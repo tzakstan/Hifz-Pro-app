@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Musajjal Pro – Hifzul Quran Records</title>
   <meta name="description" content="Musajjal Pro: High-performance Hifzul Quran classroom records, Tasmee evaluations, and parent progress reporting.">
+    <!-- Google Fonts: Amiri Quran, Amiri, Scheherazade New & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Scheherazade+New:wght@600;700&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#800020">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,40 +16,58 @@
 
   <style>
     :root {
-      --primary: #800020; /* Deep Maroon */
-      --primary-dark: #560015;
-      --primary-light: #9c1534;
-      --accent-gold: #c59b27;
-      --accent-gold-light: #fef8e7;
-      --accent-green: #1b5e20;
-      --accent-green-light: #e8f5e9;
-      --accent-amber: #b45309;
+      /* Royal Dawoodi Bohra Institutional Palette */
+      --primary: #6b0f24;          /* Imperial Crimson / Maroon */
+      --primary-dark: #450816;     /* Deep Velvet Crimson */
+      --primary-light: #8e1532;    /* Vibrant Royal Berry */
+      --primary-glow: rgba(107, 15, 36, 0.15);
+
+      --accent-gold: #c69214;       /* Antique Fatimi Gold */
+      --accent-gold-dark: #9a6f08;
+      --accent-gold-light: #fdf6e2; /* Silken Gold Parchment */
+      --accent-gold-border: rgba(198, 146, 20, 0.4);
+
+      --accent-green: #047857;      /* Islamic Emerald */
+      --accent-green-light: #ecfdf5;
+      --accent-green-border: #10b981;
+
+      --accent-amber: #b45309;      /* Warm Amber */
       --accent-amber-light: #fef3c7;
-      --accent-red: #dc2626;
-      --accent-red-light: #fee2e2;
+
+      --accent-red: #b91c1c;        /* Ruby Red for severe talqeen */
+      --accent-red-light: #fef2f2;
+
+      --background: #f7f4ed;        /* Warm Ivory Manuscript Paper */
       --surface: #ffffff;
-      --background: #f8fafc;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --border-focus: #800020;
-      --radius: 12px;
+      --surface-warm: #fcfbf8;
+      --surface-bezel: #f0ebe1;
+
+      --text-main: #1c1917;         /* Deep Stone / Ebony */
+      --text-muted: #78716c;        /* Warm Taupe Slate */
+      --border: #e7dfd3;            /* Soft Parchment Line */
+      --border-focus: #6b0f24;
+      
+      --radius: 14px;
       --radius-sm: 8px;
       --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.04);
-      --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.12), 0 8px 10px -6px rgba(0,0,0,0.06);
+
+      /* Doppelrand Machined Hardware Elevation Shadows */
+      --shadow-sm: 0 1px 3px rgba(107, 15, 36, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --shadow: 0 4px 18px -2px rgba(107, 15, 36, 0.07), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 12px 32px -4px rgba(107, 15, 36, 0.14), 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+      --shadow-gold: 0 4px 16px rgba(198, 146, 20, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background-color: var(--background);
       color: var(--text-main);
       line-height: 1.5;
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
+      background-image: radial-gradient(circle at 50% 0%, rgba(198, 146, 20, 0.03) 0%, transparent 60%);
     }
 
     /* Header */
@@ -565,6 +587,169 @@
       text-align: center;
     }
     .otp-box:focus { border-color: var(--primary); outline: none; }
+  
+    /* --- ISLAMIC TYPOGRAPHY & ORNAMENTATION --- */
+    .arabic-title {
+      font-family: 'Amiri', 'Scheherazade New', serif;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .quran-badge {
+      font-family: 'Amiri', 'Scheherazade New', serif;
+      font-size: 14px;
+      direction: rtl;
+      display: inline-block;
+    }
+    .ornament-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 12px 0;
+      color: var(--accent-gold);
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    .ornament-rule::before, .ornament-rule::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent-gold-border), transparent);
+    }
+
+    /* --- FLUID GRADE MORPHING --- */
+    @keyframes gradeSpringPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.18); }
+      100% { transform: scale(1); }
+    }
+    .grade-pop {
+      animation: gradeSpringPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .grade-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      font-variant-numeric: tabular-nums;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1.5px solid transparent;
+      box-shadow: var(--shadow-sm);
+    }
+    .grade-mumtaz {
+      background: #ecfdf5 !important;
+      color: #047857 !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.28) !important;
+    }
+    .grade-jayyid-jiddan {
+      background: #f0fdf4 !important;
+      color: #15803d !important;
+      border-color: #4ade80 !important;
+    }
+    .grade-jayyid {
+      background: #fffbeb !important;
+      color: #b45309 !important;
+      border-color: #f59e0b !important;
+    }
+    .grade-maqbool {
+      background: #fef2f2 !important;
+      color: #b91c1c !important;
+      border-color: #f87171 !important;
+    }
+
+    /* --- TACTILE 3D COUNTER BUTTONS --- */
+    .btn-step {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid #dcd4c6;
+      background: linear-gradient(180deg, #ffffff 0%, #f7f4ed 100%);
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(107, 15, 36, 0.08), inset 0 1px 0 #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.12s;
+      user-select: none;
+    }
+    .btn-step:active {
+      transform: scale(0.90);
+      background: #ece4d4;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.12);
+    }
+
+    /* --- DOPPELRAND ENHANCED CARDS --- */
+    .section-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      position: relative;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+    }
+    .section-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    .section-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      opacity: 0.6;
+    }
+
+    /* --- CELEBRATION TOAST & CONFETTI CANVAS --- */
+    #celebration-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .milestone-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, #1c1917, #292524);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1.5px var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .milestone-toast.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .milestone-icon {
+      font-size: 24px;
+      animation: pulseStar 1s infinite alternate;
+    }
+    @keyframes pulseStar {
+      from { transform: scale(1); }
+      to { transform: scale(1.25); }
+    }
+
   </style>
   <link rel="manifest" href="./manifest.json">
 </head>
@@ -1260,7 +1445,7 @@
           You can use Musajjal Pro on your mobile phone from anywhere in the world on any network (Airtel, Jio, Vodafone, mobile hotspot, or any Wi-Fi). Open this live secure HTTPS link in Chrome or Safari:
         </p>
         <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #86efac; border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px;">
-          <code style="font-size: 15px; font-weight: 800; color: #15803d;" id="mobile-worldwide-url">https://c79ab0c273f40b.lhr.life</code>
+          <code style="font-size: 15px; font-weight: 800; color: #15803d;" id="mobile-worldwide-url">https://bfce854722ccdb.lhr.life</code>
           <button class="alert-btn" style="background: #16a34a;" onclick="App.copyWorldwideUrl()">Copy Link</button>
         </div>
         <div style="font-size: 12px; color: #166534; line-height: 1.5;">
@@ -1741,7 +1926,7 @@
 
       copyWorldwideUrl() {
         const urlEl = document.getElementById('mobile-worldwide-url');
-        const url = urlEl ? urlEl.textContent.trim() : "https://c79ab0c273f40b.lhr.life";
+        const url = urlEl ? urlEl.textContent.trim() : "https://bfce854722ccdb.lhr.life";
         navigator.clipboard.writeText(url).then(() => {
           alert("Copied Worldwide Mobile Link: " + url + "\nOpen this in your phone's browser from anywhere!");
         }).catch(() => {
@@ -1823,7 +2008,7 @@
         surahs.forEach((s, idx) => {
           const opt = document.createElement("option");
           opt.value = s.surah;
-          opt.textContent = `${s.surah}. ${s.name} (${s.arabic}) - ${s.totalAyahs} Ayahs`;
+          opt.textContent = `${s.surah}. ${s.name} • ${s.arabic} (${s.totalAyahs} Ayahs)`;
           if (idx === 0) opt.selected = true;
           surahEl.appendChild(opt);
         });
@@ -1882,7 +2067,7 @@
         surahs.forEach((s, idx) => {
           const opt = document.createElement("option");
           opt.value = s.surah;
-          opt.textContent = `${s.surah}. ${s.name} (${s.arabic}) - ${s.totalAyahs} Ayahs`;
+          opt.textContent = `${s.surah}. ${s.name} • ${s.arabic} (${s.totalAyahs} Ayahs)`;
           if (idx === 0) opt.selected = true;
           surahEl.appendChild(opt);
         });
@@ -1915,7 +2100,7 @@
         surahs.forEach((s, idx) => {
           const opt = document.createElement("option");
           opt.value = s.surah;
-          opt.textContent = `${s.surah}. ${s.name} (${s.arabic}) - ${s.totalAyahs} Ayahs`;
+          opt.textContent = `${s.surah}. ${s.name} • ${s.arabic} (${s.totalAyahs} Ayahs)`;
           if (idx === 0) opt.selected = true;
           surahEl.appendChild(opt);
         });
@@ -1950,7 +2135,7 @@
         surahs.forEach((s, idx) => {
           const opt = document.createElement("option");
           opt.value = s.surah;
-          opt.textContent = `${s.surah}. ${s.name} (${s.arabic}) - ${s.totalAyahs} Ayahs`;
+          opt.textContent = `${s.surah}. ${s.name} • ${s.arabic} (${s.totalAyahs} Ayahs)`;
           if (idx === 0) opt.selected = true;
           surahEl.appendChild(opt);
         });
@@ -2006,7 +2191,7 @@
         surahs.forEach((s, idx) => {
           const opt = document.createElement("option");
           opt.value = s.surah;
-          opt.textContent = `${s.surah}. ${s.name} (${s.arabic}) - ${s.totalAyahs} Ayahs`;
+          opt.textContent = `${s.surah}. ${s.name} • ${s.arabic} (${s.totalAyahs} Ayahs)`;
           if (idx === 0) opt.selected = true;
           surahEl.appendChild(opt);
         });
@@ -2218,7 +2403,10 @@
       },
 
       setAttendance(status) {
-        ['p', 'a', 'e'].forEach(k => document.getElementById(`pill-${k}`).className = 'att-pill');
+        this.triggerHaptic('medium');
+        ['pill-p', 'pill-a', 'pill-e'].forEach(id => {
+          document.getElementById(id).className = 'att-pill';
+        });
         if (status === 'Present') document.getElementById('pill-p').className = 'att-pill active-p';
         if (status === 'Absent') document.getElementById('pill-a').className = 'att-pill active-a';
         if (status === 'Excused') document.getElementById('pill-e').className = 'att-pill active-e';
@@ -2240,18 +2428,136 @@
         let val = parseInt(el.textContent) + delta;
         if (val < 0) val = 0;
         el.textContent = val;
+        this.triggerHaptic(type === 'talqeen' ? 'warning' : 'light');
         this.recalcGrades();
       },
 
       recalcGrades() {
-        const jTan = parseInt(document.getElementById('jadeed-tanbeeh-val').textContent);
-        const jTal = parseInt(document.getElementById('jadeed-talqeen-val').textContent);
+        const jTan = parseInt(document.getElementById('jadeed-tanbeeh-val').textContent) || 0;
+        const jTal = parseInt(document.getElementById('jadeed-talqeen-val').textContent) || 0;
         const jGrade = Math.max(0, 10.0 - (jTan * 0.5) - (jTal * 1.0));
-        document.getElementById('jadeed-grade-pill').textContent = `${jGrade.toFixed(1)}/10`;
+        this.morphGradePill('jadeed-grade-pill', jGrade);
 
-        const mTan = parseInt(document.getElementById('murajaat-tanbeeh-val').textContent);
+        const mTan = parseInt(document.getElementById('murajaat-tanbeeh-val').textContent) || 0;
         const mGrade = Math.max(0, 10.0 - (mTan * 0.5));
-        document.getElementById('murajaat-grade-pill').textContent = `${mGrade.toFixed(1)}/10`;
+        this.morphGradePill('murajaat-grade-pill', mGrade);
+      },
+
+      morphGradePill(pillId, gradeVal) {
+        const el = document.getElementById(pillId);
+        if (!el) return;
+
+        // Fluid spring pop animation
+        el.classList.remove('grade-pop');
+        void el.offsetWidth; // Trigger DOM reflow for CSS animation reset
+        el.classList.add('grade-pop');
+
+        // Dynamic thresholds & colors
+        el.classList.remove('grade-mumtaz', 'grade-jayyid-jiddan', 'grade-jayyid', 'grade-maqbool');
+
+        if (gradeVal >= 9.8) {
+          el.textContent = `✨ ${gradeVal.toFixed(1)}/10`;
+          el.classList.add('grade-mumtaz');
+        } else if (gradeVal >= 8.8) {
+          el.textContent = `★ ${gradeVal.toFixed(1)}/10`;
+          el.classList.add('grade-jayyid-jiddan');
+        } else if (gradeVal >= 7.0) {
+          el.textContent = `${gradeVal.toFixed(1)}/10`;
+          el.classList.add('grade-jayyid');
+        } else {
+          el.textContent = `⚠ ${gradeVal.toFixed(1)}/10`;
+          el.classList.add('grade-maqbool');
+        }
+      },
+
+      // ---------------------------------------------------------
+      // HAPTIC TOUCH FEEDBACK (Design Spells)
+      // ---------------------------------------------------------
+      triggerHaptic(type = 'light') {
+        if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+          try {
+            if (type === 'light') navigator.vibrate(15);
+            else if (type === 'medium') navigator.vibrate(28);
+            else if (type === 'warning') navigator.vibrate([35, 40, 35]);
+            else if (type === 'success') navigator.vibrate([15, 50, 25]);
+            else if (type === 'celebrate') navigator.vibrate([40, 60, 40, 60, 80]);
+          } catch(e) {}
+        }
+      },
+
+      // ---------------------------------------------------------
+      // KHATAM & MILESTONE CELEBRATION (Confetti + Toast)
+      // ---------------------------------------------------------
+      showMilestoneToast(title, subtitle) {
+        this.triggerHaptic('celebrate');
+        const toast = document.getElementById('milestone-toast');
+        if (!toast) return;
+        document.getElementById('milestone-title').textContent = title;
+        document.getElementById('milestone-subtitle').textContent = subtitle;
+        toast.classList.add('active');
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(() => {
+          toast.classList.remove('active');
+        }, 3200);
+      },
+
+      triggerConfetti() {
+        const canvas = document.getElementById('celebration-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ['#c69214', '#ffd700', '#10b981', '#047857', '#8e1532', '#fdf6e2'];
+        const particles = [];
+        for (let i = 0; i < 70; i++) {
+          particles.push({
+            x: canvas.width * 0.5 + (Math.random() - 0.5) * 120,
+            y: canvas.height * 0.35 + (Math.random() - 0.5) * 60,
+            w: Math.random() * 8 + 4,
+            h: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 14,
+            vy: Math.random() * -12 - 4,
+            gravity: 0.35,
+            rot: Math.random() * 360,
+            vrot: (Math.random() - 0.5) * 12,
+            opacity: 1
+          });
+        }
+
+        let start = Date.now();
+        const anim = () => {
+          const elapsed = Date.now() - start;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          let alive = false;
+          particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += p.gravity;
+            p.rot += p.vrot;
+            if (elapsed > 1400) p.opacity -= 0.02;
+
+            if (p.opacity > 0 && p.y < canvas.height + 20) {
+              alive = true;
+              ctx.save();
+              ctx.translate(p.x, p.y);
+              ctx.rotate((p.rot * Math.PI) / 180);
+              ctx.globalAlpha = Math.max(0, p.opacity);
+              ctx.fillStyle = p.color;
+              ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+              ctx.restore();
+            }
+          });
+
+          if (alive && elapsed < 3000) {
+            requestAnimationFrame(anim);
+          } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        };
+        requestAnimationFrame(anim);
       },
 
       toggleJuzHaaliSkip() {
@@ -2279,6 +2585,16 @@
         this.students[this.currentIndex].curPage = page;
         this.students[this.currentIndex].curAyah = endAyah;
         this.saveStudents();
+
+        // Check for 10.0 Mumtaz Milestone celebration
+        const jTan = parseInt(document.getElementById('jadeed-tanbeeh-val').textContent) || 0;
+        const jTal = parseInt(document.getElementById('jadeed-talqeen-val').textContent) || 0;
+        if (jTan === 0 && jTal === 0) {
+          this.triggerConfetti();
+          this.showMilestoneToast("✨ Mumtaz! (10.0 / 10)", `${this.students[this.currentIndex].name} recited with 0 errors!`);
+        } else {
+          this.triggerHaptic('success');
+        }
 
         if (this.currentIndex < this.students.length - 1) {
           this.nextStudent();
@@ -2538,5 +2854,16 @@
       }
     });
   </script>
+
+  <!-- Milestone Celebration Canvas & Toast Banner -->
+  <canvas id="celebration-canvas"></canvas>
+  <div id="milestone-toast" class="milestone-toast">
+    <div class="milestone-icon">✨</div>
+    <div>
+      <div style="font-weight: 700; font-size: 13px; color: #fef08a;" id="milestone-title">Mubarak! Flawless Recitation</div>
+      <div style="font-size: 11px; opacity: 0.9;" id="milestone-subtitle">Mumtaz Grade (10.0/10) with 0 errors</div>
+    </div>
+  </div>
+
 </body>
 </html>
