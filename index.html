@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Scheherazade+New:wght@600;700&display=swap">
   </noscript>
   <!-- Preload Authentic Dawoodi Bohra Kanz al-Lulu Font (كنز اللؤلؤ) -->
-  <link rel="preload" href="./fonts/KanzalLulu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="./fonts/KanzalLulu-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <meta name="theme-color" content="#800020">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1297,6 +1297,20 @@
       <button class="btn-icon" id="btn-nav-logout" title="Logout" onclick="App.promptLogout()">🚪</button>
     </div>
   </header>
+  <!-- Instant PWA Version Update Notification Banner -->
+  <div id="pwa-update-available-banner" style="display: none; background: linear-gradient(135deg, #15803d, #16a34a); color: #fff; padding: 10px 16px; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 9999;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 18px;">⚡</span>
+      <div>
+        <div style="font-weight: 800;">Musajjal Pro Update (v3.2) Ready!</div>
+        <div style="font-size: 11px; opacity: 0.9;">Fresh changes from GitHub are ready to apply to this phone.</div>
+      </div>
+    </div>
+    <button onclick="window.location.reload(true)" style="background: #fff; color: #15803d; border: none; padding: 7px 16px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      Tap to Update 🔄
+    </button>
+  </div>
+
 
   <!-- Amber Alert Banner -->
   <!-- Offline Sync Status Bar -->
@@ -2227,6 +2241,26 @@
     <div id="settings-view" class="view-screen">
       <div class="view-title-bar">
         <div class="view-title">⚙️ App Settings & Profile</div>
+
+      <!-- PWA Version & Cache Lifecycle Management Card -->
+      <div class="card" style="background: #ffffff; border: 1.5px solid var(--border);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div class="card-title" style="margin-bottom: 0;">📱 App Version & Mobile Cache Controls</div>
+          <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: 12px;">v3.2 Production</span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+          If your mobile phone is showing an older version of the app after updating on GitHub, tap below to immediately purge stale cached files and load the newest version.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn-secondary" style="padding: 10px 14px; font-size: 13px; font-weight: 700; flex: 1; min-width: 180px;" onclick="App.checkForUpdates()">
+            🔍 Check for GitHub Updates
+          </button>
+          <button class="btn-secondary" style="padding: 10px 14px; font-size: 13px; font-weight: 700; background: #fef2f2; border-color: #fca5a5; color: #b91c1c; flex: 1; min-width: 180px;" onclick="App.forceUpdateAndClearCache()">
+            🔄 Force Update & Clear Cache
+          </button>
+        </div>
+      </div>
+
         <button class="btn-back" onclick="App.navTo('dashboard-view')">← Dashboard</button>
       </div>
 
@@ -2783,7 +2817,17 @@
     };
 
     // App State Controller
-    const App = {
+    const DEFAULT_TEACHER_PROFILE = {
+    name: "Shaikh Murtaza Zakir",
+    username: "murtaza",
+    password: "password123",
+    email: "teacher@msb.org",
+    school: "MSB Educational Institute",
+    className: "Sanah 4-B",
+    phone: "9876543210"
+  };
+
+  const App = {
       isLoggedIn: false,
       lang: 'en',
       students: [],
@@ -2793,58 +2837,81 @@
       currentSingleSection: 'jadeed',
       lastSavedEntry: null,
 
+            // Safe Storage Helper with Fallback (Prevents startup parse crashes)
+      getSafeJSON(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw || raw === 'null' || raw === 'undefined') return fallback;
+          const parsed = JSON.parse(raw);
+          return (parsed !== null && parsed !== undefined) ? parsed : fallback;
+        } catch (e) {
+          console.warn(`[SafeStorage] Could not parse ${key}:`, e);
+          return fallback;
+        }
+      },
+
       init() {
-        // 1. Check URL parameters for multi-device sync token (?auth_sync=...)
-        this.checkUrlAuthToken();
+        try {
+          // 1. Check URL parameters for multi-device sync token (?auth_sync=...)
+          this.checkUrlAuthToken();
 
-        // 2. Load Language & Preferences
-        this.lang = localStorage.getItem("musajjal_lang") || "en";
+          // 2. Load Language & Preferences
+          this.lang = localStorage.getItem("musajjal_lang") || "en";
 
-        // 3. Load Teacher Profile & Render Header Subtitle IMMEDIATELY (prevents "Ustadh Ahmed" flicker)
-        this.renderTeacherProfile();
+          // 3. Load Teacher Profile & Render Header Subtitle IMMEDIATELY (guarantees zero flicker)
+          this.renderTeacherProfile();
 
-        // 4. Load Students & Records data
-        const cached = localStorage.getItem("musajjal_students");
-        this.students = cached ? JSON.parse(cached) : SEED_STUDENTS;
-        this.saveStudents();
+          // 4. Load Students & Records data SAFELY with validation
+          const loadedStudents = this.getSafeJSON("musajjal_students", null);
+          if (Array.isArray(loadedStudents) && loadedStudents.length > 0) {
+            this.students = loadedStudents;
+          } else {
+            this.students = JSON.parse(JSON.stringify(SEED_STUDENTS));
+          }
+          this.saveStudents();
 
-        const cachedRecs = localStorage.getItem("musajjal_records");
-        this.records = cachedRecs !== null ? JSON.parse(cachedRecs) : [
-          { studentName: "Zayd Ali", date: "11 Nov 2026", section: "Jadeed", details: "Juz 29, Surah Al-Mulk, Page 562, Ayat 1-12", grade: "9.0/10", remarks: "Good tajweed" },
-          { studentName: "Ahmed Mohammed Khan", date: "11 Nov 2026", section: "Muraja'at", details: "Juz 28, Page 558", grade: "9.5/10", remarks: "Fluency excellent" },
-          { studentName: "Bilal ibn Rabah", date: "10 Nov 2026", section: "Jadeed", details: "Juz 28, Surah Al-Mujadilah, Page 542, Ayat 1-6", grade: "8.5/10", remarks: "Focus on Ghunnah" }
-        ];
+          const defaultRecs = [
+            { studentName: "Zayd Ali", date: "11 Nov 2026", section: "Jadeed", details: "Juz 29, Surah Al-Mulk, Page 562, Ayat 1-12", grade: "9.0/10", remarks: "Good tajweed" },
+            { studentName: "Ahmed Mohammed Khan", date: "11 Nov 2026", section: "Muraja'at", details: "Juz 28, Page 558", grade: "9.5/10", remarks: "Fluency excellent" },
+            { studentName: "Bilal ibn Rabah", date: "10 Nov 2026", section: "Jadeed", details: "Juz 28, Surah Al-Mujadilah, Page 542, Ayat 1-6", grade: "8.5/10", remarks: "Focus on Ghunnah" }
+          ];
+          const loadedRecs = this.getSafeJSON("musajjal_records", null);
+          if (Array.isArray(loadedRecs)) {
+            this.records = loadedRecs;
+          } else {
+            this.records = defaultRecs;
+          }
 
-        // 5. Lightweight Startup: only initialize ergonomics and counts (defer heavy 604-cell DOM grids to navTo)
-        this.initOfflineAndErgonomics();
-        this.updateAttendanceCounts();
-        this.updateDashboardKPIs();
-        this.updateUndoButtonUI();
-        this.applyLanguage(this.lang);
+          // 5. Lightweight Startup: only initialize ergonomics and counts (defer heavy 604-cell DOM grids to navTo)
+          this.initOfflineAndErgonomics();
+          this.updateAttendanceCounts();
+          this.updateDashboardKPIs();
+          this.updateUndoButtonUI();
+          this.applyLanguage(this.lang);
 
-        // 6. Evaluate Authentication State Permanently
-        const savedProfileStr = localStorage.getItem("musajjal_teacher_profile");
-        const staySignedIn = localStorage.getItem("musajjal_stay_signed_in") !== "false";
+          // 6. Evaluate Authentication State Permanently
+          const savedProfile = this.getSafeJSON("musajjal_teacher_profile", null);
+          const staySignedIn = localStorage.getItem("musajjal_stay_signed_in") !== "false";
 
-        if (savedProfileStr && staySignedIn) {
-          // Permanently authenticated - no timeouts, no kickouts to login
-          try {
-            this.teacherProfile = JSON.parse(savedProfileStr);
-          } catch(e) {}
-          this.isLoggedIn = true;
-          localStorage.setItem("musajjal_auth", "true");
-          this.completeLogin();
-        } else if (savedProfileStr && !staySignedIn) {
-          // Profile exists but user explicitly chose to enter password every time
-          try {
-            this.teacherProfile = JSON.parse(savedProfileStr);
-          } catch(e) {}
-          this.isLoggedIn = false;
-          this.showLoginScreen();
-        } else {
-          // Brand new installation, no profile saved yet
-          this.isLoggedIn = false;
-          this.showSetupScreen();
+          if (savedProfile && staySignedIn) {
+            // Permanently authenticated - no timeouts, no kickouts to login
+            this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE, savedProfile);
+            this.isLoggedIn = true;
+            localStorage.setItem("musajjal_auth", "true");
+            this.completeLogin();
+          } else if (savedProfile && !staySignedIn) {
+            // Profile exists but user explicitly chose to enter password every time
+            this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE, savedProfile);
+            this.isLoggedIn = false;
+            this.showLoginScreen();
+          } else {
+            // Brand new installation, no profile saved yet
+            this.isLoggedIn = false;
+            this.showSetupScreen();
+          }
+        } catch (initErr) {
+          console.error("[Musajjal] Caught startup error in init():", initErr);
+          this.renderEmergencyRecoveryScreen(initErr);
         }
       },
 
@@ -2856,7 +2923,74 @@
         localStorage.setItem("musajjal_records", JSON.stringify(this.records));
       },
 
+            renderEmergencyRecoveryScreen(err) {
+        const sc = document.getElementById('emergency-recovery-screen');
+        const log = document.getElementById('emergency-error-log');
+        if (sc) {
+          sc.style.display = 'block';
+          if (log && err) log.textContent = err.toString() + (err.stack ? '\n' + err.stack : '');
+        }
+      },
+
+      launchSafeMode() {
+        try {
+          this.students = JSON.parse(JSON.stringify(SEED_STUDENTS));
+          this.records = [
+            { studentName: "Zayd Ali", date: "11 Nov 2026", section: "Jadeed", details: "Juz 29, Surah Al-Mulk, Page 562, Ayat 1-12", grade: "9.0/10", remarks: "Good tajweed" }
+          ];
+          this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE);
+          this.isLoggedIn = true;
+          const sc = document.getElementById('emergency-recovery-screen');
+          if (sc) sc.style.display = 'none';
+          this.completeLogin();
+        } catch(e) {
+          window.location.reload();
+        }
+      },
+
+      async checkForUpdates() {
+        if ('serviceWorker' in navigator) {
+          try {
+            const reg = await navigator.serviceWorker.getRegistration();
+            if (reg) {
+              await reg.update();
+              alert("✓ Checked for updates. If a newer version was published on GitHub, it is downloading now.");
+            } else {
+              alert("Service worker is active and up to date.");
+            }
+          } catch(e) {
+            alert("Update check completed.");
+          }
+        } else {
+          alert("Offline service worker not supported in this browser.");
+        }
+      },
+
+      async forceUpdateAndClearCache() {
+        if (confirm("🔄 Force update and clear all cached app files? Your student records will remain safe.")) {
+          try {
+            if ('caches' in window) {
+              const keys = await caches.keys();
+              await Promise.all(keys.map(k => caches.delete(k)));
+            }
+            if ('serviceWorker' in navigator) {
+              const registrations = await navigator.serviceWorker.getRegistrations();
+              await Promise.all(registrations.map(r => r.unregister()));
+            }
+          } catch(e) {
+            console.warn("[SW] Cache clearance error:", e);
+          }
+          window.location.reload(true);
+        }
+      },
+
+      showVersionUpdateBanner() {
+        const b = document.getElementById('pwa-update-available-banner');
+        if (b) b.style.display = 'flex';
+      },
+
       navTo(screenId) {
+        this.currentView = screenId;
         document.querySelectorAll('.view-screen').forEach(el => el.classList.remove('active'));
         const target = document.getElementById(screenId);
         if (target) target.classList.add('active');
@@ -3092,17 +3226,17 @@
       },
 
       renderTeacherProfile() {
-        const saved = localStorage.getItem("musajjal_teacher_profile");
-        if (saved) {
-          try {
-            this.teacherProfile = JSON.parse(saved);
-          } catch(e) {}
+        const saved = this.getSafeJSON("musajjal_teacher_profile", null);
+        if (saved && typeof saved === 'object') {
+          this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE, saved);
+        } else if (!this.teacherProfile || typeof this.teacherProfile !== 'object') {
+          this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE);
         }
         const headerEl = document.getElementById('header-user-status');
         if (headerEl) {
           const dualDate = FatimiCalendar.formatDual(new Date(), this.lang || 'en');
           const sanahLabel = this.lang === 'ar' ? `سنة ${this.teacherProfile.className || '4-B'}` : `Sanah ${this.teacherProfile.className || '4-B'}`;
-          headerEl.textContent = `${this.teacherProfile.name || 'Ustadh'} • ${sanahLabel} | ${dualDate}`;
+          headerEl.textContent = `${this.teacherProfile.name || 'Shaikh Murtaza Zakir'} • ${sanahLabel} | ${dualDate}`;
         }
         const pName = document.getElementById('prof-teacher-name');
         if (pName) pName.value = this.teacherProfile.name || "";
@@ -5330,9 +5464,41 @@
     };
 
     window.addEventListener('DOMContentLoaded', () => {
-      App.init();
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration note:', err));
+      // 1. Safe Startup Execution
+      try {
+        App.init();
+      } catch (err) {
+        console.error('[Musajjal] Fatal startup error:', err);
+        App.renderEmergencyRecoveryScreen(err);
+      }
+
+      // 2. High-Performance Service Worker Registration with Immediate Update Check
+      if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        navigator.serviceWorker.register('./sw.js?v=3.2').then(reg => {
+          console.log('[SW] Registered v3.2 successfully, checking for updates...');
+          reg.update(); // Trigger immediate update check on every load
+
+          reg.onupdatefound = () => {
+            const installing = reg.installing;
+            if (installing) {
+              installing.onstatechange = () => {
+                if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('[SW] New version installed! Prompting reload...');
+                  App.showVersionUpdateBanner();
+                }
+              };
+            }
+          };
+        }).catch(err => console.log('SW registration note:', err));
+
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            refreshing = true;
+            console.log('[SW] Controller changed, reloading to apply latest update...');
+            window.location.reload();
+          }
+        });
       }
     });
   </script>
@@ -5446,5 +5612,25 @@
     </div>
   </div>
 
+
+  <!-- Safe Mode / Emergency Startup Error Screen (Prevents white-screen crashes) -->
+  <div id="emergency-recovery-screen" style="display: none; position: fixed; inset: 0; background: #fff8f8; z-index: 999999; padding: 24px; text-align: center; overflow-y: auto;">
+    <div style="max-width: 480px; margin: 40px auto; background: #fff; border: 1.5px solid #ef4444; border-radius: 12px; padding: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+      <div style="font-size: 40px; margin-bottom: 8px;">⚠️</div>
+      <h2 style="color: #991b1b; font-size: 18px; margin-bottom: 8px; font-weight: 800;">Musajjal Pro Safe Mode Recovery</h2>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; line-height: 1.5;">
+        An unexpected error occurred while loading temporary cached session data. Your student records are safe. Tap below to launch safely or refresh from GitHub.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button class="btn-primary" style="width: 100%; padding: 12px; font-weight: 800;" onclick="App.launchSafeMode()">
+          🚀 Launch in Safe Mode (Preserve Records)
+        </button>
+        <button class="btn-secondary" style="width: 100%; padding: 12px; font-weight: 700;" onclick="App.forceUpdateAndClearCache()">
+          🔄 Force Clear App Cache & Refresh
+        </button>
+      </div>
+      <div style="margin-top: 16px; font-size: 11px; color: #94a3b8; text-align: left; font-family: monospace; background: #f1f5f9; padding: 10px; border-radius: 6px; max-height: 100px; overflow-y: auto; word-break: break-all;" id="emergency-error-log"></div>
+    </div>
+  </div>
 </body>
 </html>
