@@ -3,7 +3,8 @@ const CACHE_NAME = 'musajjal-pro-v2.1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './offline.html'
 ];
 
 self.addEventListener('install', (event) => {
@@ -38,8 +39,9 @@ self.addEventListener('fetch', (event) => {
         return networkResponse;
       }).catch(() => {
         // Fallback for HTML pages
-        if (event.request.headers.get('accept').includes('text/html')) {
-          return caches.match('./index.html');
+        const acceptHeader = event.request.headers.get('accept') || '';
+        if (acceptHeader.includes('text/html')) {
+          return caches.match('./offline.html') || caches.match('./index.html');
         }
       });
     })
