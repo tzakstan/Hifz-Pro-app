@@ -1,6 +1,6 @@
-// Musajjal Pro - Progressive Web App Service Worker (v3.2)
+// Hifz Pro – Progressive Web App Service Worker (v3.2)
 // Network-First for HTML navigation + Stale-While-Revalidate for static assets
-const CACHE_NAME = 'musajjal-pro-v3.2';
+const CACHE_NAME = 'hifz-pro-v3.3';
 const CORE_ASSETS = [
   './',
   './index.html',

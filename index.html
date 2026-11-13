@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Musajjal Pro – Hifzul Quran Records</title>
-  <meta name="description" content="Musajjal Pro: High-performance Hifzul Quran classroom records, Tasmee evaluations, and parent progress reporting.">
+  <title>Hifz Pro – Hifzul Quran Records</title>
+  <meta name="description" content="Hifz Pro: High-performance Hifzul Quran classroom records, Tasmee evaluations, and parent progress reporting.">
     <!-- Google Fonts: Amiri Quran, Amiri, Scheherazade New & Plus Jakarta Sans (High-Speed Async Preload) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1268,6 +1268,70 @@
       transform: translateY(-1px);
     }
 
+  
+    /* ==========================================================
+       FATEMI ARCHITECTURAL & DECORATIVE MOTIFS
+       Inspired by Al-Jami' al-Anwar, Al-Jami' al-Aqmar & Raudat Tahera
+       ========================================================== */
+    :root {
+      --fatemi-gold: #c69214;
+      --fatemi-gold-light: #fef9c3;
+      --fatemi-crimson: #6b0f24;
+      --fatemi-marble: #fcfbf7;
+      --fatemi-green: #15803d;
+    }
+
+    /* Fatemi Stepped Cresting Strip (Shurafat Parapet) */
+    .fatemi-shurafat-strip {
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(180deg, #6b0f24 0%, #520b1c 100%);
+      line-height: 0;
+      position: sticky;
+      top: 56px;
+      z-index: 99;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Fatemi Keel Arch Card Profile */
+    .fatemi-arch-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid rgba(198, 146, 20, 0.28);
+      border-top: 3px solid var(--fatemi-gold);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 18px rgba(107, 15, 36, 0.06);
+      overflow: hidden;
+    }
+
+    /* Fatemi Calligraphic Bismillah Banner */
+    .fatemi-bismillah-banner {
+      text-align: center;
+      font-family: var(--font-arabic);
+      font-size: 16px;
+      color: var(--fatemi-crimson);
+      font-weight: 700;
+      padding: 6px 0 8px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px dashed rgba(198, 146, 20, 0.35);
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, rgba(198, 146, 20, 0.04) 0%, transparent 100%);
+    }
+
+    /* Fatemi Shamsah (Radiant Sunburst Medallion) */
+    .fatemi-shamsah-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fffbeb 30%, #fef3c7 70%, #fde68a 100%);
+      border: 1.5px solid var(--fatemi-gold);
+      box-shadow: 0 0 8px rgba(198, 146, 20, 0.35);
+      flex-shrink: 0;
+    }
+
   </style>
   <link rel="manifest" href="./manifest.json">
 </head>
@@ -1276,9 +1340,27 @@
   <!-- Top Sticky Header -->
   <header id="main-header">
     <div class="header-brand" onclick="App.navTo('dashboard-view')">
-      <div class="brand-icon">📖</div>
+      <div class="fatemi-shamsah-badge" title="Hifz Pro – Fatemi Madrasa System">
+        <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
+          <circle cx="50" cy="50" r="44" stroke="#c69214" stroke-width="2" stroke-dasharray="3 2" fill="none"/>
+          <circle cx="50" cy="50" r="38" stroke="#6b0f24" stroke-width="1.5" fill="#fdfcf9"/>
+          <!-- 8 Radiating Rays (Shamsah Noor) -->
+          <g stroke="#c69214" stroke-width="2" stroke-linecap="round">
+            <line x1="50" y1="8" x2="50" y2="16"/>
+            <line x1="50" y1="84" x2="50" y2="92"/>
+            <line x1="8" y1="50" x2="16" y2="50"/>
+            <line x1="84" y1="50" x2="92" y2="50"/>
+            <line x1="20" y1="20" x2="26" y2="26"/>
+            <line x1="74" y1="74" x2="80" y2="80"/>
+            <line x1="20" y1="80" x2="26" y2="74"/>
+            <line x1="74" y1="26" x2="80" y2="20"/>
+          </g>
+          <!-- Quran Book Icon in center -->
+          <text x="50" y="58" font-size="24" text-anchor="middle" dominant-baseline="central">📖</text>
+        </svg>
+      </div>
       <div>
-        <div class="brand-title">Musajjal Pro</div>
+        <div class="brand-title">Hifz Pro</div>
         <div class="brand-subtitle" id="header-user-status">Madrasa Hifz Record</div>
       </div>
     </div>
@@ -1297,12 +1379,36 @@
       <button class="btn-icon" id="btn-nav-logout" title="Logout" onclick="App.promptLogout()">🚪</button>
     </div>
   </header>
+  <!-- Authentic Fatemi Shurafat (Stepped Cresting) Parapet (Al-Jami' al-Anwar / Raudat Tahera Motif) -->
+  <div class="fatemi-shurafat-strip" aria-hidden="true">
+    <svg viewBox="0 0 480 10" preserveAspectRatio="none" style="width: 100%; height: 10px; display: block;">
+      <path d="
+        M0 10 L0 6 L6 6 L6 3 L12 3 L12 0 L18 0 L18 3 L24 3 L24 6 L30 6 L30 10
+        M30 10 L30 6 L36 6 L36 3 L42 3 L42 0 L48 0 L48 3 L54 3 L54 6 L60 6 L60 10
+        M60 10 L60 6 L66 6 L66 3 L72 3 L72 0 L78 0 L78 3 L84 3 L84 6 L90 6 L90 10
+        M90 10 L90 6 L96 6 L96 3 L102 3 L102 0 L108 0 L108 3 L114 3 L114 6 L120 6 L120 10
+        M120 10 L120 6 L126 6 L126 3 L132 3 L132 0 L138 0 L138 3 L144 3 L144 6 L150 6 L150 10
+        M150 10 L150 6 L156 6 L156 3 L162 3 L162 0 L168 0 L168 3 L174 3 L174 6 L180 6 L180 10
+        M180 10 L180 6 L186 6 L186 3 L192 3 L192 0 L198 0 L198 3 L204 3 L204 6 L210 6 L210 10
+        M210 10 L210 6 L216 6 L216 3 L222 3 L222 0 L228 0 L228 3 L234 3 L234 6 L240 6 L240 10
+        M240 10 L240 6 L246 6 L246 3 L252 3 L252 0 L258 0 L258 3 L264 3 L264 6 L270 6 L270 10
+        M270 10 L270 6 L276 6 L276 3 L282 3 L282 0 L288 0 L288 3 L294 3 L294 6 L300 6 L300 10
+        M300 10 L300 6 L306 6 L306 3 L312 3 L312 0 L318 0 L318 3 L324 3 L324 6 L330 6 L330 10
+        M330 10 L330 6 L336 6 L336 3 L342 3 L342 0 L348 0 L348 3 L354 3 L354 6 L360 6 L360 10
+        M360 10 L360 6 L366 6 L366 3 L372 3 L372 0 L378 0 L378 3 L384 3 L384 6 L390 6 L390 10
+        M390 10 L390 6 L396 6 L396 3 L402 3 L402 0 L408 0 L408 3 L414 3 L414 6 L420 6 L420 10
+        M420 10 L420 6 L426 6 L426 3 L432 3 L432 0 L438 0 L438 3 L444 3 L444 6 L450 6 L450 10
+        M450 10 L450 6 L456 6 L456 3 L462 3 L462 0 L468 0 L468 3 L474 3 L474 6 L480 6 L480 10
+      " fill="#c69214" fill-opacity="0.3" stroke="#c69214" stroke-width="0.8"/>
+    </svg>
+  </div>
+
   <!-- Instant PWA Version Update Notification Banner -->
   <div id="pwa-update-available-banner" style="display: none; background: linear-gradient(135deg, #15803d, #16a34a); color: #fff; padding: 10px 16px; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 9999;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <span style="font-size: 18px;">⚡</span>
       <div>
-        <div style="font-weight: 800;">Musajjal Pro Update (v3.2) Ready!</div>
+        <div style="font-weight: 800;">Hifz Pro Update Ready!</div>
         <div style="font-size: 11px; opacity: 0.9;">Fresh changes from GitHub are ready to apply to this phone.</div>
       </div>
     </div>
@@ -1333,7 +1439,7 @@
     <div id="login-view" class="view-screen">
       <div class="auth-container" style="max-width: 420px; margin: 20px auto; background: #fff; padding: 24px; border-radius: var(--radius); box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center;">
         <div style="font-size: 40px; margin-bottom: 8px;">📖</div>
-        <h2 style="font-size: 20px; color: var(--primary); margin-bottom: 4px;">Welcome to Musajjal Pro</h2>
+        <h2 style="font-size: 20px; color: var(--primary); margin-bottom: 4px;">Welcome to Hifz Pro</h2>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Hifzul Quran Daily Records & Tasmee</p>
 
         <!-- CARD 1: SIGN IN (Default) -->
@@ -1376,7 +1482,7 @@
         <!-- CARD 2: ONE-TIME SETUP / REGISTRATION -->
         <div id="auth-setup-card" style="display: none; text-align: left;">
           <h3 style="font-size: 16px; color: var(--primary); margin-bottom: 4px; font-weight: 700;">One-Time Teacher Setup</h3>
-          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Create your credentials to access Musajjal Pro.</p>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Create your credentials to access Hifz Pro.</p>
 
           <div class="form-group" style="margin-bottom: 10px;">
             <label class="form-label">Full Name / Title</label>
@@ -1745,6 +1851,20 @@
         <button style="background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline;" onclick="App.toggleShortcutsModal()">
           ⌨️ Keyboard Shortcuts (Laptop/Tablet)
         </button>
+      </div>
+
+      <!-- Fatemi Keel Arch Silhouette Crown (Al-Jami' al-Anwar / Al-Aqmar Architecture) -->
+      <div style="text-align: center; margin-bottom: 2px;">
+        <svg viewBox="0 0 160 26" fill="none" style="width: 140px; height: 22px; margin: 0 auto; display: block;">
+          <path d="M10 24 C 30 24, 45 16, 65 7 C 72 3, 76 1.5, 80 1 C 84 1.5, 88 3, 95 7 C 115 16, 130 24, 150 24" stroke="#c69214" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M18 24 C 34 24, 48 17, 66 9 C 72 6, 76 4, 80 3.5 C 84 4, 88 6, 94 9 C 112 17, 126 24, 142 24" stroke="rgba(107, 15, 36, 0.45)" stroke-width="1"/>
+          <circle cx="80" cy="1.5" r="2.5" fill="#c69214"/>
+        </svg>
+      </div>
+
+      <!-- Fatemi Calligraphic Bismillah Inscription -->
+      <div class="fatemi-bismillah-banner">
+        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
       </div>
 
       <div class="student-stepper">
@@ -2227,8 +2347,13 @@
 
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Enrolled Students (24)</span>
-          <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="App.openAddStudentModal()">+ Add Student</button>
+          <span class="card-title" id="roster-count-title">Enrolled Students (24)</span>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="App.openAddStudentModal()">+ Add Student</button>
+            <button class="btn-secondary" style="padding: 6px 10px; font-size: 12px; color: #b91c1c; border-color: #fca5a5;" onclick="App.clearAllStudents()" title="Erase all students for clean slate">🗑️ Erase All</button>
+            <button class="btn-secondary" style="padding: 6px 10px; font-size: 12px; color: #15803d; border-color: #86efac;" onclick="App.loadDemoStudents()" title="Load 24 sample Bohra students">👥 Load Demo</button>
+            <button class="btn-secondary" style="padding: 6px 10px; font-size: 12px;" onclick="App.exportBackupJSON()" title="Export JSON backup file">💾 Backup</button>
+          </div>
         </div>
         <div id="student-roster-list" style="display: flex; flex-direction: column; gap: 10px;">
           <!-- Rendered Student Cards with REAL NAMES, NOT RAW IDS -->
@@ -2264,13 +2389,76 @@
         <button class="btn-back" onclick="App.navTo('dashboard-view')">← Dashboard</button>
       </div>
 
+      
+      <!-- Dedicated Database, Backend Server & Local Storage Sync Card -->
+      <div class="card" style="background: #ffffff; border: 1.5px solid var(--border);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+          <div class="card-title" style="margin-bottom: 0;">🗄️ Database, Backend Server & Storage Engine</div>
+          <span class="badge" id="storage-engine-badge" style="background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 12px;">
+            💾 LocalStorage Active
+          </span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+          Your student roster and recitation records are stored with absolute persistence. Erased students stay erased permanently. You can also sync to the Python backend server, reload from local storage, or export/import backup files.
+        </p>
+
+        <!-- Backend Server Status & Sync Bar -->
+        <div style="background: var(--surface-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="font-weight: 700; font-size: 13px;" id="backend-status-text">Python REST Backend: Checking...</div>
+            <div style="font-size: 11px; color: var(--text-muted);" id="backend-sync-info">Local database synced with device storage</div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-primary" style="padding: 7px 12px; font-size: 11px; background: #0284c7; border-color: #0369a1;" onclick="App.syncToBackend(true)">
+              ☁️ Push to Backend
+            </button>
+            <button class="btn-secondary" style="padding: 7px 12px; font-size: 11px;" onclick="App.loadFromBackend()">
+              📥 Pull from Backend
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Action Groups -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px;">
+          <!-- LocalStorage Actions -->
+          <button class="btn-secondary" style="padding: 10px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.loadFromLocalStorage()">
+            📥 Load from Local Storage
+          </button>
+          <button class="btn-secondary" style="padding: 10px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.saveToLocalStorage()">
+            📤 Force Save to Local Storage
+          </button>
+          
+          <!-- Backup Export & Import -->
+          <button class="btn-secondary" style="padding: 10px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.exportBackupJSON()">
+            💾 Export JSON Backup File
+          </button>
+          <label class="btn-secondary" style="padding: 10px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; margin-bottom: 0;">
+            📂 Import JSON Backup File
+            <input type="file" id="json-backup-input" accept=".json,application/json" style="display: none;" onchange="App.importBackupJSON(event)">
+          </label>
+        </div>
+
+        <!-- Roster Management (Clean Slate vs Demo Data) -->
+        <div style="border-top: 1px dashed var(--border); padding-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text);">Roster Quick Tools:</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-secondary" style="padding: 7px 14px; font-size: 12px; background: #fef2f2; border-color: #fca5a5; color: #b91c1c; font-weight: 700;" onclick="App.clearAllStudents()">
+              🗑️ Erase All Students (Clean Slate)
+            </button>
+            <button class="btn-secondary" style="padding: 7px 14px; font-size: 12px; background: #f0fdf4; border-color: #86efac; color: #15803d; font-weight: 700;" onclick="App.loadDemoStudents()">
+              👥 Load Bohra Demo Students (24)
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Worldwide Mobile Access Card (Cellular 4G/5G & Any Wi-Fi) -->
       <div class="card" style="background: linear-gradient(135deg, #f0fdf4, #ffffff); border: 1.5px solid #16a34a;">
         <div class="card-title" style="color: #15803d; margin-bottom: 6px;">
           🌐 Open on Your Mobile Phone from Anywhere (Cellular 4G/5G or Any Wi-Fi)
         </div>
         <p style="font-size: 13px; color: #14532d; margin-bottom: 10px;">
-          You can use Musajjal Pro on your mobile phone from anywhere in the world on any network (Airtel, Jio, Vodafone, mobile hotspot, or any Wi-Fi). Open this live secure HTTPS link in Chrome or Safari:
+          You can use Hifz Pro on your mobile phone from anywhere in the world on any network (Airtel, Jio, Vodafone, mobile hotspot, or any Wi-Fi). Open this live secure HTTPS link in Chrome or Safari:
         </p>
         <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #86efac; border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
           <code style="font-size: 14px; font-weight: 800; color: #15803d; word-break: break-all;" id="mobile-worldwide-url">Loading link...</code>
@@ -2715,7 +2903,7 @@
     // -------------------------------------------------------------
     const I18N_DICT = {
       en: {
-        appTitle: "Musajjal Pro",
+        appTitle: "Hifz Pro",
         appSubtitle: "Hifz Tasmee' & Retention Registry",
         navTasmee: "Quick Tasmee'",
         navAttendance: "Attendance",
@@ -2743,7 +2931,7 @@
         resetText: "↺ Reset"
       },
       ar: {
-        appTitle: "المسجل برو",
+        appTitle: "الحفظ برو",
         appSubtitle: "سجل تسميع القرآن الكريم ومراجعته",
         navTasmee: "التسميع السريع",
         navAttendance: "سجل الحضور",
@@ -2861,14 +3049,26 @@
           // 3. Load Teacher Profile & Render Header Subtitle IMMEDIATELY (guarantees zero flicker)
           this.renderTeacherProfile();
 
-          // 4. Load Students & Records data SAFELY with validation
+          // 4. Load Students & Records data with absolute persistence
+          const hasInitialized = localStorage.getItem("musajjal_initialized");
           const loadedStudents = this.getSafeJSON("musajjal_students", null);
-          if (Array.isArray(loadedStudents) && loadedStudents.length > 0) {
+
+          if (loadedStudents !== null && Array.isArray(loadedStudents)) {
+            // User's saved student roster is respected unconditionally (even if empty [])
             this.students = loadedStudents;
-          } else {
+          } else if (!hasInitialized) {
+            // Very first initial launch only: seed demo students once
             this.students = JSON.parse(JSON.stringify(SEED_STUDENTS));
+            this.saveStudents();
+            localStorage.setItem("musajjal_initialized", "true");
+          } else {
+            // User had previously initialized and erased all students
+            this.students = [];
+            this.saveStudents();
           }
-          this.saveStudents();
+
+          // Check and auto-connect to Python REST backend server
+          this.checkBackendConnection();
 
           const defaultRecs = [
             { studentName: "Zayd Ali", date: "11 Nov 2026", section: "Jadeed", details: "Juz 29, Surah Al-Mulk, Page 562, Ayat 1-12", grade: "9.0/10", remarks: "Good tajweed" },
@@ -2910,7 +3110,7 @@
             this.showSetupScreen();
           }
         } catch (initErr) {
-          console.error("[Musajjal] Caught startup error in init():", initErr);
+          console.error("[HifzPro] Caught startup error in init():", initErr);
           this.renderEmergencyRecoveryScreen(initErr);
         }
       },
@@ -3445,7 +3645,7 @@
       },
 
       promptLogout() {
-        if (confirm("Are you sure you want to log out of Musajjal Pro?")) {
+        if (confirm("Are you sure you want to log out of Hifz Pro?")) {
           this.isLoggedIn = false;
           localStorage.removeItem("musajjal_auth");
           localStorage.removeItem("musajjal_stay_signed_in");
@@ -3826,6 +4026,18 @@
         if (!container) return;
         container.innerHTML = "";
 
+        if (this.students.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 30px 20px; background: #fff; border: 1px dashed var(--border); border-radius: var(--radius-sm); color: var(--text-muted);">
+              <div style="font-size: 32px; margin-bottom: 6px;">📋</div>
+              <div style="font-weight: 700; font-size: 14px; color: var(--text);">No students enrolled for attendance</div>
+              <p style="font-size: 12px; margin: 4px 0 12px;">Add students to your roster to begin marking daily attendance.</p>
+              <button class="btn-primary" style="padding: 6px 14px; font-size: 12px;" onclick="App.openAddStudentModal()">+ Add Student</button>
+            </div>
+          `;
+          return;
+        }
+
         const dateInput = document.getElementById('att-date-picker');
         if (dateInput && !dateInput.value) {
           dateInput.value = new Date().toISOString().split('T')[0];
@@ -3895,6 +4107,20 @@
       },
 
       renderCurrentStudent() {
+        if (!this.students || this.students.length === 0) {
+          const curName = document.getElementById('cur-name');
+          if (curName) curName.textContent = this.lang === 'ar' ? "لا يوجد طلاب في السجل" : "No Students in Roster";
+          const curAvatar = document.getElementById('cur-avatar');
+          if (curAvatar) curAvatar.textContent = "—";
+          const curMeta = document.getElementById('cur-meta');
+          if (curMeta) curMeta.textContent = this.lang === 'ar' ? "أضف طلاب من قائمة الفصل أو حمل بيانات تجريبية" : "Add students in Class Roster or load demo data in Settings";
+          const yestEl = document.getElementById('cur-yesterday');
+          if (yestEl) yestEl.textContent = "—";
+          return;
+        }
+        if (this.currentIndex >= this.students.length) {
+          this.currentIndex = 0;
+        }
         const st = this.students[this.currentIndex];
         if (!st) return;
 
@@ -4275,7 +4501,7 @@
         const prompt1 = confirm("⚠️ FACTORY RESET: This will wipe ALL app data, including teacher profile, student records, attendance, and credentials. The app will return to One-Time Setup.\n\nDo you want to proceed?");
         if (!prompt1) return;
         
-        const prompt2 = prompt("Type 'WIPE' to confirm full reset of Musajjal Pro:");
+        const prompt2 = prompt("Type 'WIPE' to confirm full reset of Hifz Pro:");
         if (prompt2 !== "WIPE") {
           alert("Reset cancelled.");
           return;
@@ -4449,9 +4675,27 @@
 
 
       renderRoster() {
+        const titleEl = document.getElementById('roster-count-title');
+        if (titleEl) titleEl.textContent = `Enrolled Students (${this.students.length})`;
+
         const container = document.getElementById('student-roster-list');
         if (!container) return;
         container.innerHTML = "";
+
+        if (this.students.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 40px 20px; background: #fff; border: 1px dashed var(--border); border-radius: var(--radius-sm); color: var(--text-muted);">
+              <div style="font-size: 38px; margin-bottom: 8px;">👥</div>
+              <div style="font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 4px;">Class Roster is Empty</div>
+              <p style="font-size: 13px; margin: 0 auto 16px; max-width: 320px;">You have erased all students. You can add your own Madrasa students or reload sample demo students.</p>
+              <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-primary" onclick="App.openAddStudentModal()">+ Add New Student</button>
+                <button class="btn-secondary" onclick="App.loadDemoStudents()">👥 Load Sample Bohra Class (24)</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
 
         this.students.forEach((st, idx) => {
           const card = document.createElement('div');
@@ -4531,16 +4775,272 @@
         this.studentToDeleteId = null;
       },
 
+            // ---------------------------------------------------------
+      // BACKEND SERVER & LOCAL STORAGE MANAGEMENT ENGINE
+      // ---------------------------------------------------------
+      backendConnected: false,
+      backendUrl: "", // Defaults to relative /api or same-origin
+
+      async checkBackendConnection() {
+        const target = this.backendUrl || window.location.origin;
+        try {
+          const res = await fetch(`${target}/api/status`, { method: 'GET', headers: { 'Accept': 'application/json' } });
+          if (res.ok) {
+            const info = await res.json();
+            this.backendConnected = true;
+            this.updateBackendStatusUI(true, info);
+            return true;
+          }
+        } catch(e) {}
+        this.backendConnected = false;
+        this.updateBackendStatusUI(false);
+        return false;
+      },
+
+      updateBackendStatusUI(isConnected, info) {
+        const badge = document.getElementById('storage-engine-badge');
+        const statusText = document.getElementById('backend-status-text');
+        const syncInfo = document.getElementById('backend-sync-info');
+
+        if (isConnected) {
+          if (badge) {
+            badge.style.background = "#dcfce7";
+            badge.style.color = "#15803d";
+            badge.textContent = "🟢 Server Backend Connected";
+          }
+          if (statusText) statusText.textContent = `Python REST Backend: Online (Port 8080)`;
+          if (syncInfo && info) {
+            syncInfo.textContent = `Server Database: ${info.studentsCount || 0} students, ${info.recordsCount || 0} records`;
+          }
+        } else {
+          if (badge) {
+            badge.style.background = "#e0f2fe";
+            badge.style.color = "#0369a1";
+            badge.textContent = "💾 LocalStorage Mode (Offline-First)";
+          }
+          if (statusText) statusText.textContent = "Python REST Backend: Standby / Local Mode";
+          if (syncInfo) syncInfo.textContent = `Local Browser Storage Active: ${this.students.length} students, ${this.records.length} records`;
+        }
+      },
+
+      async syncToBackend(showToast = false) {
+        const target = this.backendUrl || window.location.origin;
+        try {
+          const payload = {
+            students: this.students,
+            records: this.records,
+            teacherProfile: this.teacherProfile,
+            timestamp: new Date().toISOString()
+          };
+          const res = await fetch(`${target}/api/data`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            this.backendConnected = true;
+            this.updateBackendStatusUI(true, data);
+            if (showToast) {
+              this.triggerHaptic('success');
+              this.showMilestoneToast("☁️ Server Synced", `Successfully pushed ${this.students.length} students & ${this.records.length} records to server.`);
+            }
+            return true;
+          }
+        } catch(e) {
+          if (showToast) {
+            alert("Could not connect to Python backend server on port 8080. Local storage remains safe.");
+          }
+        }
+        return false;
+      },
+
+      async loadFromBackend() {
+        const target = this.backendUrl || window.location.origin;
+        try {
+          const res = await fetch(`${target}/api/data`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.students !== null && Array.isArray(data.students)) {
+              this.students = data.students;
+              this.saveStudents();
+            }
+            if (data.records !== null && Array.isArray(data.records)) {
+              this.records = data.records;
+              this.saveRecords();
+            }
+            if (data.teacherProfile && typeof data.teacherProfile === 'object') {
+              this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE, data.teacherProfile);
+              localStorage.setItem("musajjal_teacher_profile", JSON.stringify(this.teacherProfile));
+              this.renderTeacherProfile();
+            }
+            this.currentIndex = 0;
+            this.updateAttendanceCounts();
+            this.updateDashboardKPIs();
+            this.renderRoster();
+            this.renderAttendanceRoster();
+            this.renderAllRecords();
+            this.renderCurrentStudent();
+            this.triggerHaptic('success');
+            this.showMilestoneToast("☁️ Server Loaded", `Loaded ${this.students.length} students & ${this.records.length} records from server.`);
+            this.updateBackendStatusUI(true, data);
+            return true;
+          }
+        } catch(e) {
+          alert("Could not pull data from Python backend server. Make sure server.py is running on port 8080.");
+        }
+        return false;
+      },
+
+      loadFromLocalStorage() {
+        const loaded = this.getSafeJSON("musajjal_students", null);
+        const recs = this.getSafeJSON("musajjal_records", null);
+        if (loaded !== null && Array.isArray(loaded)) {
+          this.students = loaded;
+        }
+        if (recs !== null && Array.isArray(recs)) {
+          this.records = recs;
+        }
+        this.currentIndex = 0;
+        this.updateAttendanceCounts();
+        this.updateDashboardKPIs();
+        this.renderRoster();
+        this.renderAttendanceRoster();
+        this.renderAllRecords();
+        this.renderCurrentStudent();
+        this.triggerHaptic('success');
+        this.showMilestoneToast("💾 Local Storage Loaded", `Loaded ${this.students.length} students & ${this.records.length} records from browser storage.`);
+      },
+
+      saveToLocalStorage() {
+        this.saveStudents();
+        this.saveRecords();
+        this.triggerHaptic('success');
+        this.showMilestoneToast("💾 Local Storage Saved", `Saved ${this.students.length} students & ${this.records.length} records to browser storage.`);
+      },
+
+      clearAllStudents() {
+        if (this.students.length === 0) {
+          alert("Class roster is already empty.");
+          return;
+        }
+        if (confirm(`⚠️ Are you sure you want to erase ALL ${this.students.length} students from the class roster?\n\nThis will give you a clean slate to register your own Madrasa students. Your recitation logs will remain saved.`)) {
+          this.students = [];
+          this.saveStudents();
+          this.currentIndex = 0;
+          this.updateAttendanceCounts();
+          this.updateDashboardKPIs();
+          this.renderRoster();
+          this.renderAttendanceRoster();
+          this.renderCurrentStudent();
+          this.triggerHaptic('warning');
+          this.showMilestoneToast("🗑️ Roster Cleared", "All students erased. Class roster is now empty.");
+          if (this.backendConnected) {
+            this.syncToBackend();
+          }
+        }
+      },
+
+      loadDemoStudents() {
+        if (this.students.length > 0) {
+          if (!confirm("This will replace your current class list with the 24 sample Bohra Madrasa demo students. Proceed?")) {
+            return;
+          }
+        }
+        this.students = JSON.parse(JSON.stringify(SEED_STUDENTS));
+        this.students.forEach(s => s.attendance = 'Present');
+        this.saveStudents();
+        this.currentIndex = 0;
+        this.updateAttendanceCounts();
+        this.updateDashboardKPIs();
+        this.renderRoster();
+        this.renderAttendanceRoster();
+        this.renderCurrentStudent();
+        this.triggerHaptic('success');
+        this.showMilestoneToast("👥 Demo Data Loaded", "Loaded 24 sample Bohra Madrasa students.");
+        if (this.backendConnected) {
+          this.syncToBackend();
+        }
+      },
+
+      exportBackupJSON() {
+        const backup = {
+          app: "Hifz Pro",
+          version: "3.3",
+          exportedAt: new Date().toISOString(),
+          teacherProfile: this.teacherProfile,
+          students: this.students,
+          records: this.records
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
+        const dlAnchor = document.createElement('a');
+        const filename = `musajjal_backup_${new Date().toISOString().slice(0, 10)}.json`;
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", filename);
+        document.body.appendChild(dlAnchor);
+        dlAnchor.click();
+        dlAnchor.remove();
+        this.showMilestoneToast("📥 Backup Downloaded", `Exported backup to ${filename}`);
+      },
+
+      importBackupJSON(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (data.students && Array.isArray(data.students)) {
+              this.students = data.students;
+              this.saveStudents();
+            }
+            if (data.records && Array.isArray(data.records)) {
+              this.records = data.records;
+              this.saveRecords();
+            }
+            if (data.teacherProfile && typeof data.teacherProfile === 'object') {
+              this.teacherProfile = Object.assign({}, DEFAULT_TEACHER_PROFILE, data.teacherProfile);
+              localStorage.setItem("musajjal_teacher_profile", JSON.stringify(this.teacherProfile));
+              this.renderTeacherProfile();
+            }
+            this.currentIndex = 0;
+            this.updateAttendanceCounts();
+            this.updateDashboardKPIs();
+            this.renderRoster();
+            this.renderAttendanceRoster();
+            this.renderAllRecords();
+            this.renderCurrentStudent();
+            this.triggerHaptic('success');
+            alert(`✓ Successfully restored ${this.students.length} students and ${this.records.length} records from backup file!`);
+            if (this.backendConnected) {
+              this.syncToBackend();
+            }
+          } catch(err) {
+            alert("Error importing file: Invalid JSON backup format.");
+          }
+        };
+        reader.readAsText(file);
+      },
+
       executeDelete() {
         if (!this.studentToDeleteId) return;
         this.students = this.students.filter(s => s.id !== this.studentToDeleteId);
         this.saveStudents();
+        if (this.currentIndex >= this.students.length) {
+          this.currentIndex = Math.max(0, this.students.length - 1);
+        }
         this.closeDeleteModal();
         this.renderRoster();
         this.renderAttendanceRoster();
+        this.renderCurrentStudent();
+        this.updateAttendanceCounts();
+        this.updateDashboardKPIs();
         this.renderInboundMessages();
-        this.initAllDropdowns();
-        this.initOfflineAndErgonomics();
+        this.triggerHaptic('medium');
+        this.showMilestoneToast("🗑️ Student Removed", "Student removed from class roster.");
+        if (this.backendConnected) {
+          this.syncToBackend();
+        }
       },
 
       saveSettings() {
@@ -5468,7 +5968,7 @@
       try {
         App.init();
       } catch (err) {
-        console.error('[Musajjal] Fatal startup error:', err);
+        console.error('[HifzPro] Fatal startup error:', err);
         App.renderEmergencyRecoveryScreen(err);
       }
 
@@ -5580,7 +6080,7 @@
   <div id="pwa-install-banner" class="pwa-install-banner" style="display: none;">
     <div style="font-size: 28px; background: rgba(107, 15, 36, 0.08); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">📖</div>
     <div style="flex: 1;">
-      <div style="font-weight: 800; font-size: 13px; color: var(--primary);">Install Musajjal Pro</div>
+      <div style="font-weight: 800; font-size: 13px; color: var(--primary);">Install Hifz Pro</div>
       <div style="font-size: 11px; color: var(--text-muted);">Install on your phone for 1-tap launch & offline classroom evaluations</div>
     </div>
     <div style="display: flex; gap: 6px; align-items: center;">
@@ -5617,7 +6117,7 @@
   <div id="emergency-recovery-screen" style="display: none; position: fixed; inset: 0; background: #fff8f8; z-index: 999999; padding: 24px; text-align: center; overflow-y: auto;">
     <div style="max-width: 480px; margin: 40px auto; background: #fff; border: 1.5px solid #ef4444; border-radius: 12px; padding: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
       <div style="font-size: 40px; margin-bottom: 8px;">⚠️</div>
-      <h2 style="color: #991b1b; font-size: 18px; margin-bottom: 8px; font-weight: 800;">Musajjal Pro Safe Mode Recovery</h2>
+      <h2 style="color: #991b1b; font-size: 18px; margin-bottom: 8px; font-weight: 800;">Hifz Pro Safe Mode Recovery</h2>
       <p style="font-size: 13px; color: #64748b; margin-bottom: 16px; line-height: 1.5;">
         An unexpected error occurred while loading temporary cached session data. Your student records are safe. Tap below to launch safely or refresh from GitHub.
       </p>
