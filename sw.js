@@ -1,6 +1,6 @@
-// Hifz Pro – Progressive Web App Service Worker (v3.2)
+// Hifz Pro – Progressive Web App Service Worker (v3.4)
 // Network-First for HTML navigation + Stale-While-Revalidate for static assets
-const CACHE_NAME = 'hifz-pro-v3.3';
+const CACHE_NAME = 'hifz-pro-v3.4';
 const CORE_ASSETS = [
   './',
   './index.html',

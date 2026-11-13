@@ -1726,7 +1726,12 @@
 
       <div class="card">
         <div class="form-group" style="margin-bottom: 12px;">
-          <label class="form-label">1. Choose Student (Required)</label>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label class="form-label" style="margin-bottom: 0;">1. Choose Student (Required)</label>
+            <button type="button" class="btn-secondary" style="padding: 4px 10px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border-color: var(--primary); color: var(--primary);" onclick="App.openAddStudentModal('single')" title="Add student directly from Single Record view">
+              <span>+ Add Student</span>
+            </button>
+          </div>
           <select class="form-select" id="single-student-select" onchange="App.onSingleStudentChange()">
             <option value="">-- Tap to Select Student Name --</option>
           </select>
@@ -3082,8 +3087,11 @@
             this.records = defaultRecs;
           }
 
-          // 5. Lightweight Startup: only initialize ergonomics and counts (defer heavy 604-cell DOM grids to navTo)
+          // 5. Lightweight Startup: initialize ergonomics, Quran dropdowns, and student selectors
           this.initOfflineAndErgonomics();
+          this.initAllDropdowns();
+          this._dropdownsInitialized = true;
+          this.renderSingleEntryView();
           this.updateAttendanceCounts();
           this.updateDashboardKPIs();
           this.updateUndoButtonUI();
@@ -3205,6 +3213,8 @@
             this._dropdownsInitialized = true;
           }
           this.renderCurrentStudent();
+        } else if (screenId === 'single-entry-view') {
+          this.renderSingleEntryView();
         } else if (screenId === 'students-view') {
           this.renderRoster();
         } else if (screenId === 'attendance-view') {
@@ -3659,6 +3669,10 @@
       // DROPDOWN INITIALIZATION & EVENT LISTENERS
       // ---------------------------------------------------------
       initAllDropdowns() {
+        if (this._dropdownsInitializing) return;
+        this._dropdownsInitializing = true;
+        this._dropdownsInitialized = true;
+
         // Populate Juz Dropdowns (1..30)
         ['jadeed-juz', 'murajaat-juz', 'juzhaali-juz', 'single-juz', 'single-revision-juz'].forEach(id => {
           const el = document.getElementById(id);
@@ -3683,28 +3697,9 @@
         this.onSingleJuzChange();
         this.onSingleRevisionJuzChange();
 
-        // Single student picker
-        const picker = document.getElementById('single-student-select');
-        if (picker) {
-          picker.innerHTML = '<option value="">-- Tap to Select Student Name --</option>';
-          this.students.forEach((st, idx) => {
-            const opt = document.createElement("option");
-            opt.value = idx;
-            opt.textContent = `${st.name} (ITS: ${st.its})`;
-            picker.appendChild(opt);
-          });
-        }
-
-        const repSelect = document.getElementById('report-student-select');
-        if (repSelect) {
-          repSelect.innerHTML = "";
-          this.students.forEach((st, idx) => {
-            const opt = document.createElement("option");
-            opt.value = idx;
-            opt.textContent = `${st.name} (ITS: ${st.its})`;
-            repSelect.appendChild(opt);
-          });
-        }
+        // Single student picker & report picker synchronized
+        this.renderSingleEntryView();
+        this._dropdownsInitializing = false;
       },
 
       // ---------------------------------------------------------
@@ -4002,7 +3997,7 @@
         this.renderAllRecords();
         this.updateDashboardKPIs();
 
-        const msg = `*MUSAJJAL PRO – DAILY HIFZ REPORT*\nDate: ${dateStr}\nStudent: *${st.name}*\n${sectionMsg}`;
+        const msg = `*HIFZ PRO – DAILY HIFZ REPORT*\nDate: ${dateStr}\nStudent: *${st.name}*\n${sectionMsg}`;
         const waUrl = `https://wa.me/${st.phone}?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, '_blank');
       },
@@ -4085,18 +4080,108 @@
         this.navTo('dashboard-view');
       },
 
+      renderSingleEntryView(preselectedStudentIndex = null) {
+        if (!this._dropdownsInitialized && !this._dropdownsInitializing) {
+          this.initAllDropdowns();
+        }
+
+        const picker = document.getElementById('single-student-select');
+        if (!picker) return;
+
+        const prevVal = (preselectedStudentIndex !== null && preselectedStudentIndex !== undefined)
+          ? String(preselectedStudentIndex)
+          : picker.value;
+
+        picker.innerHTML = '<option value="">-- Tap to Select Student Name --</option>';
+
+        if (!this.students || this.students.length === 0) {
+          const opt = document.createElement('option');
+          opt.value = '';
+          opt.textContent = this.lang === 'ar' ? '⚠️ لا يوجد طلاب - اضغط "+ إضافة طالب" أعلاه' : '⚠️ No students enrolled - Tap "+ Add Student" above';
+          opt.disabled = true;
+          picker.appendChild(opt);
+          const detailsBox = document.getElementById('single-student-details');
+          if (detailsBox) detailsBox.style.display = 'none';
+          return;
+        }
+
+        this.students.forEach((st, idx) => {
+          const opt = document.createElement('option');
+          opt.value = String(idx);
+          const cls = st.class ? `Class ${st.class}` : '';
+          const its = st.its ? `ITS: ${st.its}` : '';
+          const meta = [cls, its].filter(Boolean).join(' • ');
+          opt.textContent = `${st.name}${meta ? ' (' + meta + ')' : ''}`;
+          if (prevVal !== '' && prevVal !== null && prevVal !== undefined && parseInt(prevVal, 10) === idx) {
+            opt.selected = true;
+          }
+          picker.appendChild(opt);
+        });
+
+        // Also keep report-student-select in sync
+        const repSelect = document.getElementById('report-student-select');
+        if (repSelect) {
+          const repPrev = repSelect.value;
+          repSelect.innerHTML = '<option value="">-- All Students Overview --</option>';
+          this.students.forEach((st, idx) => {
+            const opt = document.createElement('option');
+            opt.value = String(idx);
+            opt.textContent = `${st.name} (ITS: ${st.its || '—'})`;
+            if (repPrev !== '' && parseInt(repPrev, 10) === idx) opt.selected = true;
+            repSelect.appendChild(opt);
+          });
+        }
+
+        if (picker.value !== '') {
+          this.onSingleStudentChange();
+        } else {
+          const detailsBox = document.getElementById('single-student-details');
+          if (detailsBox) detailsBox.style.display = 'none';
+        }
+      },
+
+      openSingleEntryForStudent(idx) {
+        this.navTo('single-entry-view');
+        this.renderSingleEntryView(idx);
+        const picker = document.getElementById('single-student-select');
+        if (picker) {
+          picker.value = String(idx);
+          this.onSingleStudentChange();
+        }
+      },
+
       onSingleStudentChange() {
-        const idx = document.getElementById('single-student-select').value;
+        const sel = document.getElementById('single-student-select');
+        const idx = sel ? sel.value : '';
         const detailsBox = document.getElementById('single-student-details');
-        if (!idx && idx !== "0") {
+        if (!detailsBox) return;
+
+        if (idx === '' || idx === null || idx === undefined) {
           detailsBox.style.display = 'none';
           return;
         }
+
+        const st = this.students[parseInt(idx, 10)];
+        if (!st) {
+          detailsBox.style.display = 'none';
+          return;
+        }
+
         detailsBox.style.display = 'block';
-        const st = this.students[parseInt(idx)];
-        document.getElementById('single-name-display').textContent = st.name;
-        document.getElementById('single-meta-display').textContent = `Class ${st.class} • ITS: ${st.its} • Mobile: ${st.phone}`;
+        const nameDisp = document.getElementById('single-name-display');
+        if (nameDisp) nameDisp.textContent = st.name;
+        const metaDisp = document.getElementById('single-meta-display');
+        if (metaDisp) metaDisp.textContent = `Class ${st.class || '4-B'} • ITS: ${st.its || '—'} • Mobile: ${st.phone || '—'}`;
         this.setSingleAttendance(st.attendance || 'Present');
+
+        // Automatically set student's current Juz in Single Jadeed if available
+        if (st.curJuz) {
+          const sj = document.getElementById('single-juz');
+          if (sj) {
+            sj.value = st.curJuz;
+            try { this.onSingleJuzChange(); } catch(e) {}
+          }
+        }
       },
 
       setSingleAttendance(status) {
@@ -4706,9 +4791,10 @@
               <div style="font-size: 12px; color: var(--text-muted);">Class ${st.class} • ITS: ${st.its} • Mobile: ${st.phone}</div>
               <div style="font-size: 11px; color: var(--accent-green); font-weight: 600;">Current: Juz ${st.curJuz}, Page ${st.curPage}</div>
             </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn-secondary" style="padding: 6px 10px; font-size: 11px;" onclick="App.selectStudentFromRoster(${idx})">Select</button>
-              <button class="btn-danger" style="padding: 6px 10px; font-size: 11px;" onclick="App.promptDeleteStudent('${st.id}', '${st.name}')">Delete</button>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="btn-primary" style="padding: 6px 10px; font-size: 11px; background: var(--primary); color: #fff;" onclick="App.openSingleEntryForStudent(${idx})" title="Record Tasmee for ${st.name}">📝 Record</button>
+              <button class="btn-secondary" style="padding: 6px 10px; font-size: 11px;" onclick="App.selectStudentFromRoster(${idx})" title="Quick Tasmee carousel">⚡ Tasmee</button>
+              <button class="btn-danger" style="padding: 6px 8px; font-size: 11px;" onclick="App.promptDeleteStudent('${st.id}', '${st.name}')" title="Delete student">🗑️</button>
             </div>
           `;
           container.appendChild(card);
@@ -4721,46 +4807,85 @@
         this.navTo('tasmee-view');
       },
 
-      openAddStudentModal() {
-        document.getElementById('add-student-modal').style.display = 'flex';
+      openAddStudentModal(source = null) {
+        this._addStudentSource = source;
+        const modal = document.getElementById('add-student-modal');
+        if (modal) modal.style.display = 'flex';
+        const nameInput = document.getElementById('new-std-name');
+        if (nameInput) setTimeout(() => nameInput.focus(), 100);
       },
 
       closeAddStudentModal() {
-        document.getElementById('add-student-modal').style.display = 'none';
+        this._addStudentSource = null;
+        const modal = document.getElementById('add-student-modal');
+        if (modal) modal.style.display = 'none';
       },
 
       saveNewStudent() {
-        const name = document.getElementById('new-std-name').value.trim();
-        const cls = document.getElementById('new-std-class').value.trim();
-        const its = document.getElementById('new-std-its').value.trim();
-        const phone = document.getElementById('new-std-phone').value.trim();
-        const juz = parseInt(document.getElementById('new-std-juz').value) || 1;
-        const page = parseInt(document.getElementById('new-std-page').value) || 1;
+        const nameInput = document.getElementById('new-std-name');
+        const clsInput = document.getElementById('new-std-class');
+        const itsInput = document.getElementById('new-std-its');
+        const phoneInput = document.getElementById('new-std-phone');
+        const juzInput = document.getElementById('new-std-juz');
+        const pageInput = document.getElementById('new-std-page');
+
+        const name = (nameInput ? nameInput.value : '').trim();
+        const cls = (clsInput ? clsInput.value : '').trim() || "4-B";
+        const its = (itsInput ? itsInput.value : '').trim() || "00000000";
+        const phone = (phoneInput ? phoneInput.value : '').trim() || "919876543210";
+        const juz = parseInt(juzInput ? juzInput.value : '1', 10) || 1;
+        const page = parseInt(pageInput ? pageInput.value : '1', 10) || 1;
 
         if (!name) {
           alert("Please enter student name.");
           return;
         }
 
-        this.students.push({
+        const newStudent = {
           id: `std_${Date.now()}`,
           name: name,
           class: cls,
-          its: its || "00000000",
-          phone: phone || "919876543210",
+          its: its,
+          phone: phone,
           attendance: "Present",
           curJuz: juz,
           curPage: page,
           curAyah: 1
-        });
+        };
 
+        this.students.push(newStudent);
+        const newIdx = this.students.length - 1;
         this.saveStudents();
+
+        // Clear modal form inputs for clean state next time
+        if (nameInput) nameInput.value = '';
+        if (itsInput) itsInput.value = '';
+        if (phoneInput) phoneInput.value = '';
+
+        const source = this._addStudentSource;
         this.closeAddStudentModal();
-        this.initAllDropdowns();
+        this.renderSingleEntryView(newIdx);
         this.initOfflineAndErgonomics();
         this.renderRoster();
         this.renderAttendanceRoster();
         this.renderInboundMessages();
+        this.updateDashboardKPIs();
+
+        if (this.backendConnected) {
+          this.syncToBackend();
+        }
+
+        // If added from Single Entry view, keep teacher on single entry view with new student selected
+        if (source === 'single') {
+          this.navTo('single-entry-view');
+          this.renderSingleEntryView(newIdx);
+          const picker = document.getElementById('single-student-select');
+          if (picker) {
+            picker.value = String(newIdx);
+            this.onSingleStudentChange();
+          }
+        }
+
         alert(`Student "${name}" added successfully!`);
       },
 
@@ -4881,6 +5006,7 @@
             this.renderAttendanceRoster();
             this.renderAllRecords();
             this.renderCurrentStudent();
+            this.renderSingleEntryView();
             this.triggerHaptic('success');
             this.showMilestoneToast("☁️ Server Loaded", `Loaded ${this.students.length} students & ${this.records.length} records from server.`);
             this.updateBackendStatusUI(true, data);
@@ -4908,6 +5034,7 @@
         this.renderAttendanceRoster();
         this.renderAllRecords();
         this.renderCurrentStudent();
+        this.renderSingleEntryView();
         this.triggerHaptic('success');
         this.showMilestoneToast("💾 Local Storage Loaded", `Loaded ${this.students.length} students & ${this.records.length} records from browser storage.`);
       },
@@ -4933,6 +5060,7 @@
           this.renderRoster();
           this.renderAttendanceRoster();
           this.renderCurrentStudent();
+          this.renderSingleEntryView();
           this.triggerHaptic('warning');
           this.showMilestoneToast("🗑️ Roster Cleared", "All students erased. Class roster is now empty.");
           if (this.backendConnected) {
@@ -4956,6 +5084,7 @@
         this.renderRoster();
         this.renderAttendanceRoster();
         this.renderCurrentStudent();
+        this.renderSingleEntryView();
         this.triggerHaptic('success');
         this.showMilestoneToast("👥 Demo Data Loaded", "Loaded 24 sample Bohra Madrasa students.");
         if (this.backendConnected) {
@@ -5033,6 +5162,7 @@
         this.renderRoster();
         this.renderAttendanceRoster();
         this.renderCurrentStudent();
+        this.renderSingleEntryView();
         this.updateAttendanceCounts();
         this.updateDashboardKPIs();
         this.renderInboundMessages();
