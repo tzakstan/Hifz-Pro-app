@@ -458,6 +458,40 @@
       color: var(--text-muted);
       border: 1px solid var(--border);
     }
+    .question-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .question-card:hover {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    .avg-grade-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      border: 1.5px solid #22c55e;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(34,197,94,0.1);
+      animation: fadeInCard 0.3s ease-in-out;
+    }
+    .badge-questions-count {
+      font-size: 11px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+    @keyframes fadeInCard {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     /* Counter Stepper */
     .counter-row {
@@ -1787,21 +1821,55 @@
               </div>
             </div>
 
-            <!-- Single Murajaat / Juz Haali Fields (Surah + Page, No Ayahs) -->
+            <!-- Single Murajaat / Juz Haali Fields with Multi-Questions Support & Average Marks -->
             <div id="single-page-only-fields" style="display: none;">
-              <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
-                <div class="form-group">
-                  <label class="form-label">Juz</label>
-                  <select class="form-select" id="single-revision-juz" onchange="App.onSingleRevisionJuzChange()"></select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Surah (in this Juz)</label>
-                  <select class="form-select" id="single-revision-surah" onchange="App.onSingleRevisionSurahChange()"></select>
+              <!-- Live Average Marks Summary Banner & Formula for Single Student Entry -->
+              <div class="avg-grade-card" id="single-avg-summary" style="display: none; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #22c55e; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(34,197,94,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <span style="font-size: 15px;">⚖️</span>
+                      <span style="font-weight: 800; font-size: 13px; color: #166534;" id="single-avg-title">Average Revision Mark</span>
+                    </div>
+                    <div style="font-size: 11px; color: #15803d; margin-top: 2px; font-weight: 600;" id="single-avg-breakdown">
+                      Calculation: (Q1: 10.0 + Q2: 9.0) ÷ 2 = 9.5 / 10
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="grade-pill grade-mumtaz" id="single-avg-pill" style="font-size: 14px; font-weight: 800; padding: 6px 12px;">9.5/10</span>
+                  </div>
                 </div>
               </div>
-              <div class="form-group" style="margin-bottom: 10px;">
-                <label class="form-label">Page (in Surah)</label>
-                <select class="form-select" id="single-revision-page-select"></select>
+
+              <!-- Multi-Questions Container for Single Entry -->
+              <div id="single-questions-list">
+                <div class="question-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-left: 4px solid var(--primary); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-weight: 700; font-size: 13px; color: var(--text);">Question #1</span>
+                  </div>
+                  <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
+                    <div class="form-group">
+                      <label class="form-label">Juz</label>
+                      <select class="form-select" id="single-revision-juz" onchange="App.onSingleRevisionJuzChange()"></select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Surah (in this Juz)</label>
+                      <select class="form-select" id="single-revision-surah" onchange="App.onSingleRevisionSurahChange()"></select>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 6px;">
+                    <label class="form-label">Page (in Surah)</label>
+                    <select class="form-select" id="single-revision-page-select" onchange="App.onQuestionPageChange('single', 0, this.value)"></select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action bar to add more questions in Single Entry -->
+              <div style="margin-top: 6px; margin-bottom: 12px;">
+                <button type="button" class="btn-secondary" id="btn-add-single-q" style="width: 100%; padding: 10px 14px; font-weight: 700; font-size: 12px; border: 1.5px dashed var(--primary); background: #fdf8f0; color: var(--primary); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.addSingleQuestion()">
+                  <span>➕</span>
+                  <span id="btn-add-single-q-label">+ Add Question in Revision (سؤال إضافي)</span>
+                </button>
               </div>
             </div>
 
@@ -1831,12 +1899,43 @@
 
             <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label">Section Remarks</label>
-              <input type="text" class="form-input" id="single-remarks" placeholder="Enter specific observations...">
+              <textarea class="form-input" id="single-remarks" rows="2" placeholder="Enter specific observations..." style="resize: vertical; font-size: 12px; font-family: inherit;"></textarea>
             </div>
 
-            <button class="btn-save-wa"  style="width: 100%; margin-top: 10px;" onclick="App.saveSingleAndShare()">
-              💬 Save Record & Share on WhatsApp
-            </button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+              <button type="button" class="btn-secondary" style="padding: 12px 10px; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1.5px solid var(--border);" onclick="App.saveSingleSectionRecord()" title="Save this section to log without opening WhatsApp">
+                <span>💾</span>
+                <span>Save Section</span>
+              </button>
+              <button type="button" class="btn-save-wa" style="padding: 12px 10px; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.saveSingleAndShare()" title="Save and share this individual section on WhatsApp">
+                <span>💬</span>
+                <span>Share Section</span>
+              </button>
+            </div>
+
+            <!-- Consolidated Daily Report Card in Single Entry -->
+            <div class="card" style="margin-top: 14px; background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border: 1.5px solid #22c55e; padding: 14px; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(34,197,94,0.1);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 16px;">📋</span>
+                  <span style="font-weight: 800; font-size: 13px; color: #15803d;">Consolidated Daily Report (WhatsApp)</span>
+                </div>
+                <span id="single-consolidated-status-badge" style="font-size: 10px; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 12px; font-weight: 700;">
+                  Jadeed • Muraja'at • Juz Haali
+                </span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4;">
+                Combines all evaluated sections for today into one systematic report with overall remarks.
+              </div>
+              <div class="form-group" style="margin-bottom: 10px;">
+                <label class="form-label" style="font-size: 11px; font-weight: 700;">Overall Daily Remarks (ملاحظات عامة لليوم):</label>
+                <textarea class="form-input" id="single-overall-remarks" rows="2" placeholder="e.g. Murajat- Fajr si Amma&#10;juzz haali- Saff si Mujadalah&#10;jadeed" style="resize: vertical; font-size: 12px;"></textarea>
+              </div>
+              <button type="button" class="btn-primary" id="btn-single-consolidated-report" style="width: 100%; background: #16a34a; border-color: #15803d; font-weight: 800; font-size: 13px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="App.openConsolidatedReportModal('single')">
+                <span>📲</span>
+                <span>Send Consolidated Daily Report on WhatsApp</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1961,80 +2060,158 @@
       </div>
 
       <!-- SECTION 2: MURAJA'AT -->
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">2. Muraja'at (Cumulative Revision)</span>
+      <!-- SECTION 2: MURAJA'AT WITH MULTI-QUESTION ASSESSMENT & AVERAGE MARKS -->
+      <div class="section-card" id="murajaat-section-card">
+        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="section-title">2. Muraja'at (Cumulative Revision)</span>
+            <span class="badge-questions-count" id="murajaat-q-count-badge" style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px; font-weight: 700;">1 Question</span>
+          </div>
           <span class="grade-pill" id="murajaat-grade-pill">10.0/10</span>
         </div>
+
         <div class="prev-stop-badge" id="murajaat-prev-badge" style="margin-bottom: 10px;">
           Yesterday: Juz 28, Surah Al-Hashr, Page 546
         </div>
-        <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
-          <div class="form-group">
-            <label class="form-label">Juz</label>
-            <select class="form-select" id="murajaat-juz" onchange="App.onMurajaatJuzChange()"></select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Surah (in this Juz)</label>
-            <select class="form-select" id="murajaat-surah" onchange="App.onMurajaatSurahChange()"></select>
-          </div>
-        </div>
-        <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 10px;">
-          <div class="form-group">
-            <label class="form-label">Page (in Surah)</label>
-            <select class="form-select" id="murajaat-page-select"></select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" style="display: flex; justify-content: space-between;">
-              <span>Tanbeeh (-0.5)</span>
-              <button id="btn-murajaat-reset" style="background: none; border: none; color: var(--primary); font-size: 11px; cursor: pointer; text-decoration: underline;" onclick="App.resetCounters()">↺ Reset</button>
-            </label>
-            <div class="counter-controls">
-              <button class="btn-step" id="btn-murajaat-tanbeeh-minus" onclick="App.updateCount('murajaat', 'tanbeeh', -1)">-</button>
-              <span class="counter-val" id="murajaat-tanbeeh-val">0</span>
-              <button class="btn-step" id="btn-murajaat-tanbeeh-plus" onclick="App.updateCount('murajaat', 'tanbeeh', 1)">+</button>
+
+        <!-- Live Average Marks Summary Banner & Formula -->
+        <div class="avg-grade-card" id="murajaat-avg-summary" style="display: none; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #22c55e; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(34,197,94,0.1);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 15px;">⚖️</span>
+                <span style="font-weight: 800; font-size: 13px; color: #166534;" id="murajaat-avg-title">Average Muraja'at Mark</span>
+              </div>
+              <div style="font-size: 11px; color: #15803d; margin-top: 2px; font-weight: 600;" id="murajaat-avg-breakdown">
+                Calculation: (Q1: 10.0 + Q2: 9.0) ÷ 2 = 9.5 / 10
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="grade-pill grade-mumtaz" id="murajaat-avg-pill" style="font-size: 14px; font-weight: 800; padding: 6px 12px;">9.5/10</span>
             </div>
           </div>
         </div>
+
+        <!-- Dynamic Multi-Questions List for Muraja'at -->
+        <div id="murajaat-questions-list">
+          <div class="question-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-left: 4px solid var(--primary); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-weight: 700; font-size: 13px; color: var(--text);">Question #1</span>
+              <button type="button" id="btn-murajaat-reset" style="background: none; border: none; color: var(--primary); font-size: 11px; cursor: pointer; text-decoration: underline;" onclick="App.resetCounters()">↺ Reset</button>
+            </div>
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
+              <div class="form-group">
+                <label class="form-label">Juz</label>
+                <select class="form-select" id="murajaat-juz" onchange="App.onMurajaatJuzChange()"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Surah (in this Juz)</label>
+                <select class="form-select" id="murajaat-surah" onchange="App.onMurajaatSurahChange()"></select>
+              </div>
+            </div>
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 6px;">
+              <div class="form-group">
+                <label class="form-label">Page (in Surah)</label>
+                <select class="form-select" id="murajaat-page-select" onchange="App.onQuestionPageChange('murajaat', 0, this.value)"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tanbeeh (-0.5)</label>
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" id="btn-murajaat-tanbeeh-minus" onclick="App.updateCount('murajaat', 'tanbeeh', -1)">-</button>
+                  <span class="counter-val" id="murajaat-tanbeeh-val">0</span>
+                  <button type="button" class="btn-step" id="btn-murajaat-tanbeeh-plus" onclick="App.updateCount('murajaat', 'tanbeeh', 1)">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action bar to add more questions in Muraja'at -->
+        <div style="margin-top: 6px; margin-bottom: 10px;">
+          <button type="button" class="btn-secondary" id="btn-add-murajaat-q" style="width: 100%; padding: 10px 14px; font-weight: 700; font-size: 12px; border: 1.5px dashed var(--primary); background: #fdf8f0; color: var(--primary); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.addQuestion('murajaat')">
+            <span>➕</span>
+            <span id="btn-add-murajaat-q-label">+ Add Question in Muraja'at (سؤال إضافي)</span>
+          </button>
+        </div>
+
         <input type="text" class="form-input" id="murajaat-remarks" placeholder="Muraja'at remarks (e.g. good flow)...">
       </div>
 
-      <!-- SECTION 3: JUZ HAALI -->
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">3. Juz Haali (Recent Revision)</span>
+      <!-- SECTION 3: JUZ HAALI WITH MULTI-QUESTION ASSESSMENT & AVERAGE MARKS -->
+      <div class="section-card" id="juzhaali-section-card">
+        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="section-title">3. Juz Haali (Recent Revision)</span>
+            <span class="badge-questions-count" id="juzhaali-q-count-badge" style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px; font-weight: 700; display: none;">1 Question</span>
+          </div>
           <label style="font-size: 11px; display: flex; align-items: center; gap: 4px; cursor: pointer;">
             <input type="checkbox" id="juzhaali-skip" onchange="App.toggleJuzHaaliSkip()" checked>
             <span>Not assessed today</span>
           </label>
         </div>
-        <div id="juzhaali-inputs" style="display: none;">
-          <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
-            <div class="form-group">
-              <label class="form-label">Juz</label>
-              <select class="form-select" id="juzhaali-juz" onchange="App.onJuzHaaliJuzChange()"></select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Surah (in this Juz)</label>
-              <select class="form-select" id="juzhaali-surah" onchange="App.onJuzHaaliSurahChange()"></select>
-            </div>
-          </div>
-          <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
-            <div class="form-group">
-              <label class="form-label">Page (in Surah)</label>
-              <select class="form-select" id="juzhaali-page-select"></select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Tanbeeh (-0.5)</label>
-              <div class="counter-controls">
-                <button class="btn-step" onclick="App.updateCount('juzhaali', 'tanbeeh', -1)">-</button>
-                <span class="counter-val" id="juzhaali-tanbeeh-val">0</span>
-                <button class="btn-step" onclick="App.updateCount('juzhaali', 'tanbeeh', 1)">+</button>
+
+        <div id="juzhaali-inputs" style="display: none; margin-top: 10px;">
+          <!-- Live Average Marks Summary Banner & Formula -->
+          <div class="avg-grade-card" id="juzhaali-avg-summary" style="display: none; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #22c55e; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(34,197,94,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 15px;">⚖️</span>
+                  <span style="font-weight: 800; font-size: 13px; color: #166534;" id="juzhaali-avg-title">Average Juz Haali Mark</span>
+                </div>
+                <div style="font-size: 11px; color: #15803d; margin-top: 2px; font-weight: 600;" id="juzhaali-avg-breakdown">
+                  Calculation: (Q1: 10.0 + Q2: 9.0) ÷ 2 = 9.5 / 10
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="grade-pill grade-mumtaz" id="juzhaali-avg-pill" style="font-size: 14px; font-weight: 800; padding: 6px 12px;">9.5/10</span>
               </div>
             </div>
           </div>
+
+          <!-- Dynamic Multi-Questions List for Juz Haali -->
+          <div id="juzhaali-questions-list">
+            <div class="question-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-left: 4px solid var(--primary); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 700; font-size: 13px; color: var(--text);">Question #1</span>
+              </div>
+              <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
+                <div class="form-group">
+                  <label class="form-label">Juz</label>
+                  <select class="form-select" id="juzhaali-juz" onchange="App.onJuzHaaliJuzChange()"></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Surah (in this Juz)</label>
+                  <select class="form-select" id="juzhaali-surah" onchange="App.onJuzHaaliSurahChange()"></select>
+                </div>
+              </div>
+              <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 6px;">
+                <div class="form-group">
+                  <label class="form-label">Page (in Surah)</label>
+                  <select class="form-select" id="juzhaali-page-select" onchange="App.onQuestionPageChange('juzhaali', 0, this.value)"></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tanbeeh (-0.5)</label>
+                  <div class="counter-controls">
+                    <button type="button" class="btn-step" onclick="App.updateCount('juzhaali', 'tanbeeh', -1)">-</button>
+                    <span class="counter-val" id="juzhaali-tanbeeh-val">0</span>
+                    <button type="button" class="btn-step" onclick="App.updateCount('juzhaali', 'tanbeeh', 1)">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action bar to add more questions in Juz Haali -->
+          <div style="margin-top: 6px; margin-bottom: 10px;">
+            <button type="button" class="btn-secondary" id="btn-add-juzhaali-q" style="width: 100%; padding: 10px 14px; font-weight: 700; font-size: 12px; border: 1.5px dashed var(--primary); background: #fdf8f0; color: var(--primary); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.addQuestion('juzhaali')">
+              <span>➕</span>
+              <span id="btn-add-juzhaali-q-label">+ Add Question in Juz Haali (سؤال إضافي)</span>
+            </button>
+          </div>
+
           <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 0;">
-            <span style="font-size: 12px; font-weight: 700;">Grade:</span>
+            <span style="font-size: 12px; font-weight: 700;">Section Grade:</span>
             <span class="grade-pill" id="juzhaali-grade-pill">10.0/10</span>
           </div>
           <input type="text" class="form-input" id="juzhaali-remarks" placeholder="Juz Haali remarks..." style="margin-top: 6px;">
@@ -2045,6 +2222,13 @@
       <div class="card" style="margin-bottom: 80px;">
         <label class="form-label" style="margin-bottom: 4px; display: block;">Next Lesson Target</label>
         <input type="text" class="form-input" id="next-target" placeholder="Target for tomorrow (e.g. Complete Surah Al-Mulk to Ayah 30)">
+        <div class="form-group" style="margin-top: 10px; margin-bottom: 4px;">
+          <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+            <span>Overall Daily Remarks (ملاحظات عامة لليوم)</span>
+            <span style="font-size: 10px; color: var(--text-muted);">Shared in Consolidated Report</span>
+          </label>
+          <textarea class="form-input" id="tasmee-overall-remarks" rows="2" placeholder="e.g. Murajat- Fajr si Amma&#10;juzz haali- Saff si Mujadalah&#10;jadeed" style="resize: vertical; font-size: 12px;"></textarea>
+        </div>
       </div>
 
       <!-- Sticky Action Bar -->
@@ -2059,15 +2243,18 @@
         </button>
       </div>
 
-      <div class="entry-footer" style="display: flex; gap: 8px; align-items: center;">
+      <div class="entry-footer" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
         <button class="btn-secondary" id="btn-undo-entry" style="padding: 12px 14px; font-weight: 700; border: 1.5px solid #fca5a5; color: #b91c1c; background: #fff1f2; display: none; align-items: center; gap: 4px; white-space: nowrap;" onclick="App.undoLastStudentEntry()" title="Undo last saved student entry">
           <span>↩️</span>
-          <span id="undo-btn-label">Undo Entry</span>
+          <span id="undo-btn-label">Undo</span>
         </button>
-        <button class="btn-save-wa" onclick="App.saveAndOpenWhatsApp()">
-          <span>💬</span> Save & WhatsApp
+        <button class="btn-save-wa" onclick="App.saveAndOpenWhatsApp()" title="Save and share section report">
+          <span>💬</span> Section WA
         </button>
-        <button class="btn-save-next" id="btn-save-next" onclick="App.saveAndNextStudent()">
+        <button class="btn-primary" id="btn-tasmee-consolidated-report" style="background: #15803d; border-color: #166534; font-size: 12px; padding: 12px 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; white-space: nowrap;" onclick="App.openConsolidatedReportModal('tasmee')" title="Open consolidated daily report for all 3 sections">
+          <span>📋</span> Daily Report
+        </button>
+        <button class="btn-save-next" id="btn-save-next" onclick="App.saveAndNextStudent()" style="flex: 1;">
           Save & Next (Seat #5) ›
         </button>
       </div>
@@ -3091,6 +3278,7 @@
           this.initOfflineAndErgonomics();
           this.initAllDropdowns();
           this._dropdownsInitialized = true;
+          this.initQuestionsForStudent();
           this.renderSingleEntryView();
           this.updateAttendanceCounts();
           this.updateDashboardKPIs();
@@ -3666,6 +3854,909 @@
       },
 
       // ---------------------------------------------------------
+      // CONSOLIDATED DAILY REPORT (WHATSAPP) ENGINE
+      // ---------------------------------------------------------
+      _consolidatedTargetStudent: null,
+      _consolidatedTargetPhone: null,
+      _consolidatedSectionsData: null,
+
+      formatSystematicDate(d = new Date()) {
+        const pad = (n) => String(n).padStart(2, '0');
+        const day = pad(d.getDate());
+        const month = pad(d.getMonth() + 1);
+        const year = d.getFullYear();
+        const hours = pad(d.getHours());
+        const mins = pad(d.getMinutes());
+        const secs = pad(d.getSeconds());
+        return `${day}-${month}-${year} ${hours}:${mins}:${secs}`;
+      },
+
+      formatSystematicGrade(val) {
+        if (typeof val === 'number') {
+          return (Math.round(val) === val) ? String(Math.round(val)) : val.toFixed(1);
+        }
+        if (!val) return "10";
+        const m = String(val).match(/^([\d.]+)/);
+        if (m) {
+          const num = parseFloat(m[1]);
+          return (Math.round(num) === num) ? String(Math.round(num)) : num.toFixed(1);
+        }
+        return String(val);
+      },
+
+      cleanSystematicSurah(name) {
+        if (!name) return "Surah";
+        let s = String(name).split('•')[0].split('(')[0].trim();
+        s = s.replace(/^\d+\.\s*/, '').trim();
+        if (s.toLowerCase() === 'ar-rahmaan') s = 'Ar-Rahman';
+        return s || "Surah";
+      },
+
+      getStudentTodaySectionsData(st, source = 'single') {
+        const todayStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const cleanStName = st.name.replace(/\s+\.\s*/g, ' ').trim();
+
+        // Find existing saved records for today
+        const todayRecs = this.records.filter(r => {
+          const recName = (r.studentName || '').replace(/\s+\.\s*/g, ' ').trim();
+          return (recName.toLowerCase() === cleanStName.toLowerCase() || (r.its && r.its === st.its)) && r.date === todayStr;
+        });
+
+        const data = {
+          murajaat: null,
+          juzhaali: null,
+          jadeed: null,
+          overallRemarks: ""
+        };
+
+        // 1. Check saved records for Muraja'at
+        const mRec = todayRecs.find(r => (r.section || '').toUpperCase().includes('MURAJA'));
+        if (mRec) {
+          let qs = [];
+          if (mRec.questions && mRec.questions.length > 0) {
+            qs = mRec.questions;
+          } else {
+            const pMatch = (mRec.details || '').match(/Juz\s+(\d+).*?(?:,\s*([^,]+))?.*?(?:Page|P\.)\s*(\d+)/i);
+            qs = [{
+              juz: pMatch ? parseInt(pMatch[1]) : 28,
+              surahName: pMatch && pMatch[2] ? this.cleanSystematicSurah(pMatch[2]) : 'Al-Hashr',
+              page: pMatch ? parseInt(pMatch[3]) : 546,
+              score: mRec.averageGrade || parseFloat(mRec.grade) || 10
+            }];
+          }
+          data.murajaat = {
+            questions: qs,
+            avg: mRec.averageGrade || parseFloat(mRec.grade) || 10,
+            remarks: mRec.remarks && mRec.remarks !== 'Evaluated' && mRec.remarks !== "Muraja'at assessed" && mRec.remarks !== "Good effort" ? mRec.remarks : 'no remarks'
+          };
+        }
+
+        // 2. Check saved records for Juz Haali
+        const jhRec = todayRecs.find(r => (r.section || '').toUpperCase().includes('JUZ') && (r.section || '').toUpperCase().includes('HAALI'));
+        if (jhRec) {
+          let qs = [];
+          if (jhRec.questions && jhRec.questions.length > 0) {
+            qs = jhRec.questions;
+          } else {
+            const pMatch = (jhRec.details || '').match(/Juz\s+(\d+).*?(?:,\s*([^,]+))?.*?(?:Page|P\.)\s*(\d+)/i);
+            qs = [{
+              juz: pMatch ? parseInt(pMatch[1]) : 29,
+              surahName: pMatch && pMatch[2] ? this.cleanSystematicSurah(pMatch[2]) : 'Al-Mulk',
+              page: pMatch ? parseInt(pMatch[3]) : 562,
+              score: jhRec.averageGrade || parseFloat(jhRec.grade) || 10
+            }];
+          }
+          data.juzhaali = {
+            questions: qs,
+            avg: jhRec.averageGrade || parseFloat(jhRec.grade) || 10,
+            remarks: jhRec.remarks && jhRec.remarks !== 'Evaluated' && jhRec.remarks !== "Juz Haali assessed" && jhRec.remarks !== "Good effort" ? jhRec.remarks : 'no remarks'
+          };
+        }
+
+        // 3. Check saved records for Jadeed
+        const jRec = todayRecs.find(r => (r.section || '').toUpperCase() === 'JADEED');
+        if (jRec) {
+          const pMatch = (jRec.details || '').match(/Juz\s+(\d+).*?(?:,\s*([^,]+))?.*?(?:Page|P\.)\s*(\d+).*?Ayat\s*([\d-]+)/i);
+          data.jadeed = {
+            records: [{
+              juz: pMatch ? parseInt(pMatch[1]) : 29,
+              surahName: pMatch && pMatch[2] ? this.cleanSystematicSurah(pMatch[2]) : 'Al-Mulk',
+              page: pMatch ? parseInt(pMatch[3]) : 562,
+              ayat: pMatch && pMatch[4] ? pMatch[4] : '1-12',
+              score: parseFloat(jRec.grade) || 10
+            }],
+            avg: parseFloat(jRec.grade) || 10,
+            remarks: jRec.remarks && jRec.remarks !== 'Evaluated' && jRec.remarks !== "Good effort" ? jRec.remarks : 'no remarks'
+          };
+        }
+
+        // Now, merge active form data if currently viewing/editing this student!
+        if (source === 'tasmee' && this.students[this.currentIndex] && this.students[this.currentIndex].name === st.name) {
+          const jJuz = document.getElementById('jadeed-juz') ? document.getElementById('jadeed-juz').value : 29;
+          const jSurahEl = document.getElementById('jadeed-surah');
+          const jSurahName = jSurahEl && jSurahEl.options[jSurahEl.selectedIndex] ? this.cleanSystematicSurah(jSurahEl.options[jSurahEl.selectedIndex].text) : "Al-Mulk";
+          const jPage = document.getElementById('jadeed-page-select') ? document.getElementById('jadeed-page-select').value : 562;
+          const jStart = document.getElementById('jadeed-start-ayah-select') ? document.getElementById('jadeed-start-ayah-select').value : 1;
+          const jEnd = document.getElementById('jadeed-end-ayah-select') ? document.getElementById('jadeed-end-ayah-select').value : 12;
+          const jGradeText = document.getElementById('jadeed-grade-pill') ? document.getElementById('jadeed-grade-pill').textContent : '10.0/10';
+          const jRem = document.getElementById('jadeed-remarks') ? document.getElementById('jadeed-remarks').value : '';
+          const jScore = parseFloat(jGradeText) || 10;
+          data.jadeed = {
+            records: [{
+              juz: parseInt(jJuz) || 29,
+              surahName: jSurahName,
+              page: parseInt(jPage) || 562,
+              ayat: `${jStart}-${jEnd}`,
+              score: jScore
+            }],
+            avg: jScore,
+            remarks: jRem.trim() || (data.jadeed ? data.jadeed.remarks : 'no remarks')
+          };
+
+          const mList = this.getQuestionsList('murajaat');
+          const mAvg = this.getAverageScore('murajaat');
+          const mRem = document.getElementById('murajaat-remarks') ? document.getElementById('murajaat-remarks').value : '';
+          data.murajaat = {
+            questions: mList.map(q => ({
+              juz: q.juz,
+              surahName: this.cleanSystematicSurah(q.surahName),
+              page: q.page,
+              score: q.score
+            })),
+            avg: mAvg,
+            remarks: mRem.trim() || (data.murajaat ? data.murajaat.remarks : 'no remarks')
+          };
+
+          const isSkipJH = document.getElementById('juzhaali-skip') ? document.getElementById('juzhaali-skip').checked : true;
+          if (!isSkipJH) {
+            const jhList = this.getQuestionsList('juzhaali');
+            const jhAvg = this.getAverageScore('juzhaali');
+            const jhRem = document.getElementById('juzhaali-remarks') ? document.getElementById('juzhaali-remarks').value : '';
+            data.juzhaali = {
+              questions: jhList.map(q => ({
+                juz: q.juz,
+                surahName: this.cleanSystematicSurah(q.surahName),
+                page: q.page,
+                score: q.score
+              })),
+              avg: jhAvg,
+              remarks: jhRem.trim() || (data.juzhaali ? data.juzhaali.remarks : 'no remarks')
+            };
+          }
+
+          const tOverall = document.getElementById('tasmee-overall-remarks') ? document.getElementById('tasmee-overall-remarks').value : '';
+          if (tOverall.trim()) data.overallRemarks = tOverall.trim();
+        }
+
+        if (source === 'single') {
+          const singleIdx = parseInt(document.getElementById('single-student-select')?.value);
+          if (!isNaN(singleIdx) && this.students[singleIdx] && this.students[singleIdx].name === st.name) {
+            const curSec = this.currentSingleSection;
+            const singleRem = document.getElementById('single-remarks') ? document.getElementById('single-remarks').value : '';
+            if (curSec === 'jadeed') {
+              const jJuz = document.getElementById('single-juz')?.value || 29;
+              const surahEl = document.getElementById('single-surah');
+              const sName = surahEl && surahEl.options[surahEl.selectedIndex] ? this.cleanSystematicSurah(surahEl.options[surahEl.selectedIndex].text) : 'Al-Mulk';
+              const pVal = document.getElementById('single-page-select')?.value || 562;
+              const sAyah = document.getElementById('single-start-ayah-select')?.value || 1;
+              const eAyah = document.getElementById('single-end-ayah-select')?.value || 12;
+              const gVal = parseFloat(document.getElementById('single-grade-pill')?.textContent) || 10;
+              data.jadeed = {
+                records: [{ juz: parseInt(jJuz), surahName: sName, page: parseInt(pVal), ayat: `${sAyah}-${eAyah}`, score: gVal }],
+                avg: gVal,
+                remarks: singleRem.trim() || (data.jadeed ? data.jadeed.remarks : 'no remarks')
+              };
+            } else if (curSec === 'murajaat') {
+              const mList = this.getQuestionsList('singleMurajaat');
+              const mAvg = this.getAverageScore('singleMurajaat');
+              data.murajaat = {
+                questions: mList.map(q => ({ juz: q.juz, surahName: this.cleanSystematicSurah(q.surahName), page: q.page, score: q.score })),
+                avg: mAvg,
+                remarks: singleRem.trim() || (data.murajaat ? data.murajaat.remarks : 'no remarks')
+              };
+            } else if (curSec === 'juzhaali') {
+              const jhList = this.getQuestionsList('singleJuzhaali');
+              const jhAvg = this.getAverageScore('singleJuzhaali');
+              data.juzhaali = {
+                questions: jhList.map(q => ({ juz: q.juz, surahName: this.cleanSystematicSurah(q.surahName), page: q.page, score: q.score })),
+                avg: jhAvg,
+                remarks: singleRem.trim() || (data.juzhaali ? data.juzhaali.remarks : 'no remarks')
+              };
+            }
+
+            const sOverall = document.getElementById('single-overall-remarks') ? document.getElementById('single-overall-remarks').value : '';
+            if (sOverall.trim()) data.overallRemarks = sOverall.trim();
+          }
+        }
+
+        return data;
+      },
+
+      buildConsolidatedDailyMessage(student, sectionsData, customOverallRemarks = "") {
+        const dateStr = this.formatSystematicDate();
+        let msg = `Date: ${dateStr}\n\nStudent Name: ${student.name}\n\n\n`;
+
+        // 1. Muraja'at
+        if (sectionsData.murajaat && sectionsData.murajaat.questions && sectionsData.murajaat.questions.length > 0) {
+          const qs = sectionsData.murajaat.questions;
+          qs.forEach((q, i) => {
+            const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+            msg += `Murajaat Record ${i + 1}:\n` +
+                   `* Juz: Juz ${q.juz}\n` +
+                   `* Surah: ${this.cleanSystematicSurah(sName)}\n` +
+                   `* Page: Page ${q.page}\n` +
+                   `* Grade: ${this.formatSystematicGrade(q.score)}\n\n`;
+          });
+          msg += `Murajaat Average Grade: ${this.formatSystematicGrade(sectionsData.murajaat.avg)}\n` +
+                 `Murajaat Remarks: ${sectionsData.murajaat.remarks || 'no remarks'}\n\n`;
+        }
+
+        // 2. Juz Haali
+        if (sectionsData.juzhaali && sectionsData.juzhaali.questions && sectionsData.juzhaali.questions.length > 0) {
+          const qs = sectionsData.juzhaali.questions;
+          qs.forEach((q, i) => {
+            const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+            msg += `Juz Haali Record ${i + 1}:\n` +
+                   `* Juz: Juz ${q.juz}\n` +
+                   `* Surah: ${this.cleanSystematicSurah(sName)}\n` +
+                   `* Page: Page ${q.page}\n` +
+                   `* Grade: ${this.formatSystematicGrade(q.score)}\n\n`;
+          });
+          msg += `Juz Haali Average Grade: ${this.formatSystematicGrade(sectionsData.juzhaali.avg)}\n` +
+                 `Juz Haali Remarks: ${sectionsData.juzhaali.remarks || 'no remarks'}\n\n`;
+        }
+
+        // 3. Jadeed
+        if (sectionsData.jadeed && sectionsData.jadeed.records && sectionsData.jadeed.records.length > 0) {
+          const recs = sectionsData.jadeed.records;
+          recs.forEach((r, i) => {
+            let ayatClean = String(r.ayat).replace(/^Ayat\s*/i, '').trim();
+            if (ayatClean.includes('-')) {
+              const parts = ayatClean.split('-');
+              if (parts[0].trim() === parts[1].trim()) {
+                ayatClean = parts[0].trim();
+              }
+            }
+            msg += `Jadeed Record ${i + 1}:\n` +
+                   `* Juz: Juz ${r.juz}\n` +
+                   `* Surah: ${this.cleanSystematicSurah(r.surahName)}\n` +
+                   `* Page: Page ${r.page}\n` +
+                   `* Ayat: Ayat ${ayatClean}\n` +
+                   `* Grade: ${this.formatSystematicGrade(r.score)}\n\n`;
+          });
+          msg += `Jadeed Average Grade: ${this.formatSystematicGrade(sectionsData.jadeed.avg)}\n` +
+                 `Jadeed Remarks: ${sectionsData.jadeed.remarks || 'no remarks'}\n`;
+        }
+
+        // 4. Overall Remarks
+        const finalOverall = (customOverallRemarks || sectionsData.overallRemarks || '').trim();
+        if (finalOverall) {
+          msg += `\nOverall Remarks:\n${finalOverall}\n`;
+        }
+
+        return msg;
+      },
+
+      openConsolidatedReportModal(source = 'single', studentIdx = null) {
+        this.triggerHaptic('light');
+        let st = null;
+        if (studentIdx !== null && this.students[studentIdx]) {
+          st = this.students[studentIdx];
+        } else if (source === 'single') {
+          const sIdx = parseInt(document.getElementById('single-student-select')?.value);
+          st = !isNaN(sIdx) && this.students[sIdx] ? this.students[sIdx] : this.students[0];
+        } else {
+          st = this.students[this.currentIndex] || this.students[0];
+        }
+
+        if (!st) {
+          alert("Please select or add a student first.");
+          return;
+        }
+
+        this._consolidatedTargetStudent = st;
+        this._consolidatedTargetPhone = st.phone;
+
+        // Gather sections data
+        const secData = this.getStudentTodaySectionsData(st, source);
+        this._consolidatedSectionsData = secData;
+
+        // Modal Header details
+        const nameEl = document.getElementById('consolidated-modal-student-name');
+        if (nameEl) nameEl.textContent = `${st.name} (ITS: ${st.its || 'N/A'})`;
+
+        const dateEl = document.getElementById('consolidated-modal-date-display');
+        if (dateEl) dateEl.textContent = this.formatSystematicDate();
+
+        // Render Section Badges
+        const badgesContainer = document.getElementById('consolidated-sections-badges');
+        if (badgesContainer) {
+          badgesContainer.innerHTML = "";
+          let count = 0;
+          if (secData.murajaat) {
+            count++;
+            const qCount = secData.murajaat.questions.length;
+            const b = document.createElement('span');
+            b.style.cssText = "background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;";
+            b.textContent = `✓ Muraja'at (${qCount} Q${qCount > 1 ? 's' : ''} • Avg: ${this.formatSystematicGrade(secData.murajaat.avg)})`;
+            badgesContainer.appendChild(b);
+          }
+          if (secData.juzhaali) {
+            count++;
+            const qCount = secData.juzhaali.questions.length;
+            const b = document.createElement('span');
+            b.style.cssText = "background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;";
+            b.textContent = `✓ Juz Haali (${qCount} Q${qCount > 1 ? 's' : ''} • Avg: ${this.formatSystematicGrade(secData.juzhaali.avg)})`;
+            badgesContainer.appendChild(b);
+          }
+          if (secData.jadeed) {
+            count++;
+            const b = document.createElement('span');
+            b.style.cssText = "background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;";
+            b.textContent = `✓ Jadeed (Grade: ${this.formatSystematicGrade(secData.jadeed.avg)})`;
+            badgesContainer.appendChild(b);
+          }
+          if (count === 0) {
+            const b = document.createElement('span');
+            b.style.cssText = "background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;";
+            b.textContent = `⚠️ No evaluations recorded yet today`;
+            badgesContainer.appendChild(b);
+          }
+        }
+
+        // Remarks input prefill
+        const remarksArea = document.getElementById('consolidated-overall-remarks');
+        if (remarksArea) {
+          remarksArea.value = secData.overallRemarks || "";
+        }
+
+        // Update preview
+        this.updateConsolidatedPreview();
+
+        const modal = document.getElementById('consolidated-report-modal');
+        if (modal) modal.style.display = 'flex';
+      },
+
+      closeConsolidatedReportModal() {
+        const modal = document.getElementById('consolidated-report-modal');
+        if (modal) modal.style.display = 'none';
+      },
+
+      onConsolidatedRemarksChange(val) {
+        if (this._consolidatedSectionsData) {
+          this._consolidatedSectionsData.overallRemarks = val;
+        }
+        this.updateConsolidatedPreview();
+      },
+
+      updateConsolidatedPreview() {
+        if (!this._consolidatedTargetStudent || !this._consolidatedSectionsData) return "";
+        const remarksArea = document.getElementById('consolidated-overall-remarks');
+        const customRemarks = remarksArea ? remarksArea.value : "";
+        const msg = this.buildConsolidatedDailyMessage(this._consolidatedTargetStudent, this._consolidatedSectionsData, customRemarks);
+        const previewEl = document.getElementById('consolidated-message-preview');
+        if (previewEl) {
+          previewEl.textContent = msg;
+        }
+        return msg;
+      },
+
+      copyConsolidatedMessage() {
+        const msg = this.updateConsolidatedPreview();
+        if (!msg) return;
+        navigator.clipboard.writeText(msg).then(() => {
+          this.triggerHaptic('light');
+          this.showMilestoneToast("📋 Copied to Clipboard", "Systematic Daily Report copied! Ready to paste into WhatsApp.");
+        }).catch(() => {
+          alert("Report copied to clipboard.");
+        });
+      },
+
+      sendConsolidatedWhatsApp() {
+        this.triggerHaptic('celebrate');
+        const msg = this.updateConsolidatedPreview();
+        const phone = this._consolidatedTargetPhone || (this._consolidatedTargetStudent ? this._consolidatedTargetStudent.phone : "");
+        const remarksArea = document.getElementById('consolidated-overall-remarks');
+        const customRemarks = remarksArea ? remarksArea.value.trim() : "";
+
+        // Also sync overall remarks back to UI inputs if open
+        const singleRem = document.getElementById('single-overall-remarks');
+        if (singleRem) singleRem.value = customRemarks;
+        const tasmeeRem = document.getElementById('tasmee-overall-remarks');
+        if (tasmeeRem) tasmeeRem.value = customRemarks;
+
+        this.closeConsolidatedReportModal();
+        this.showMilestoneToast("📲 Opening WhatsApp", `Sending systematic consolidated report for ${this._consolidatedTargetStudent?.name}...`);
+
+        const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, '_blank');
+      },
+
+      saveSingleSectionRecord() {
+        const idx = document.getElementById('single-student-select').value;
+        const st = this.students[parseInt(idx)];
+        if (!st) return;
+        const grade = document.getElementById('single-grade-pill').textContent;
+        const remarks = document.getElementById('single-remarks').value;
+        const dateStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const hijriObj = FatimiCalendar.fromDate(new Date());
+
+        let details = "";
+        const secKeyToUse = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : (this.currentSingleSection === 'juzhaali' ? 'singleJuzhaali' : null);
+        let finalQuestions = null;
+        let finalGrade = grade;
+
+        if (this.currentSingleSection === 'jadeed') {
+          const jJuz = document.getElementById('single-juz').value;
+          const surahEl = document.getElementById('single-surah');
+          const surahName = surahEl.options[surahEl.selectedIndex].text.split(' - ')[0];
+          const page = document.getElementById('single-page-select').value;
+          const startAyah = document.getElementById('single-start-ayah-select').value;
+          const endAyah = document.getElementById('single-end-ayah-select').value;
+          details = `Juz ${jJuz}, ${surahName}, Page ${page}, Ayat ${startAyah}-${endAyah}`;
+        } else {
+          const qList = this.getQuestionsForSection(secKeyToUse);
+          const avgScore = this.getAverageScore(secKeyToUse);
+          const avgStr = `${avgScore.toFixed(1)}/10`;
+          finalQuestions = JSON.parse(JSON.stringify(qList));
+          finalGrade = avgStr;
+
+          if (qList.length <= 1) {
+            const q = qList[0];
+            const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+            details = `Juz ${q.juz}, ${sName}, Page ${q.page}`;
+          } else {
+            const qDetails = qList.map((q, i) => {
+              const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+              return `Q${i+1}: Juz ${q.juz}, ${sName}, P. ${q.page} (${q.score.toFixed(1)})`;
+            }).join(' | ');
+            details = `${qDetails} • Average: ${avgStr}`;
+          }
+        }
+
+        this.records.unshift({
+          studentName: st.name,
+          date: dateStr,
+          hijriDate: hijriObj.formattedEn,
+          section: this.currentSingleSection.toUpperCase(),
+          details: details,
+          grade: finalGrade,
+          averageGrade: secKeyToUse ? this.getAverageScore(secKeyToUse) : null,
+          questionsCount: finalQuestions ? finalQuestions.length : 1,
+          questions: finalQuestions,
+          remarks: remarks.trim() ? remarks.trim() : "no remarks"
+        });
+
+        this.saveRecords();
+        this.renderAllRecords();
+        this.updateDashboardKPIs();
+        this.triggerHaptic('light');
+        this.showMilestoneToast("💾 Record Saved", `Saved ${this.currentSingleSection.toUpperCase()} record for ${st.name}! Ready to add other sections or share consolidated report.`);
+      },
+
+      openConsolidatedReportModalForStudent(studentName) {
+        const idx = this.students.findIndex(s => s.name === studentName || s.name.replace(/\s+\.\s*/g, ' ').trim() === studentName.replace(/\s+\.\s*/g, ' ').trim());
+        if (idx !== -1) {
+          this.openConsolidatedReportModal('log', idx);
+        } else {
+          alert("Student record not found in active roster.");
+        }
+      },
+
+      // ---------------------------------------------------------
+      // MULTI-QUESTION ASSESSMENT & AVERAGE MARKS ENGINE
+      // ---------------------------------------------------------
+      questions: {
+        murajaat: [
+          { id: 1, juz: 28, surah: 59, surahName: "Al-Hashr", page: 546, tanbeeh: 0, talqeen: 0, score: 10.0 }
+        ],
+        juzhaali: [
+          { id: 1, juz: 29, surah: 67, surahName: "Al-Mulk", page: 562, tanbeeh: 0, talqeen: 0, score: 10.0 }
+        ],
+        singleMurajaat: [
+          { id: 1, juz: 28, surah: 59, surahName: "Al-Hashr", page: 546, tanbeeh: 0, talqeen: 0, score: 10.0 }
+        ],
+        singleJuzhaali: [
+          { id: 1, juz: 29, surah: 67, surahName: "Al-Mulk", page: 562, tanbeeh: 0, talqeen: 0, score: 10.0 }
+        ]
+      },
+
+      initQuestionsForStudent() {
+        const curStudent = (this.students && this.students[this.currentIndex]) || {};
+        const curJuz = curStudent.curJuz || 29;
+        const curPage = curStudent.curPage || 562;
+        const revJuz = Math.max(1, curJuz - 1);
+        const jhSurahs = QuranFilters.getSurahsForJuz(curJuz);
+        const jhSurah = jhSurahs[0] || { surah: 67, name: 'Al-Mulk' };
+        const mSurahs = QuranFilters.getSurahsForJuz(revJuz);
+        const mSurah = mSurahs[0] || { surah: 59, name: 'Al-Hashr' };
+
+        if (!this.questions) this.questions = {};
+
+        this.questions.murajaat = [{
+          id: 1,
+          juz: revJuz,
+          surah: mSurah.surah,
+          surahName: mSurah.name,
+          page: QuranFilters.getPagesForSurah(mSurah.surah)[0] || 546,
+          tanbeeh: 0,
+          talqeen: 0,
+          score: 10.0
+        }];
+
+        this.questions.juzhaali = [{
+          id: 1,
+          juz: curJuz,
+          surah: jhSurah.surah,
+          surahName: jhSurah.name,
+          page: curPage,
+          tanbeeh: 0,
+          talqeen: 0,
+          score: 10.0
+        }];
+
+        this.renderAllQuestionsUI();
+      },
+
+      getQuestionsList(section) {
+        if (!this.questions) this.questions = {};
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        if (!this.questions[secKey]) {
+          const isJH = secKey.toLowerCase().includes('juzhaali');
+          this.questions[secKey] = [{
+            id: 1,
+            juz: isJH ? 29 : 28,
+            surah: isJH ? 67 : 59,
+            surahName: isJH ? 'Al-Mulk' : 'Al-Hashr',
+            page: isJH ? 562 : 546,
+            tanbeeh: 0,
+            talqeen: 0,
+            score: 10.0
+          }];
+        }
+        return this.questions[secKey];
+      },
+
+      addQuestion(section) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const lastQ = list[list.length - 1];
+        const nextJuz = lastQ ? lastQ.juz : (secKey.toLowerCase().includes('juzhaali') ? 29 : 28);
+        const surahs = QuranFilters.getSurahsForJuz(nextJuz);
+        const firstSurah = surahs[0] || { surah: 1, name: 'Al-Fatihah' };
+        const pages = QuranFilters.getPagesForSurah(firstSurah.surah);
+
+        list.push({
+          id: list.length + 1,
+          juz: nextJuz,
+          surah: firstSurah.surah,
+          surahName: firstSurah.name,
+          page: pages[0] || 1,
+          tanbeeh: 0,
+          talqeen: 0,
+          score: 10.0
+        });
+
+        this.triggerHaptic('medium');
+        this.renderQuestionsUI(secKey);
+        const secLabel = secKey.toLowerCase().includes('juzhaali') ? "Juz Haali" : "Muraja'at";
+        this.showMilestoneToast("➕ Question Added", `Added Question #${list.length} to ${secLabel}`);
+      },
+
+      addSingleQuestion() {
+        this.addQuestion('single');
+      },
+
+      removeQuestion(section, qIdx) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        if (list.length <= 1) return;
+        list.splice(qIdx, 1);
+        list.forEach((q, i) => q.id = i + 1);
+        this.triggerHaptic('warning');
+        this.renderQuestionsUI(secKey);
+      },
+
+      updateQuestionCounter(section, qIdx, type, delta) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const q = list[qIdx];
+        if (!q) return;
+
+        if (type === 'tanbeeh') {
+          q.tanbeeh = Math.max(0, (q.tanbeeh || 0) + delta);
+        } else if (type === 'talqeen') {
+          q.talqeen = Math.max(0, (q.talqeen || 0) + delta);
+        }
+        q.score = Math.max(0, 10.0 - (q.tanbeeh * 0.5) - (q.talqeen * 1.0));
+        this.triggerHaptic(type === 'talqeen' ? 'warning' : 'light');
+        this.renderQuestionsUI(secKey);
+      },
+
+      resetQuestionCounter(section, qIdx) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const q = list[qIdx];
+        if (!q) return;
+        q.tanbeeh = 0;
+        q.talqeen = 0;
+        q.score = 10.0;
+        this.triggerHaptic('light');
+        this.renderQuestionsUI(secKey);
+      },
+
+      onQuestionJuzChange(section, qIdx, newJuz) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const q = list[qIdx];
+        if (!q) return;
+        q.juz = parseInt(newJuz, 10);
+        const surahs = QuranFilters.getSurahsForJuz(q.juz);
+        const firstSurah = surahs[0] || { surah: 1, name: 'Al-Fatihah' };
+        q.surah = firstSurah.surah;
+        q.surahName = firstSurah.name;
+        const pages = QuranFilters.getPagesForSurah(q.surah);
+        q.page = pages[0] || 1;
+        this.renderQuestionsUI(secKey);
+      },
+
+      onQuestionSurahChange(section, qIdx, newSurah) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const q = list[qIdx];
+        if (!q) return;
+        q.surah = parseInt(newSurah, 10);
+        const sObj = QuranFilters.getSurah(q.surah);
+        q.surahName = sObj ? sObj.name : "Surah";
+        const pages = QuranFilters.getPagesForSurah(q.surah);
+        q.page = pages[0] || 1;
+        this.renderQuestionsUI(secKey);
+      },
+
+      onQuestionPageChange(section, qIdx, newPage) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const q = list[qIdx];
+        if (!q) return;
+        q.page = parseInt(newPage, 10);
+      },
+
+      getAverageScore(section) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        if (!list || list.length === 0) return 10.0;
+        const total = list.reduce((sum, q) => sum + (typeof q.score === 'number' ? q.score : 10.0), 0);
+        const avg = total / list.length;
+        return Math.round(avg * 10) / 10;
+      },
+
+      getQuestionsForSection(section) {
+        return this.getQuestionsList(section);
+      },
+
+      renderQuestionsUI(section) {
+        let secKey = section;
+        if (section === 'single') {
+          secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+        }
+        const list = this.getQuestionsList(secKey);
+        const isAr = this.lang === 'ar';
+        const avgScore = this.getAverageScore(secKey);
+        const avgStr = `${avgScore.toFixed(1)}/10`;
+
+        let containerId = 'murajaat-questions-list';
+        let summaryId = 'murajaat-avg-summary';
+        let countBadgeId = 'murajaat-q-count-badge';
+        let avgPillId = 'murajaat-avg-pill';
+        let avgBreakdownId = 'murajaat-avg-breakdown';
+        let gradePillId = 'murajaat-grade-pill';
+
+        if (secKey === 'juzhaali') {
+          containerId = 'juzhaali-questions-list';
+          summaryId = 'juzhaali-avg-summary';
+          countBadgeId = 'juzhaali-q-count-badge';
+          avgPillId = 'juzhaali-avg-pill';
+          avgBreakdownId = 'juzhaali-avg-breakdown';
+          gradePillId = 'juzhaali-grade-pill';
+        } else if (secKey === 'singleMurajaat' || secKey === 'singleJuzhaali') {
+          containerId = 'single-questions-list';
+          summaryId = 'single-avg-summary';
+          countBadgeId = null;
+          avgPillId = 'single-avg-pill';
+          avgBreakdownId = 'single-avg-breakdown';
+          gradePillId = 'single-grade-pill';
+        }
+
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = "";
+        list.forEach((q, idx) => {
+          const surahs = QuranFilters.getSurahsForJuz(q.juz);
+          const pages = QuranFilters.getPagesForSurah(q.surah);
+          const qScore = typeof q.score === 'number' ? q.score : 10.0;
+          const isQ1 = (idx === 0);
+
+          // Maintain primary IDs on Q1 for full backward compatibility
+          const juzId = isQ1 && secKey === 'murajaat' ? 'murajaat-juz' : (isQ1 && secKey === 'juzhaali' ? 'juzhaali-juz' : (isQ1 ? 'single-revision-juz' : `${secKey}-juz-q${idx+1}`));
+          const surahId = isQ1 && secKey === 'murajaat' ? 'murajaat-surah' : (isQ1 && secKey === 'juzhaali' ? 'juzhaali-surah' : (isQ1 ? 'single-revision-surah' : `${secKey}-surah-q${idx+1}`));
+          const pageId = isQ1 && secKey === 'murajaat' ? 'murajaat-page-select' : (isQ1 && secKey === 'juzhaali' ? 'juzhaali-page-select' : (isQ1 ? 'single-revision-page-select' : `${secKey}-page-q${idx+1}`));
+          const tanValId = isQ1 && secKey === 'murajaat' ? 'murajaat-tanbeeh-val' : (isQ1 && secKey === 'juzhaali' ? 'juzhaali-tanbeeh-val' : (isQ1 ? 'single-tanbeeh-val' : `${secKey}-tan-val-q${idx+1}`));
+
+          const card = document.createElement('div');
+          card.className = 'question-card';
+          card.style.cssText = "background: #ffffff; border: 1.5px solid #e2e8f0; border-left: 4px solid var(--primary); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);";
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-weight: 700; font-size: 13px; color: var(--text);">
+                  ${isAr ? `سؤال #${idx + 1}` : `Question #${idx + 1}`}
+                </span>
+                <span class="grade-pill" style="padding: 2px 8px; font-size: 11px; font-weight: 700;">
+                  ${qScore.toFixed(1)}/10
+                </span>
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button type="button" style="background: none; border: none; color: var(--text-muted); font-size: 11px; cursor: pointer; text-decoration: underline;" onclick="App.resetQuestionCounter('${secKey}', ${idx})" title="Reset deductions">↺ Reset</button>
+                ${list.length > 1 ? `
+                  <button type="button" style="background: #fee2e2; border: 1px solid #fca5a5; color: #dc2626; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; font-weight: 600;" onclick="App.removeQuestion('${secKey}', ${idx})" title="Remove question">
+                    🗑️ ${isAr ? 'حذف' : 'Remove'}
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- Dropdown Row: Juz & Surah -->
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">${isAr ? 'الجزء' : 'Juz'}</label>
+                <select class="form-select" id="${juzId}" onchange="App.onQuestionJuzChange('${secKey}', ${idx}, this.value)"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">${isAr ? 'السورة' : 'Surah'}</label>
+                <select class="form-select" id="${surahId}" onchange="App.onQuestionSurahChange('${secKey}', ${idx}, this.value)"></select>
+              </div>
+            </div>
+
+            <!-- Dropdown Row: Page & Counters -->
+            <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">${isAr ? 'الصفحة' : 'Page'}</label>
+                <select class="form-select" id="${pageId}" onchange="App.onQuestionPageChange('${secKey}', ${idx}, this.value)"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px; white-space: nowrap;">${isAr ? 'تنبيه (-0.5)' : 'Tanbeeh (-0.5)'}</label>
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" onclick="App.updateQuestionCounter('${secKey}', ${idx}, 'tanbeeh', -1)">-</button>
+                  <span class="counter-val" id="${tanValId}">${q.tanbeeh || 0}</span>
+                  <button type="button" class="btn-step" onclick="App.updateQuestionCounter('${secKey}', ${idx}, 'tanbeeh', 1)">+</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px; white-space: nowrap;">${isAr ? 'تلقين (-1.0)' : 'Talqeen (-1.0)'}</label>
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" onclick="App.updateQuestionCounter('${secKey}', ${idx}, 'talqeen', -1)">-</button>
+                  <span class="counter-val">${q.talqeen || 0}</span>
+                  <button type="button" class="btn-step" onclick="App.updateQuestionCounter('${secKey}', ${idx}, 'talqeen', 1)">+</button>
+                </div>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+
+          // Populate Juz Dropdown
+          const juzEl = card.querySelector(`#${juzId}`);
+          if (juzEl) {
+            for (let j = 1; j <= 30; j++) {
+              const jInfo = QuranFilters.getJuzInfo(j);
+              const opt = document.createElement("option");
+              opt.value = j;
+              opt.textContent = `Juz ${j} (Pages ${jInfo.startPage}-${jInfo.endPage})`;
+              if (j === q.juz) opt.selected = true;
+              juzEl.appendChild(opt);
+            }
+          }
+
+          // Populate Surah Dropdown
+          const surahEl = card.querySelector(`#${surahId}`);
+          if (surahEl) {
+            surahs.forEach(s => {
+              const opt = document.createElement("option");
+              opt.value = s.surah;
+              opt.textContent = `${s.surah}. ${s.name} • ${s.arabic} (${s.totalAyahs} Ayahs)`;
+              if (s.surah === q.surah) opt.selected = true;
+              surahEl.appendChild(opt);
+            });
+          }
+
+          // Populate Page Dropdown
+          const pageEl = card.querySelector(`#${pageId}`);
+          if (pageEl) {
+            pages.forEach(p => {
+              const opt = document.createElement("option");
+              opt.value = p;
+              opt.textContent = `Page ${p}`;
+              if (p === q.page) opt.selected = true;
+              pageEl.appendChild(opt);
+            });
+          }
+        });
+
+        // Update Average Marks Summary Banner
+        const summaryEl = document.getElementById(summaryId);
+        if (summaryEl) {
+          if (list.length > 1) {
+            summaryEl.style.display = 'block';
+            const pillEl = document.getElementById(avgPillId);
+            if (pillEl) {
+              pillEl.textContent = avgStr;
+              this.morphGradePill(avgPillId, avgScore);
+            }
+            const bdEl = document.getElementById(avgBreakdownId);
+            if (bdEl) {
+              const calc = list.map((q, i) => `Q${i+1}: ${q.score.toFixed(1)}`).join(' + ');
+              bdEl.textContent = `Calculation: (${calc}) ÷ ${list.length} = ${avgStr}`;
+            }
+          } else {
+            summaryEl.style.display = 'none';
+          }
+        }
+
+        // Update Questions Count Badge
+        if (countBadgeId) {
+          const badgeEl = document.getElementById(countBadgeId);
+          if (badgeEl) {
+            badgeEl.textContent = list.length === 1 ? '1 Question' : `${list.length} Questions (Avg: ${avgStr})`;
+            badgeEl.style.display = 'inline-block';
+          }
+        }
+
+        // Update Section Grade Pill
+        if (gradePillId) {
+          const mainPill = document.getElementById(gradePillId);
+          if (mainPill) {
+            this.morphGradePill(gradePillId, avgScore);
+            if (list.length > 1) {
+              mainPill.textContent = (avgScore >= 9.8 ? '✨ ' : (avgScore >= 8.8 ? '★ ' : '')) + `${avgStr} (${list.length} Qs)`;
+            }
+          }
+        }
+      },
+
+      renderAllQuestionsUI() {
+        this.renderQuestionsUI('murajaat');
+        this.renderQuestionsUI('juzhaali');
+      },
+
+      // ---------------------------------------------------------
       // DROPDOWN INITIALIZATION & EVENT LISTENERS
       // ---------------------------------------------------------
       initAllDropdowns() {
@@ -3931,13 +5022,21 @@
         activeTab.style.color = '#ffffff';
 
         // If Jadeed: show full Surah -> Page -> Ayat dropdowns
-        // If Murajaat or Juz Haali: show Juz -> Page dropdown only! (No Ayats)
+        // If Murajaat or Juz Haali: show Multi-Questions Revision Container & Average Marks
         if (sec === 'jadeed') {
           document.getElementById('single-jadeed-fields').style.display = 'block';
           document.getElementById('single-page-only-fields').style.display = 'none';
+          document.querySelector('#single-entry-view .counter-row').style.display = 'grid';
+          const jTan = parseInt(document.getElementById('single-tanbeeh-val').textContent) || 0;
+          const jTal = parseInt(document.getElementById('single-talqeen-val').textContent) || 0;
+          const jGrade = Math.max(0, 10.0 - (jTan * 0.5) - (jTal * 1.0));
+          this.morphGradePill('single-grade-pill', jGrade);
         } else {
           document.getElementById('single-jadeed-fields').style.display = 'none';
           document.getElementById('single-page-only-fields').style.display = 'block';
+          document.querySelector('#single-entry-view .counter-row').style.display = 'none';
+          const secKey = (sec === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+          this.renderQuestionsUI(secKey);
         }
       },
 
@@ -3974,24 +5073,52 @@
           details = `Juz ${jJuz}, ${surahName}, Page ${page}, Ayat ${startAyah}-${endAyah}`;
           sectionMsg = `--- *Jadeed (New Lesson)* ---\n${details} -> Grade: ${grade}\n`;
         } else {
-          const rJuz = document.getElementById('single-revision-juz').value;
-          const rSurahEl = document.getElementById('single-revision-surah');
-          const rSurahName = rSurahEl && rSurahEl.options[rSurahEl.selectedIndex] ? rSurahEl.options[rSurahEl.selectedIndex].text.split(' - ')[0] : "";
-          const rPage = document.getElementById('single-revision-page-select').value;
+          const secKey = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : 'singleJuzhaali';
+          const qList = this.getQuestionsForSection(secKey);
+          const avgScore = this.getAverageScore(secKey);
+          const avgStr = `${avgScore.toFixed(1)}/10`;
           const secTitle = this.currentSingleSection === 'murajaat' ? "Muraja'at (Revision)" : "Juz Haali (Recent Revision)";
-          details = `Juz ${rJuz}, ${rSurahName}, Page ${rPage}`;
-          sectionMsg = `--- *${secTitle}* ---\n${details} -> Grade: ${grade}\n`;
+
+          if (qList.length <= 1) {
+            const q = qList[0];
+            const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+            details = `Juz ${q.juz}, ${sName}, Page ${q.page}`;
+            sectionMsg = `--- *${secTitle}* ---\n${details} -> Grade: ${avgStr}\nAverage Grade: *${avgStr}*\n`;
+          } else {
+            const qDetails = qList.map((q, i) => {
+              const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+              return `Q${i+1}: Juz ${q.juz}, ${sName}, P. ${q.page} (${q.score.toFixed(1)})`;
+            }).join(' | ');
+            details = `${qDetails} • Average: ${avgStr}`;
+            sectionMsg = `--- *${secTitle} (${qList.length} Questions Asked)* ---\n`;
+            qList.forEach((q, i) => {
+              const sName = q.surahName || (QuranFilters.getSurah(q.surah) ? QuranFilters.getSurah(q.surah).name : "Surah");
+              const errs = [];
+              if (q.tanbeeh > 0) errs.push(`${q.tanbeeh} Tanbeeh`);
+              if (q.talqeen > 0) errs.push(`${q.talqeen} Talqeen`);
+              const errStr = errs.length > 0 ? ` (${errs.join(', ')})` : ' (Mumtaz)';
+              sectionMsg += `• Question ${i+1}: Juz ${q.juz}, ${sName}, Page ${q.page} -> Grade: ${q.score.toFixed(1)}/10${errStr}\n`;
+            });
+            sectionMsg += `🏆 *Average Grade: ${avgStr}*\n`;
+          }
         }
 
         if (remarks.trim()) sectionMsg += `Remarks: ${remarks.trim()}\n`;
+
+        const secKeyToUse = (this.currentSingleSection === 'murajaat') ? 'singleMurajaat' : (this.currentSingleSection === 'juzhaali' ? 'singleJuzhaali' : null);
+        const finalQuestions = secKeyToUse ? JSON.parse(JSON.stringify(this.getQuestionsForSection(secKeyToUse))) : null;
+        const finalGrade = (this.currentSingleSection === 'jadeed') ? grade : `${this.getAverageScore(secKeyToUse).toFixed(1)}/10`;
 
         this.records.unshift({
           studentName: st.name,
           date: dateStr,
           section: this.currentSingleSection.toUpperCase(),
           details: details,
-          grade: grade,
-          remarks: remarks || "Good effort"
+          grade: finalGrade,
+          averageGrade: secKeyToUse ? this.getAverageScore(secKeyToUse) : null,
+          questionsCount: finalQuestions ? finalQuestions.length : 1,
+          questions: finalQuestions,
+          remarks: remarks.trim() ? remarks.trim() : "no remarks"
         });
         this.saveRecords();
         this.renderAllRecords();
@@ -4230,6 +5357,7 @@
 
         this.setAttendance(st.attendance || 'Present');
         this.resetCounters();
+        this.initQuestionsForStudent();
       },
 
       setAttendance(status) {
@@ -4445,20 +5573,75 @@
         curStudent.curAyah = endAyah;
         this.saveStudents();
 
-        // Push new record to log
+        // Push new Jadeed record to log
         const jJuz = document.getElementById('jadeed-juz').value;
         const jSurahEl = document.getElementById('jadeed-surah');
         const jSurahName = jSurahEl ? jSurahEl.options[jSurahEl.selectedIndex].text.split(' - ')[0] : "Al-Mulk";
-        const newRecord = {
-          studentName: curStudent.name.replace(/\s+\.\s*/g, ' ').trim(),
+        const cleanStudentName = curStudent.name.replace(/\s+\.\s*/g, ' ').trim();
+        
+        let recordsPushed = 0;
+        this.records.unshift({
+          studentName: cleanStudentName,
           date: dateStr,
           hijriDate: hijriObj.formattedEn,
           section: "Jadeed",
           details: `Juz ${jJuz}, ${jSurahName}, Page ${page}, Ayat ${startAyah}-${endAyah}`,
           grade: jGrade,
           remarks: jRemarks || "Evaluated"
-        };
-        this.records.unshift(newRecord);
+        });
+        recordsPushed++;
+
+        // Push Muraja'at record with Multiple Questions and Average Marks
+        const mQuestions = this.getQuestionsForSection('murajaat');
+        const mAvg = this.getAverageScore('murajaat');
+        const mRemarks = (document.getElementById('murajaat-remarks') ? document.getElementById('murajaat-remarks').value : '').trim();
+        const mDetails = mQuestions.length > 1
+          ? mQuestions.map((q, i) => `Q${i+1}: Juz ${q.juz}, ${q.surahName || 'Surah'}, P. ${q.page} (${q.score.toFixed(1)})`).join(' | ') + ` • Average: ${mAvg.toFixed(1)}/10`
+          : `Juz ${mQuestions[0].juz}, ${mQuestions[0].surahName || 'Surah'}, Page ${mQuestions[0].page}`;
+
+        this.records.unshift({
+          studentName: cleanStudentName,
+          date: dateStr,
+          hijriDate: hijriObj.formattedEn,
+          section: "MURAJA'AT",
+          details: mDetails,
+          grade: `${mAvg.toFixed(1)}/10`,
+          averageGrade: mAvg,
+          questionsCount: mQuestions.length,
+          questions: JSON.parse(JSON.stringify(mQuestions)),
+          remarks: mRemarks || "Muraja'at assessed"
+        });
+        recordsPushed++;
+
+        // Push Juz Haali record (if assessed today)
+        const isSkipJuzHaali = document.getElementById('juzhaali-skip') ? document.getElementById('juzhaali-skip').checked : true;
+        if (!isSkipJuzHaali) {
+          const jhQuestions = this.getQuestionsForSection('juzhaali');
+          const jhAvg = this.getAverageScore('juzhaali');
+          const jhRemarks = (document.getElementById('juzhaali-remarks') ? document.getElementById('juzhaali-remarks').value : '').trim();
+          const jhDetails = jhQuestions.length > 1
+            ? jhQuestions.map((q, i) => `Q${i+1}: Juz ${q.juz}, ${q.surahName || 'Surah'}, P. ${q.page} (${q.score.toFixed(1)})`).join(' | ') + ` • Average: ${jhAvg.toFixed(1)}/10`
+            : `Juz ${jhQuestions[0].juz}, ${jhQuestions[0].surahName || 'Surah'}, Page ${jhQuestions[0].page}`;
+
+          this.records.unshift({
+            studentName: cleanStudentName,
+            date: dateStr,
+            hijriDate: hijriObj.formattedEn,
+            section: "JUZ HAALI",
+            details: jhDetails,
+            grade: `${jhAvg.toFixed(1)}/10`,
+            averageGrade: jhAvg,
+            questionsCount: jhQuestions.length,
+            questions: JSON.parse(JSON.stringify(jhQuestions)),
+            remarks: jhRemarks || "Juz Haali assessed"
+          });
+          recordsPushed++;
+        }
+
+        if (this.lastSavedEntry) {
+          this.lastSavedEntry.recordsPushed = recordsPushed;
+        }
+
         this.saveRecords();
         this.renderAllRecords();
         this.updateDashboardKPIs();
@@ -4496,8 +5679,13 @@
           this.saveStudents();
         }
 
-        // Remove the latest record
-        if (this.records.length > 0) {
+        // Remove all records pushed in this student session
+        const countToRemove = (snapshot && snapshot.recordsPushed) || 1;
+        if (this.records.length >= countToRemove) {
+          this.records.splice(0, countToRemove);
+          this.saveRecords();
+          this.renderAllRecords();
+        } else if (this.records.length > 0) {
           this.records.shift();
           this.saveRecords();
           this.renderAllRecords();
@@ -4673,8 +5861,19 @@
                 </button>
               </div>
             </div>
-            <div style="font-size: 12px; color: var(--text-muted);">${rec.date} ${rec.hijriDate ? '• ' + rec.hijriDate : ''} • ${rec.section}: ${rec.details}</div>
-            <div style="font-size: 12px; font-style: italic; color: #475569; margin-top: 4px;">Remarks: ${rec.remarks || 'None'}</div>
+            <div style="font-size: 12px; color: var(--text-muted);">${rec.date} ${rec.hijriDate ? '• ' + rec.hijriDate : ''} • <strong>${rec.section}</strong>: ${rec.details}</div>
+            ${rec.questions && rec.questions.length > 1 ? `
+              <div style="font-size: 11px; background: #f0fdf4; color: #166534; padding: 4px 8px; border-radius: 4px; margin-top: 4px; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span>⚖️ <strong>Average of ${rec.questions.length} Questions:</strong></span>
+                ${rec.questions.map((q, qi) => `<span style="background: #ffffff; padding: 1px 6px; border-radius: 3px; border: 1px solid #86efac;">Q${qi+1}: Juz ${q.juz}, P. ${q.page} (<strong>${q.score.toFixed(1)}</strong>)</span>`).join(' ')}
+              </div>
+            ` : ''}
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; flex-wrap: wrap; gap: 6px;">
+              <div style="font-size: 12px; font-style: italic; color: #475569;">Remarks: ${rec.remarks || 'None'}</div>
+              <button type="button" class="btn-secondary" style="font-size: 11px; padding: 3px 8px; color: #166534; border-color: #86efac; background: #f0fdf4; border-radius: 4px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="App.openConsolidatedReportModalForStudent('${rec.studentName}')" title="Generate consolidated daily WhatsApp report for this student">
+                <span>📲</span> Daily WA Report
+              </button>
+            </div>
           `;
           container.appendChild(card);
         });
@@ -4686,6 +5885,8 @@
         const mGrade = document.getElementById('murajaat-grade-pill').textContent;
         const jRemarks = document.getElementById('jadeed-remarks').value;
         const mRemarks = document.getElementById('murajaat-remarks').value;
+        const jhRemarksEl = document.getElementById('juzhaali-remarks');
+        const jhRemarks = jhRemarksEl ? jhRemarksEl.value : '';
         const nextTarget = document.getElementById('next-target').value;
         const isSkipJuzHaali = document.getElementById('juzhaali-skip').checked;
 
@@ -4711,28 +5912,53 @@
                `Average Grade: *${jGrade}*\n`;
         if (jRemarks.trim()) msg += `Remarks: ${jRemarks.trim()}\n`;
 
-        // Muraja'at section (Surah + Page, No Ayats!)
-        const mJuz = document.getElementById('murajaat-juz').value;
-        const mSurahEl = document.getElementById('murajaat-surah');
-        const mSurahName = mSurahEl && mSurahEl.options[mSurahEl.selectedIndex] ? mSurahEl.options[mSurahEl.selectedIndex].text.split(' - ')[0] : "Al-Hashr";
-        const mPage = document.getElementById('murajaat-page-select').value;
-        msg += `\n--- *Muraja'at (Revision)* ---\n` +
-               `Juz ${mJuz}, ${mSurahName}, Page ${mPage} -> Grade: ${mGrade}\n` +
-               `Average Grade: *${mGrade}*\n`;
+        // Muraja'at section with Multi-Questions & Average Marks
+        const mQuestions = this.getQuestionsForSection('murajaat');
+        const mAvg = this.getAverageScore('murajaat');
+        const mAvgStr = `${mAvg.toFixed(1)}/10`;
+
+        if (mQuestions.length <= 1) {
+          const q = mQuestions[0] || { juz: 28, surahName: 'Al-Hashr', page: 546, score: 10.0, tanbeeh: 0, talqeen: 0 };
+          msg += `\n--- *Muraja'at (Revision)* ---\n` +
+                 `Juz ${q.juz}, ${q.surahName || 'Al-Hashr'}, Page ${q.page} -> Grade: ${q.score.toFixed(1)}/10\n` +
+                 `Average Grade: *${mAvgStr}*\n`;
+        } else {
+          msg += `\n--- *Muraja'at (Revision – ${mQuestions.length} Questions Asked)* ---\n`;
+          mQuestions.forEach((q, i) => {
+            const errs = [];
+            if (q.tanbeeh > 0) errs.push(`${q.tanbeeh} Tanbeeh`);
+            if (q.talqeen > 0) errs.push(`${q.talqeen} Talqeen`);
+            const errStr = errs.length > 0 ? ` (${errs.join(', ')})` : ' (Mumtaz)';
+            msg += `• *Question ${i + 1}:* Juz ${q.juz}, ${q.surahName || 'Surah'}, Page ${q.page} -> Grade: ${q.score.toFixed(1)}/10${errStr}\n`;
+          });
+          msg += `🏆 *Average Muraja'at Grade: ${mAvgStr}*\n`;
+        }
         if (mRemarks.trim()) msg += `Remarks: ${mRemarks.trim()}\n`;
 
-        // Juz Haali section (Surah + Page, No Ayats!)
+        // Juz Haali section with Multi-Questions & Average Marks
         msg += `\n--- *Juz Haali (Recent Revision)* ---\n`;
         if (isSkipJuzHaali) {
           msg += `Status: Not assessed today\n`;
         } else {
-          const jhJuz = document.getElementById('juzhaali-juz').value;
-          const jhSurahEl = document.getElementById('juzhaali-surah');
-          const jhSurahName = jhSurahEl && jhSurahEl.options[jhSurahEl.selectedIndex] ? jhSurahEl.options[jhSurahEl.selectedIndex].text.split(' - ')[0] : "Al-Mulk";
-          const jhPage = document.getElementById('juzhaali-page-select').value;
-          const jhGrade = document.getElementById('juzhaali-grade-pill').textContent;
-          const jhRemarks = document.getElementById('juzhaali-remarks').value;
-          msg += `Juz ${jhJuz}, ${jhSurahName}, Page ${jhPage} -> Grade: ${jhGrade}\n`;
+          const jhQuestions = this.getQuestionsForSection('juzhaali');
+          const jhAvg = this.getAverageScore('juzhaali');
+          const jhAvgStr = `${jhAvg.toFixed(1)}/10`;
+
+          if (jhQuestions.length <= 1) {
+            const q = jhQuestions[0] || { juz: 29, surahName: 'Al-Mulk', page: 562, score: 10.0, tanbeeh: 0, talqeen: 0 };
+            msg += `Juz ${q.juz}, ${q.surahName || 'Al-Mulk'}, Page ${q.page} -> Grade: ${q.score.toFixed(1)}/10\n` +
+                   `Average Grade: *${jhAvgStr}*\n`;
+          } else {
+            msg += `*${jhQuestions.length} Questions Asked:*\n`;
+            jhQuestions.forEach((q, i) => {
+              const errs = [];
+              if (q.tanbeeh > 0) errs.push(`${q.tanbeeh} Tanbeeh`);
+              if (q.talqeen > 0) errs.push(`${q.talqeen} Talqeen`);
+              const errStr = errs.length > 0 ? ` (${errs.join(', ')})` : ' (Mumtaz)';
+              msg += `• *Question ${i + 1}:* Juz ${q.juz}, ${q.surahName || 'Surah'}, Page ${q.page} -> Grade: ${q.score.toFixed(1)}/10${errStr}\n`;
+            });
+            msg += `🏆 *Average Juz Haali Grade: ${jhAvgStr}*\n`;
+          }
           if (jhRemarks.trim()) msg += `Remarks: ${jhRemarks.trim()}\n`;
         }
 
@@ -6143,6 +7369,84 @@
     </div>
   </div>
 
+
+  <!-- ============================================================= -->
+  <!-- CONSOLIDATED DAILY REPORT WHATSAPP MODAL -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="consolidated-report-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
+    <div class="modal-card" style="max-width: 540px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; background: #ffffff; border-radius: var(--radius); padding: 18px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); overflow-y: auto;">
+      
+      <!-- Modal Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #25d366; color: white; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            💬
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--text-main);">Consolidated Daily Report (WhatsApp)</div>
+            <div style="font-size: 11px; color: var(--text-muted);" id="consolidated-modal-subtitle">
+              Systematic Daily Summary • Jadeed, Muraja'at & Juz Haali
+            </div>
+          </div>
+        </div>
+        <button class="btn-icon" style="background: #f1f5f9; color: #475569; width: 28px; height: 28px; border-radius: 50%; border: none; font-size: 14px; cursor: pointer;" onclick="App.closeConsolidatedReportModal()">✕</button>
+      </div>
+
+      <!-- Student & Date Info Chip -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Student</div>
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-main);" id="consolidated-modal-student-name">Student Name</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Date & Time</div>
+          <div style="font-size: 12px; font-weight: 700; color: var(--primary);" id="consolidated-modal-date-display">14-11-2026 11:30:00</div>
+        </div>
+      </div>
+
+      <!-- Evaluated Sections Badges -->
+      <div style="margin-bottom: 10px;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">Sections Included Today:</div>
+        <div id="consolidated-sections-badges" style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <!-- Dynamic Pills: Muraja'at (2 Qs), Juz Haali (1 Q), Jadeed -->
+        </div>
+      </div>
+
+      <!-- Overall Remarks Input (The requested feature!) -->
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700;">
+          <span>📝 Overall Remarks (ملاحظات عامة لليوم):</span>
+          <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">Included at the bottom of the message</span>
+        </label>
+        <textarea class="form-input" id="consolidated-overall-remarks" rows="3" placeholder="Enter overall remarks, e.g.:&#10;Murajat- Fajr si Amma&#10;juzz haali- Saff si Mujadalah&#10;jadeed" style="resize: vertical; font-size: 12px; font-family: inherit; line-height: 1.4;" oninput="App.onConsolidatedRemarksChange(this.value)"></textarea>
+      </div>
+
+      <!-- Live Message Preview Box -->
+      <div style="margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <label class="form-label" style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 0;">
+            📱 Live WhatsApp Message Preview:
+          </label>
+          <span style="font-size: 10px; color: #166534; background: #dcfce7; padding: 1px 6px; border-radius: 4px; font-weight: 600;">Systematic Format</span>
+        </div>
+        <pre id="consolidated-message-preview" style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: var(--radius-sm); padding: 12px; font-size: 11px; color: #1e293b; max-height: 220px; overflow-y: auto; white-space: pre-wrap; font-family: Consolas, Monaco, monospace; line-height: 1.45;"></pre>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+        <button class="btn-secondary" style="padding: 10px 14px; font-size: 12px;" onclick="App.closeConsolidatedReportModal()">
+          Cancel
+        </button>
+        <button class="btn-secondary" style="padding: 10px 14px; font-size: 12px; display: flex; align-items: center; gap: 4px;" onclick="App.copyConsolidatedMessage()">
+          📋 Copy Text
+        </button>
+        <button class="btn-primary" id="btn-send-consolidated-wa" style="padding: 10px 16px; font-size: 13px; font-weight: 800; background: #16a34a; border-color: #15803d; display: flex; align-items: center; gap: 6px;" onclick="App.sendConsolidatedWhatsApp()">
+          <span>📲</span>
+          <span>Send on WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============================================================= -->
   <!-- WHATSAPP BATCH DISPATCH MODAL -->
