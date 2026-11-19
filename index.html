@@ -488,6 +488,116 @@
       border-radius: 12px;
       font-weight: 700;
     }
+
+    /* ============================================================= */
+    /* IKHTEBAAR (EXAMINATION) MODULE & SANAD STYLING               */
+    /* ============================================================= */
+    .ikhtebaar-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .ikhtebaar-header-gold {
+      background: linear-gradient(135deg, #fefce8 0%, #fffbeb 100%);
+      border: 1.5px solid #facc15;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .siparah-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .siparah-chip {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 6px 2px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .siparah-chip:hover {
+      border-color: #94a3b8;
+      background: #f1f5f9;
+    }
+    .siparah-chip.active {
+      background: linear-gradient(135deg, #15803d, #16a34a);
+      color: #ffffff;
+      border-color: #14532d;
+      box-shadow: 0 2px 4px rgba(22,163,74,0.25);
+    }
+    .tag-chip {
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      user-select: none;
+      margin: 3px 2px;
+    }
+    .tag-chip:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+    .tag-chip.active {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(245,158,11,0.2);
+    }
+    .sanad-frame {
+      border: 4px double #c69214;
+      background: #fffdfa;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 12px rgba(198,146,20,0.12);
+      position: relative;
+    }
+    .sanad-title-gold {
+      font-family: 'KanzalLulu', 'Traditional Arabic', serif;
+      font-size: 24px;
+      color: #6b0f24;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #ikhtebaar-sanad-modal, #ikhtebaar-sanad-modal * {
+        visibility: visible !important;
+      }
+      #ikhtebaar-sanad-modal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: white !important;
+        display: block !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
     @keyframes fadeInCard {
       from { opacity: 0; transform: translateY(-4px); }
       to { opacity: 1; transform: translateY(0); }
@@ -1366,6 +1476,271 @@
       flex-shrink: 0;
     }
 
+  
+    /* =========================================================================
+       UI/UX MAX ENHANCEMENTS (PRIORITIES 1-5):
+       TOUCH ERGONOMICS, ARABIC OPTICALS, MOBILE STICKY BAR, FATEMI ACCENTS
+       ========================================================================= */
+
+    /* Priority 1: Pull-to-Refresh Shield & Smooth Touch Containment */
+    html, body {
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal-overlay, .view-screen {
+      overscroll-behavior-y: contain;
+    }
+
+    /* Priority 1: WCAG 2.2 / Platform Touch Targets (44pt iOS / 48dp Android) */
+    .btn-step {
+      min-width: 44px !important;
+      min-height: 44px !important;
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 12px !important;
+      border: 1.5px solid #cbd5e1 !important;
+      background: #ffffff !important;
+      color: var(--text-main) !important;
+      font-weight: 800 !important;
+      font-size: 19px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      touch-action: manipulation !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    }
+    .btn-step:hover {
+      border-color: var(--accent-gold) !important;
+      background: #fffdf8 !important;
+    }
+    .btn-step:active {
+      transform: scale(0.91) !important;
+      background: #f1f5f9 !important;
+    }
+
+    .counter-controls {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 12px !important;
+      margin-top: 4px !important;
+    }
+    .counter-val {
+      font-size: 19px !important;
+      font-weight: 800 !important;
+      min-width: 32px !important;
+      text-align: center !important;
+    }
+
+    /* Ensure comfortable touch targets across mobile action surfaces */
+    .btn-icon, .btn-secondary, .btn-primary, .lang-pill-btn, .siparah-chip {
+      touch-action: manipulation;
+    }
+
+    /* Priority 2: Arabic Typography & Kanz al-Lulu Optical Balance */
+    .arabic-title,
+    .arabic-script,
+    .arabic-text,
+    .quran-text,
+    .surah-name-ar,
+    .sanad-title-gold,
+    .quran-badge {
+      font-family: var(--font-arabic) !important;
+      line-height: 1.85 !important; /* Protects upper/lower diacritics (harakat/tashkeel) from clipping */
+      text-rendering: optimizeLegibility !important;
+      font-feature-settings: "cv01" on, "kern" on, "mark" on, "mkmk" on !important;
+      -webkit-font-smoothing: antialiased !important;
+      overflow: visible !important;
+    }
+
+    /* Optical Scaling: Balances Arabic visual presence next to Latin text */
+    .dual-lang-label {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .dual-lang-label .ar-part,
+    .arabic-accent {
+      font-family: var(--font-arabic) !important;
+      font-size: 1.15em !important;
+      line-height: 1.3 !important;
+      vertical-align: -0.06em !important;
+    }
+
+    /* Priority 3: Mobile Sticky Action Bar ("One-Thumb Workflow") */
+    .mobile-sticky-action-bar {
+      display: none;
+    }
+    @media (max-width: 640px) {
+      .mobile-sticky-action-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-top: 1.5px solid var(--border);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.09);
+        padding: 8px 12px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+      .mobile-sticky-action-bar.hidden-bar {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+      }
+      main {
+        padding-bottom: 95px !important;
+      }
+      .sticky-bar-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        flex: 1;
+      }
+      .sticky-std-name {
+        font-weight: 800;
+        font-size: 13px;
+        color: var(--primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .sticky-grade-pill {
+        font-size: 11px;
+        font-weight: 700;
+        color: #15803d;
+        background: #dcfce7;
+        padding: 2px 8px;
+        border-radius: 10px;
+        display: inline-flex;
+        width: fit-content;
+      }
+      .sticky-bar-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .sticky-btn-save {
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(107, 15, 36, 0.25);
+      }
+      .sticky-btn-wa {
+        background: #16a34a;
+        color: #ffffff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
+      }
+    }
+
+    /* Priority 4: Visual Hierarchy & Fatemi Accents */
+    .fatemi-shamsah-corner {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 14px;
+      color: var(--accent-gold);
+      opacity: 0.65;
+      user-select: none;
+      pointer-events: none;
+    }
+    .card-fatemi-accent {
+      position: relative;
+      border-top: 3px solid var(--accent-gold) !important;
+      background: linear-gradient(180deg, #fffdf8 0%, #ffffff 40px) !important;
+    }
+
+    /* Standardized Bohra Merit Badges */
+    .merit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
+      transition: all 0.2s ease;
+    }
+    .merit-mumtaz {
+      background: #fef3c7 !important;
+      color: #92400e !important;
+      border: 1px solid #facc15 !important;
+      box-shadow: 0 1px 3px rgba(180, 83, 9, 0.12) !important;
+    }
+    .merit-jayyid-jiddan {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border: 1px solid #86efac !important;
+      box-shadow: 0 1px 3px rgba(22, 163, 74, 0.12) !important;
+    }
+    .merit-jayyid {
+      background: #ccfbf1 !important;
+      color: #0f766e !important;
+      border: 1px solid #5eead4 !important;
+    }
+    .merit-maqbool {
+      background: #fffbeb !important;
+      color: #b45309 !important;
+      border: 1px solid #fde68a !important;
+    }
+    .merit-rasib {
+      background: #fee2e2 !important;
+      color: #b91c1c !important;
+      border: 1px solid #fca5a5 !important;
+    }
+
+    /* Priority 5: Circular SVG Progress Ring */
+    .progress-ring-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.4s ease;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    .progress-ring-label {
+      position: absolute;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
   </style>
   <link rel="manifest" href="./manifest.json">
 </head>
@@ -1405,6 +1780,7 @@
       <div class="header-actions" id="header-action-buttons">
       <button id="btn-lang-toggle" class="lang-pill-btn" onclick="App.toggleLanguage()" title="Switch Language / تبديل اللغة">🌐 عربي</button>
       <button class="btn-icon" id="btn-nav-home" title="Dashboard Home" onclick="App.navTo('dashboard-view')">🏠</button>
+      <button class="btn-icon" id="btn-nav-ikhtebaar" title="Ikhtebaar (Hifz Exam)" onclick="App.navTo('ikhtebaar-view')">🎓</button>
       <button class="btn-icon" id="btn-nav-tasmee" title="Quick Tasmee" onclick="App.navTo('tasmee-view')">⚡</button>
       <button class="btn-icon" id="btn-nav-attendance" title="Attendance" onclick="App.navTo('attendance-view')">📅</button>
       <button class="btn-icon" id="btn-nav-records" title="Recitation Records" onclick="App.navTo('view-records-view')">📋</button>
@@ -1646,6 +2022,12 @@
           <div class="action-icon">⚡</div>
           <div class="action-title">Quick Tasmee Flow</div>
           <div class="action-desc">Fast continuous entry for 20+ students with auto-continuation</div>
+        </div>
+
+        <div class="action-tile" onclick="App.navTo('ikhtebaar-view')" style="border-left: 4px solid #b45309; background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);">
+          <div class="action-icon" style="background: #fef3c7; color: #b45309;">🎓</div>
+          <div class="action-title" style="color: #92400e;">Ikhtebaar (Hifz Exam) • إختبار الحفظ</div>
+          <div class="action-desc">Formal examination: multi-siparah questions, Makhaarij & Ahkam scoring & sanad</div>
         </div>
 
         <div class="action-tile" onclick="App.navTo('single-entry-view')">
@@ -2846,21 +3228,21 @@
         <div class="form-row" style="grid-template-columns: 1fr 1fr;">
           <div class="form-group">
             <label class="form-label">Jadeed Tanbeeh Deduction</label>
-            <input type="number" step="0.25" class="form-input" id="set-jad-tan" value="0.5">
+            <input type="number" step="0.25" class="form-input" id="set-jad-tan" value="0.5" inputmode="decimal">
           </div>
           <div class="form-group">
             <label class="form-label">Jadeed Talqeen Deduction</label>
-            <input type="number" step="0.25" class="form-input" id="set-jad-tal" value="1.0">
+            <input type="number" step="0.25" class="form-input" id="set-jad-tal" value="1.0" inputmode="decimal">
           </div>
         </div>
         <div class="form-row" style="grid-template-columns: 1fr 1fr;">
           <div class="form-group">
             <label class="form-label">Muraja'at Tanbeeh Deduction</label>
-            <input type="number" step="0.25" class="form-input" id="set-mur-tan" value="0.5">
+            <input type="number" step="0.25" class="form-input" id="set-mur-tan" value="0.5" inputmode="decimal">
           </div>
           <div class="form-group">
             <label class="form-label">Muraja'at Talqeen Deduction</label>
-            <input type="number" step="0.25" class="form-input" id="set-mur-tal" value="1.0">
+            <input type="number" step="0.25" class="form-input" id="set-mur-tal" value="1.0" inputmode="decimal">
           </div>
         </div>
         <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="App.saveSettings()">Save Deduction Rules</button>
@@ -2916,6 +3298,340 @@
         </div>
       </div>
     </div>
+
+    <!-- ============================================================= -->
+    <!-- 9. IKHTEBAAR (EXAMINATION) MODULE VIEW                        -->
+    <!-- ============================================================= -->
+    <div id="ikhtebaar-view" class="view-screen">
+      <!-- Title & Tab Bar -->
+      <div class="view-title-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 24px;">🎓</span>
+          <div>
+            <div class="view-title" style="margin-bottom: 0;">Ikhtebaar (Hifz Examination)</div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">نظام إختبارات حفظ القرآن الكريم • معايير المخارج والأحكام</div>
+          </div>
+        </div>
+        <button class="btn-back" onclick="App.navTo('dashboard-view')">← Dashboard</button>
+      </div>
+
+      <!-- Segmented Control: Conduct Exam vs Past Exam Records -->
+      <div class="analytics-nav" style="margin-bottom: 14px;">
+        <button class="analytics-tab-btn active" id="tab-btn-new-ikhtebaar" onclick="App.switchIkhtebaarTab('new-exam')">
+          📝 Conduct Examination (إجراء إختبار)
+        </button>
+        <button class="analytics-tab-btn" id="tab-btn-past-ikhtebaar" onclick="App.switchIkhtebaarTab('past-exams')">
+          📜 Past Exam Records (<span id="ikhtebaar-past-count">0</span>)
+        </button>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- PANE 1: CONDUCT NEW IKHTEBAAR                             -->
+      <!-- ========================================================= -->
+      <div id="ikhtebaar-new-pane">
+        <!-- 1. Exam Configuration & Candidate Info -->
+        <div class="ikhtebaar-header-gold">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 18px;">📋</span>
+              <span style="font-weight: 800; font-size: 14px; color: #78350f;">1. Candidate & Examination Setup</span>
+            </div>
+            <span class="badge" id="ikhtebaar-date-badge" style="background: #ffffff; color: #78350f; font-weight: 700; border: 1px solid #facc15; font-size: 11px; padding: 3px 8px; border-radius: 6px;">
+              Today
+            </span>
+          </div>
+
+          <!-- Student Picker -->
+          <div class="form-row" style="grid-template-columns: 2fr 1fr; margin-bottom: 10px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size: 11px; font-weight: 700;">Student Candidate (الطالب المختَبَر)</label>
+              <select class="form-select" id="ikhtebaar-student-select" onchange="App.onIkhtebaarStudentChange()" style="font-weight: 700;"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size: 11px; font-weight: 700;">Class / Division</label>
+              <input type="text" class="form-input" id="ikhtebaar-class-display" readonly style="background: #ffffff; font-weight: 700; color: #78350f;" value="4-B">
+            </div>
+          </div>
+
+          <!-- Candidate Details Banner -->
+          <div id="ikhtebaar-student-banner" style="background: #ffffff; border: 1px solid #fde047; border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 11px;">
+            <div>
+              <span style="color: var(--text-muted);">ITS Number:</span> <strong id="ikhtebaar-its-display">30491823</strong>
+              <span style="margin: 0 6px; color: #cbd5e1;">•</span>
+              <span style="color: var(--text-muted);">Current Milestone:</span> <strong id="ikhtebaar-milestone-display">Juz 29, Page 562</strong>
+            </div>
+            <div style="color: #15803d; font-weight: 700;">
+              <span>Guardian Mobile:</span> <strong id="ikhtebaar-phone-display">919876543210</strong>
+            </div>
+          </div>
+
+          <!-- Exam Title Preset & Range -->
+          <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 10px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size: 11px; font-weight: 700;">Examination Title / Milestone</label>
+              <select class="form-select" id="ikhtebaar-title-preset" onchange="App.onIkhtebaarTitleChange()">
+                <option value="Juz 30 (Amma) Final Ikhtebaar">Juz 30 (Amma) Final Ikhtebaar • إختبار جزء عمّ</option>
+                <option value="Juz 29 (Tabarak) Ikhtebaar">Juz 29 (Tabarak) Ikhtebaar • إختبار جزء تبارك</option>
+                <option value="Juz 28–30 (Daur 1) Milestone Exam">Juz 28–30 (Daur 1) Milestone Exam • إختبار الثلاثة أجزاء</option>
+                <option value="Juz 1–5 Milestone Ikhtebaar">Juz 1–5 Milestone Ikhtebaar • إختبار الخمسة أجزاء</option>
+                <option value="Annual Sanah Hifz Exam">Annual Sanah Hifz Exam • إختبار نهاية السنة</option>
+                <option value="Custom Multi-Siparah Ikhtebaar">Custom Multi-Siparah Ikhtebaar • إختبار مخصص</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size: 11px; font-weight: 700;">Examiner / Mumtahin (الممتحن)</label>
+              <input type="text" class="form-input" id="ikhtebaar-examiner" value="Shaikh Murtaza Zakir">
+            </div>
+          </div>
+
+          <!-- Custom Title Input (if chosen) -->
+          <div class="form-group" id="ikhtebaar-custom-title-box" style="display: none; margin-bottom: 10px;">
+            <label class="form-label" style="font-size: 11px;">Custom Examination Title</label>
+            <input type="text" class="form-input" id="ikhtebaar-custom-title" placeholder="e.g. Mid-Term Juz 25 to 27 Ikhtebaar...">
+          </div>
+
+          <!-- Tested Siparahs Selector (1 or Multiple Siparahs) -->
+          <div style="margin-top: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+              <label class="form-label" style="font-size: 11px; font-weight: 700; margin-bottom: 0;">
+                Tested Siparahs (السور والأجزاء المختبرة):
+                <span id="ikhtebaar-selected-siparahs-label" style="color: #b45309; font-weight: 800;">Juz 30</span>
+              </label>
+              <div style="display: flex; gap: 4px;">
+                <button type="button" class="btn-secondary" style="font-size: 10px; padding: 2px 6px;" onclick="App.selectSiparahPreset('juz30')">Juz 30</button>
+                <button type="button" class="btn-secondary" style="font-size: 10px; padding: 2px 6px;" onclick="App.selectSiparahPreset('juz29-30')">Juz 29-30</button>
+                <button type="button" class="btn-secondary" style="font-size: 10px; padding: 2px 6px;" onclick="App.selectSiparahPreset('juz28-30')">Juz 28-30</button>
+                <button type="button" class="btn-secondary" style="font-size: 10px; padding: 2px 6px;" onclick="App.selectSiparahPreset('juz1-5')">Juz 1-5</button>
+                <button type="button" class="btn-secondary" style="font-size: 10px; padding: 2px 6px;" onclick="App.selectSiparahPreset('all')">All 30</button>
+              </div>
+            </div>
+            <!-- Interactive 30 Siparahs Grid -->
+            <div class="siparah-chips-grid" id="ikhtebaar-siparah-chips"></div>
+          </div>
+        </div>
+
+        <!-- 2. Recitation Questions Assessment -->
+        <div class="ikhtebaar-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">📖</span>
+              <span class="section-title" style="margin-bottom: 0;">2. Recitation Questions (أسئلة التسميع الشفهي)</span>
+              <span class="badge-questions-count" id="ikhtebaar-q-count-badge">2 Questions</span>
+            </div>
+            <span class="grade-pill" id="ikhtebaar-recitation-avg-pill">10.0/10</span>
+          </div>
+
+          <!-- Dynamic Questions List -->
+          <div id="ikhtebaar-questions-list"></div>
+
+          <!-- Add Question Button -->
+          <div style="margin-top: 10px; margin-bottom: 12px;">
+            <button type="button" class="btn-secondary" style="width: 100%; padding: 10px; font-weight: 700; font-size: 12px; border: 1.5px dashed var(--primary); background: #fdf8f0; color: var(--primary); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="App.addIkhtebaarQuestion()">
+              <span>➕</span>
+              <span>+ Add Exam Question (سؤال إضافي من الأجزاء المختبرة)</span>
+            </button>
+          </div>
+
+          <!-- Live Hifz Recitation Average Calculation Formula -->
+          <div class="avg-grade-card" id="ikhtebaar-recitation-avg-card" style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #22c55e; border-radius: var(--radius-sm); padding: 10px 14px; box-shadow: 0 1px 3px rgba(34,197,94,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span>⚖️</span>
+                  <strong style="font-size: 13px; color: #166534;">Hifz Memory & Recitation Average (حفظ القرآن)</strong>
+                </div>
+                <div style="font-size: 11px; color: #15803d; margin-top: 2px; font-weight: 600;" id="ikhtebaar-recitation-calc-formula">
+                  Calculation: (Q1: 10.0 + Q2: 10.0) ÷ 2 = 10.0 / 10
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 11px; color: #166534; font-weight: 600;">Weight: 60%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Makhaarij and Ahkam al-Tajweed Assessment (User's specific criteria) -->
+        <div class="ikhtebaar-card" style="border-left: 4px solid #b45309;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">🗣️</span>
+              <div>
+                <div class="section-title" style="margin-bottom: 0; color: #92400e;">3. Makhaarij & Ahkam Criteria (معايير التجويد)</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Letter Articulation Points & Tajweed Rulings (Weight: 40%)</div>
+              </div>
+            </div>
+            <span class="badge" style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 12px;">
+              Tajweed Standards
+            </span>
+          </div>
+
+          <!-- Criteria Box 1: Makhaarij al-Huroof -->
+          <div class="ikhtebaar-criteria-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+              <div>
+                <strong style="font-size: 13px; color: var(--text-main);">A. Makhaarij al-Huroof (مخارج الحروف - Articulation)</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Phonetic accuracy, throat/tongue placement, letter distinctions</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" onclick="App.updateMakhaarijScore(-0.5)">-</button>
+                  <span class="counter-val" id="ikhtebaar-makhaarij-val" style="min-width: 44px; font-weight: 800; color: #b45309;">10.0</span>
+                  <button type="button" class="btn-step" onclick="App.updateMakhaarijScore(0.5)">+</button>
+                </div>
+                <span class="grade-pill grade-mumtaz" id="ikhtebaar-makhaarij-pill">Mumtaz 10/10</span>
+              </div>
+            </div>
+
+            <!-- Quick Diagnostic Observation Chips -->
+            <div style="margin-bottom: 8px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">Diagnostic Observations:</div>
+              <div id="ikhtebaar-makhaarij-tags">
+                <span class="tag-chip active" onclick="App.toggleMakhaarijTag('Saliem al-Makhaarij')">✓ Saliem (سليم المخارج)</span>
+                <span class="tag-chip" onclick="App.toggleMakhaarijTag('Halqiyyah (ح/ع/غ/خ)')">⚠️ Halqiyyah (ح/ع/غ/خ)</span>
+                <span class="tag-chip" onclick="App.toggleMakhaarijTag('Dhad / Zha (ض/ظ)')">⚠️ Dhad/Zha (ض/ظ)</span>
+                <span class="tag-chip" onclick="App.toggleMakhaarijTag('Qaf / Kaf (ق/ك)')">⚠️ Qaf/Kaf (ق/ك)</span>
+                <span class="tag-chip" onclick="App.toggleMakhaarijTag('Lisaniyyah (ث/ذ/ص/ز)')">⚠️ Lisaniyyah (ث/ذ/ص/ز)</span>
+                <span class="tag-chip" onclick="App.toggleMakhaarijTag('Khayshoom Ghunnah (الخيشوم)')">⚠️ Khayshoom (الخيشوم)</span>
+              </div>
+            </div>
+
+            <input type="text" class="form-input" id="ikhtebaar-makhaarij-notes" placeholder="Makhaarij observations (e.g. subtle weakness in heavy Dhad)..." style="font-size: 12px;">
+          </div>
+
+          <!-- Criteria Box 2: Ahkam al-Tajweed -->
+          <div class="ikhtebaar-criteria-box" style="border-left-color: #0284c7;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+              <div>
+                <strong style="font-size: 13px; color: var(--text-main);">B. Ahkam al-Tajweed (أحكام التجويد - Rules & Rulings)</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Ghunnah, Noon/Meem Sakinah, Madd lengths, Qalqalah, Waqf</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" onclick="App.updateAhkamScore(-0.5)">-</button>
+                  <span class="counter-val" id="ikhtebaar-ahkam-val" style="min-width: 44px; font-weight: 800; color: #0284c7;">10.0</span>
+                  <button type="button" class="btn-step" onclick="App.updateAhkamScore(0.5)">+</button>
+                </div>
+                <span class="grade-pill grade-mumtaz" id="ikhtebaar-ahkam-pill">Mumtaz 10/10</span>
+              </div>
+            </div>
+
+            <!-- Quick Diagnostic Observation Chips -->
+            <div style="margin-bottom: 8px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">Diagnostic Observations:</div>
+              <div id="ikhtebaar-ahkam-tags">
+                <span class="tag-chip active" onclick="App.toggleAhkamTag('Mutqin al-Ahkam')">✓ Mutqin (متقن الأحكام)</span>
+                <span class="tag-chip" onclick="App.toggleAhkamTag('Noon Sakinah / Tanween')">⚠️ Noon/Tanween (إدغام/إخفاء)</span>
+                <span class="tag-chip" onclick="App.toggleAhkamTag('Meem Sakinah')">⚠️ Meem Sakinah</span>
+                <span class="tag-chip" onclick="App.toggleAhkamTag('Madd Lengths')">⚠️ Madd Lengths (المدود)</span>
+                <span class="tag-chip" onclick="App.toggleAhkamTag('Qalqalah (Sughra/Kubra)')">⚠️ Qalqalah (قلقلة)</span>
+                <span class="tag-chip" onclick="App.toggleAhkamTag('Tafkheem / Tarqeeq')">⚠️ Tafkheem (تفخيم/ترقيق)</span>
+                <span class="tag-chip" onclick="App.toggleAhkamTag('Waqf & Ibtida')">⚠️ Waqf & Ibtida (وقف)</span>
+              </div>
+            </div>
+
+            <input type="text" class="form-input" id="ikhtebaar-ahkam-notes" placeholder="Ahkam observations (e.g. perfect Qalqalah, ensure 4 harakat on Madd Munfasil)..." style="font-size: 12px;">
+          </div>
+        </div>
+
+        <!-- 4. Composite Examination Scorecard & Bohra Merit Award -->
+        <div class="card" style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #fefce8 100%); border: 2px solid #22c55e; padding: 18px; border-radius: var(--radius); margin-bottom: 16px; box-shadow: 0 4px 12px rgba(34,197,94,0.12);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 26px;">🏆</span>
+              <div>
+                <div style="font-weight: 800; font-size: 16px; color: #166534;">Final Examination Scorecard (النتيجة النهائية)</div>
+                <div style="font-size: 11px; color: #15803d; font-weight: 600;">Composite Quranic Evaluation • Hifz (60%) + Makhaarij (20%) + Ahkam (20%)</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="grade-pill grade-mumtaz" id="ikhtebaar-composite-pill" style="font-size: 18px; font-weight: 900; padding: 8px 16px;">10.0 / 10</span>
+              <span class="badge" id="ikhtebaar-status-badge" style="background: #16a34a; color: white; font-weight: 800; font-size: 13px; padding: 8px 14px; border-radius: 8px;">
+                ✅ PASSED (ناجح)
+              </span>
+            </div>
+          </div>
+
+          <!-- Weighting Breakdown Bar -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 12px; font-size: 11px;">
+            <div style="background: rgba(255,255,255,0.8); border: 1px solid #bbf7d0; border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="color: var(--text-muted);">Hifz Recitation (60%)</div>
+              <strong style="font-size: 14px; color: #166534;" id="score-breakdown-hifz">10.0</strong>
+            </div>
+            <div style="background: rgba(255,255,255,0.8); border: 1px solid #fef08a; border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="color: var(--text-muted);">Makhaarij (20%)</div>
+              <strong style="font-size: 14px; color: #854d0e;" id="score-breakdown-makhaarij">10.0</strong>
+            </div>
+            <div style="background: rgba(255,255,255,0.8); border: 1px solid #bae6fd; border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="color: var(--text-muted);">Ahkam (20%)</div>
+              <strong style="font-size: 14px; color: #0369a1;" id="score-breakdown-ahkam">10.0</strong>
+            </div>
+            <div style="background: rgba(255,255,255,0.8); border: 1px solid #86efac; border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="color: var(--text-muted);">Bohra Designation</div>
+              <strong style="font-size: 14px; color: #15803d;" id="score-breakdown-merit">✨ MUMTAZ (ممتاز)</strong>
+            </div>
+          </div>
+
+          <!-- Overall Remarks & Du'a -->
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" style="font-size: 11px; font-weight: 700; color: #166534;">Examiner's Concluding Remarks & Du'a (ملاحظات الممتحن ودعاء المبارك):</label>
+            <textarea class="form-input" id="ikhtebaar-overall-remarks" rows="2" placeholder="e.g. Mubarak! Student recited with excellent fluency, clear articulation of Halqiyyah letters, and accurate madd lengths. Ready to progress to next Daur/Sanah." style="font-size: 12px; resize: vertical;"></textarea>
+          </div>
+        </div>
+
+        <!-- 5. Examination Actions -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 24px;">
+          <button type="button" class="btn-primary" style="background: #16a34a; border-color: #15803d; font-weight: 800; padding: 14px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="App.saveIkhtebaarRecord()">
+            <span>💾</span>
+            <span>Save Ikhtebaar Result</span>
+          </button>
+          <button type="button" class="btn-save-wa" style="padding: 14px; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="App.sendIkhtebaarWhatsApp()">
+            <span>💬</span>
+            <span>Send Official WhatsApp Sanad</span>
+          </button>
+          <button type="button" class="btn-secondary" style="border: 1.5px solid #c69214; background: #fffdfa; color: #78350f; font-weight: 800; padding: 14px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="App.openIkhtebaarSanad()">
+            <span>📜</span>
+            <span>View Printable Sanad (Certificate)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- PANE 2: PAST EXAM RECORDS                                -->
+      <!-- ========================================================= -->
+      <div id="ikhtebaar-past-pane" style="display: none;">
+        <div class="card" style="padding: 10px 14px; margin-bottom: 12px;">
+          <div style="display: flex; gap: 8px; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <input type="text" class="form-input" id="ikhtebaar-search" placeholder="Search past exams by student name or title..." oninput="App.filterPastExams()" style="flex: 1; min-width: 220px;">
+            <button class="btn-secondary" style="padding: 8px 12px; font-size: 12px; font-weight: 700;" onclick="App.exportIkhtebaarJSON()">
+              💾 Export Exam Records JSON
+            </button>
+          </div>
+        </div>
+
+        <div id="past-exams-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px;">
+          <!-- Dynamically populated past exams -->
+        </div>
+      </div>
+    </div>
+    <!-- ============================================================= -->
+  <!-- MOBILE STICKY ACTION BAR (ONE-THUMB WORKFLOW FOR USTADH)         -->
+  <!-- ============================================================= -->
+  <div class="mobile-sticky-action-bar hidden-bar" id="mobile-sticky-bar">
+    <div class="sticky-bar-info">
+      <div class="sticky-std-name" id="sticky-std-name">No Student Selected</div>
+      <div class="sticky-grade-pill" id="sticky-grade-pill">Grade: 10.0/10</div>
+    </div>
+    <div class="sticky-bar-actions">
+      <button type="button" class="sticky-btn-save" id="sticky-btn-save" onclick="App.handleStickySave()">
+        <span>💾</span> Save
+      </button>
+      <button type="button" class="sticky-btn-wa" id="sticky-btn-wa" onclick="App.handleStickyWA()">
+        <span>📲</span> WA
+      </button>
+    </div>
+  </div>
+
   </main>
 
   <!-- Add Student Modal -->
@@ -2933,7 +3649,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">ITS Number (8 digits)</label>
-          <input type="text" id="new-std-its" class="form-input" placeholder="30491899" maxlength="8">
+          <input type="text" id="new-std-its" class="form-input" placeholder="30491899" maxlength="8" inputmode="numeric" pattern="[0-9]*">
         </div>
       </div>
       <div class="form-group" style="margin-bottom: 8px;">
@@ -2943,11 +3659,11 @@
       <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
         <div class="form-group">
           <label class="form-label">Current Juz</label>
-          <input type="number" id="new-std-juz" class="form-input" value="1" min="1" max="30">
+          <input type="number" id="new-std-juz" class="form-input" value="1" min="1" max="30" inputmode="numeric">
         </div>
         <div class="form-group">
           <label class="form-label">Current Page</label>
-          <input type="number" id="new-std-page" class="form-input" value="1" min="1" max="604">
+          <input type="number" id="new-std-page" class="form-input" value="1" min="1" max="604" inputmode="numeric">
         </div>
       </div>
       <div class="modal-actions">
@@ -3279,6 +3995,7 @@
           this.initAllDropdowns();
           this._dropdownsInitialized = true;
           this.initQuestionsForStudent();
+          this.initIkhtebaarState();
           this.renderSingleEntryView();
           this.updateAttendanceCounts();
           this.updateDashboardKPIs();
@@ -3422,7 +4139,10 @@
         } else if (screenId === 'settings-view') {
           this.renderTeacherProfile();
           this.refreshWorldwideUrl();
+        } else if (screenId === 'ikhtebaar-view') {
+          this.renderIkhtebaarView();
         }
+        this.updateMobileStickyBar();
       },
 
       // Auth & Profile State
@@ -3851,6 +4571,835 @@
           document.getElementById('header-action-buttons').style.display = 'none';
           this.showLoginScreen();
         }
+      },
+
+      // ---------------------------------------------------------
+      // IKHTEBAAR (EXAMINATION) MODULE STATE & ENGINE
+      // ---------------------------------------------------------
+      ikhtebaarState: {
+        activeTab: 'new-exam',
+        selectedStudentIndex: 0,
+        examTitle: "Juz 30 (Amma) Final Ikhtebaar",
+        customTitle: "",
+        examiner: "Shaikh Murtaza Zakir",
+        selectedSiparahs: [30],
+        questions: [
+          { id: 1, juz: 30, surah: 78, surahName: "An-Naba", page: 582, startAyah: 1, endAyah: 16, tanbeeh: 0, talqeen: 0, score: 10.0, remarks: "" },
+          { id: 2, juz: 30, surah: 98, surahName: "Al-Bayinah", page: 598, startAyah: 1, endAyah: 8, tanbeeh: 0, talqeen: 0, score: 10.0, remarks: "" }
+        ],
+        makhaarijScore: 10.0,
+        makhaarijTags: ["Saliem al-Makhaarij"],
+        makhaarijRemarks: "",
+        ahkamScore: 10.0,
+        ahkamTags: ["Mutqin al-Ahkam"],
+        ahkamRemarks: "",
+        overallRemarks: ""
+      },
+      ikhtebaarRecords: [],
+
+      initIkhtebaarState() {
+        const saved = this.getSafeJSON("musajjal_ikhtebaar_records", []);
+        if (Array.isArray(saved)) {
+          this.ikhtebaarRecords = saved;
+        } else {
+          this.ikhtebaarRecords = [];
+        }
+      },
+
+      saveIkhtebaarToStorage() {
+        try {
+          localStorage.setItem("musajjal_ikhtebaar_records", JSON.stringify(this.ikhtebaarRecords));
+        } catch(e) {
+          console.warn("[Ikhtebaar] Failed to save records to localStorage", e);
+        }
+      },
+
+      renderIkhtebaarView() {
+        if (!this.ikhtebaarState) this.initIkhtebaarState();
+
+        // 1. Populate Candidate Select
+        const sel = document.getElementById('ikhtebaar-student-select');
+        if (sel) {
+          sel.innerHTML = "";
+          this.students.forEach((s, idx) => {
+            const opt = document.createElement("option");
+            opt.value = idx;
+            opt.textContent = `${s.name} (ITS: ${s.its || 'N/A'}) • Class ${s.class || '4-B'}`;
+            if (idx === this.ikhtebaarState.selectedStudentIndex) opt.selected = true;
+            sel.appendChild(opt);
+          });
+        }
+        this.onIkhtebaarStudentChange();
+
+        // 2. Render Siparah Chips Grid
+        this.renderSiparahChips();
+
+        // 3. Render Questions
+        this.renderIkhtebaarQuestionsUI();
+
+        // 4. Update Makhaarij & Ahkam controls
+        this.renderTajweedControls();
+
+        // 5. Update live composite score
+        this.calculateIkhtebaarComposite();
+
+        // 6. Update past count
+        const pastCountEl = document.getElementById('ikhtebaar-past-count');
+        if (pastCountEl) pastCountEl.textContent = this.ikhtebaarRecords.length;
+
+        // Date badge
+        const dBadge = document.getElementById('ikhtebaar-date-badge');
+        if (dBadge) {
+          const dStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+          const hObj = FatimiCalendar.fromDate(new Date());
+          dBadge.textContent = `${dStr} • ${hObj.formattedEn}`;
+        }
+      },
+
+      switchIkhtebaarTab(tab) {
+        this.ikhtebaarState.activeTab = tab;
+        const btnNew = document.getElementById('tab-btn-new-ikhtebaar');
+        const btnPast = document.getElementById('tab-btn-past-ikhtebaar');
+        const paneNew = document.getElementById('ikhtebaar-new-pane');
+        const panePast = document.getElementById('ikhtebaar-past-pane');
+
+        if (tab === 'new-exam') {
+          if (btnNew) btnNew.classList.add('active');
+          if (btnPast) btnPast.classList.remove('active');
+          if (paneNew) paneNew.style.display = 'block';
+          if (panePast) panePast.style.display = 'none';
+        } else {
+          if (btnNew) btnNew.classList.remove('active');
+          if (btnPast) btnPast.classList.add('active');
+          if (paneNew) paneNew.style.display = 'none';
+          if (panePast) panePast.style.display = 'block';
+          this.renderPastIkhtebaarExams();
+        }
+      },
+
+      onIkhtebaarStudentChange() {
+        const sel = document.getElementById('ikhtebaar-student-select');
+        const idx = sel ? parseInt(sel.value) : 0;
+        this.ikhtebaarState.selectedStudentIndex = isNaN(idx) ? 0 : idx;
+        const st = this.students[this.ikhtebaarState.selectedStudentIndex] || { name: "Student", class: "4-B", its: "30491823", phone: "919876543210", curJuz: 30, curPage: 582 };
+
+        const classEl = document.getElementById('ikhtebaar-class-display');
+        if (classEl) classEl.value = st.class || '4-B';
+        const itsEl = document.getElementById('ikhtebaar-its-display');
+        if (itsEl) itsEl.textContent = st.its || 'N/A';
+        const mileEl = document.getElementById('ikhtebaar-milestone-display');
+        if (mileEl) mileEl.textContent = `Juz ${st.curJuz || 30}, Page ${st.curPage || 582}`;
+        const phoneEl = document.getElementById('ikhtebaar-phone-display');
+        if (phoneEl) phoneEl.textContent = st.phone || 'N/A';
+      },
+
+      onIkhtebaarTitleChange() {
+        const sel = document.getElementById('ikhtebaar-title-preset');
+        const customBox = document.getElementById('ikhtebaar-custom-title-box');
+        if (!sel) return;
+        this.ikhtebaarState.examTitle = sel.value;
+        if (sel.value.includes('Custom')) {
+          if (customBox) customBox.style.display = 'block';
+        } else {
+          if (customBox) customBox.style.display = 'none';
+          // Auto select relevant siparahs based on preset
+          if (sel.value.includes('Juz 30')) this.selectSiparahPreset('juz30');
+          else if (sel.value.includes('Juz 29')) this.selectSiparahPreset('juz29');
+          else if (sel.value.includes('28–30')) this.selectSiparahPreset('juz28-30');
+          else if (sel.value.includes('1–5')) this.selectSiparahPreset('juz1-5');
+        }
+      },
+
+      renderSiparahChips() {
+        const container = document.getElementById('ikhtebaar-siparah-chips');
+        if (!container) return;
+        container.innerHTML = "";
+        for (let j = 1; j <= 30; j++) {
+          const chip = document.createElement("div");
+          chip.className = `siparah-chip ${this.ikhtebaarState.selectedSiparahs.includes(j) ? 'active' : ''}`;
+          chip.textContent = `${j}`;
+          chip.title = `Siparah ${j} (${QuranFilters.getJuzInfo(j).name})`;
+          chip.onclick = () => this.toggleSiparah(j);
+          container.appendChild(chip);
+        }
+        this.updateSiparahLabel();
+      },
+
+      toggleSiparah(juzNum) {
+        const arr = this.ikhtebaarState.selectedSiparahs;
+        const idx = arr.indexOf(juzNum);
+        if (idx !== -1) {
+          if (arr.length > 1) arr.splice(idx, 1);
+          else {
+            this.showMilestoneToast("⚠️ Notice", "At least one Siparah must be selected for the exam.");
+            return;
+          }
+        } else {
+          arr.push(juzNum);
+          arr.sort((a,b) => a - b);
+        }
+        this.triggerHaptic('light');
+        this.renderSiparahChips();
+        // Update questions if their Juz is no longer in tested siparahs
+        this.ikhtebaarState.questions.forEach(q => {
+          if (!arr.includes(q.juz)) {
+            q.juz = arr[0];
+            const surahs = QuranFilters.getSurahsForJuz(q.juz);
+            q.surah = surahs[0] ? surahs[0].surah : 1;
+            q.surahName = surahs[0] ? surahs[0].name : 'Surah';
+            q.page = QuranFilters.getPagesForSurah(q.surah)[0] || 1;
+            q.startAyah = 1;
+            q.endAyah = 10;
+          }
+        });
+        this.renderIkhtebaarQuestionsUI();
+      },
+
+      selectSiparahPreset(preset) {
+        if (preset === 'juz30') this.ikhtebaarState.selectedSiparahs = [30];
+        else if (preset === 'juz29') this.ikhtebaarState.selectedSiparahs = [29];
+        else if (preset === 'juz29-30') this.ikhtebaarState.selectedSiparahs = [29, 30];
+        else if (preset === 'juz28-30') this.ikhtebaarState.selectedSiparahs = [28, 29, 30];
+        else if (preset === 'juz1-5') this.ikhtebaarState.selectedSiparahs = [1, 2, 3, 4, 5];
+        else if (preset === 'all') this.ikhtebaarState.selectedSiparahs = Array.from({length: 30}, (_, i) => i + 1);
+
+        this.triggerHaptic('light');
+        this.renderSiparahChips();
+        this.renderIkhtebaarQuestionsUI();
+      },
+
+      updateSiparahLabel() {
+        const lbl = document.getElementById('ikhtebaar-selected-siparahs-label');
+        if (!lbl) return;
+        const arr = this.ikhtebaarState.selectedSiparahs;
+        if (arr.length === 1) lbl.textContent = `Siparah ${arr[0]}`;
+        else if (arr.length === 30) lbl.textContent = `All 30 Siparahs (Kamil)`;
+        else lbl.textContent = `Siparahs: ${arr.join(', ')} (${arr.length} Siparahs)`;
+      },
+
+      addIkhtebaarQuestion() {
+        const qs = this.ikhtebaarState.questions;
+        const tested = this.ikhtebaarState.selectedSiparahs;
+        const nextJuz = tested[qs.length % tested.length] || 30;
+        const surahs = QuranFilters.getSurahsForJuz(nextJuz);
+        const firstSurah = surahs[0] || { surah: 78, name: "An-Naba" };
+        const pages = QuranFilters.getPagesForSurah(firstSurah.surah);
+        const p = pages[0] || 582;
+        const ayahs = QuranFilters.getAyahsForPageAndSurah(p, firstSurah.surah);
+
+        qs.push({
+          id: qs.length + 1,
+          juz: nextJuz,
+          surah: firstSurah.surah,
+          surahName: firstSurah.name,
+          page: p,
+          startAyah: ayahs[0] || 1,
+          endAyah: ayahs[Math.min(ayahs.length - 1, 10)] || 10,
+          tanbeeh: 0,
+          talqeen: 0,
+          score: 10.0,
+          remarks: ""
+        });
+        this.triggerHaptic('medium');
+        this.renderIkhtebaarQuestionsUI();
+        this.calculateIkhtebaarComposite();
+        this.showMilestoneToast("➕ Question Added", `Added Exam Question #${qs.length}`);
+      },
+
+      removeIkhtebaarQuestion(qIdx) {
+        if (this.ikhtebaarState.questions.length <= 1) {
+          alert("An examination requires at least one question.");
+          return;
+        }
+        this.ikhtebaarState.questions.splice(qIdx, 1);
+        this.triggerHaptic('medium');
+        this.renderIkhtebaarQuestionsUI();
+        this.calculateIkhtebaarComposite();
+      },
+
+      renderIkhtebaarQuestionsUI() {
+        const container = document.getElementById('ikhtebaar-questions-list');
+        if (!container) return;
+        container.innerHTML = "";
+
+        const qs = this.ikhtebaarState.questions;
+        const tested = this.ikhtebaarState.selectedSiparahs;
+        const countBadge = document.getElementById('ikhtebaar-q-count-badge');
+        if (countBadge) countBadge.textContent = `${qs.length} Question${qs.length > 1 ? 's' : ''}`;
+
+        qs.forEach((q, idx) => {
+          const card = document.createElement("div");
+          card.className = "question-card";
+          card.style.cssText = "background: #ffffff; border: 1.5px solid #e2e8f0; border-left: 4px solid #b45309; border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);";
+
+          const surahs = QuranFilters.getSurahsForJuz(q.juz);
+          const pages = QuranFilters.getPagesForSurah(q.surah);
+          const ayahs = QuranFilters.getAyahsForPageAndSurah(q.page, q.surah);
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <strong style="font-size: 13px; color: #78350f;">Question #${idx + 1}</strong>
+                <span class="grade-pill" id="ikhtebaar-q-pill-${idx}" style="font-size: 11px; padding: 2px 8px; font-weight: 700;">
+                  ${q.score.toFixed(1)}/10
+                </span>
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <button type="button" style="background: none; border: none; color: var(--text-muted); font-size: 11px; cursor: pointer; text-decoration: underline;" onclick="App.resetIkhtebaarQCounters(${idx})">↺ Reset</button>
+                ${qs.length > 1 ? `
+                  <button type="button" style="background: #fee2e2; border: 1px solid #fca5a5; color: #dc2626; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; font-weight: 600;" onclick="App.removeIkhtebaarQuestion(${idx})">
+                    🗑️ Remove
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- Row 1: Siparah & Surah -->
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 8px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">Siparah (Juz)</label>
+                <select class="form-select" id="ikhtebaar-q-juz-${idx}" onchange="App.onIkhtebaarQJuzChange(${idx}, this.value)">
+                  ${tested.map(j => `<option value="${j}" ${j === q.juz ? 'selected' : ''}>Juz ${j} (${QuranFilters.getJuzInfo(j).name})</option>`).join('')}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">Surah (in this Juz)</label>
+                <select class="form-select" id="ikhtebaar-q-surah-${idx}" onchange="App.onIkhtebaarQSurahChange(${idx}, this.value)">
+                  ${surahs.map(s => `<option value="${s.surah}" ${s.surah === q.surah ? 'selected' : ''}>${s.surah}. ${s.name} • ${s.arabic}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: Page & Ayahs -->
+            <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">Page</label>
+                <select class="form-select" id="ikhtebaar-q-page-${idx}" onchange="App.onIkhtebaarQPageChange(${idx}, this.value)">
+                  ${pages.map(p => `<option value="${p}" ${p === q.page ? 'selected' : ''}>Page ${p}</option>`).join('')}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">From Ayah</label>
+                <select class="form-select" id="ikhtebaar-q-start-${idx}" onchange="App.onIkhtebaarQAyahChange(${idx})">
+                  ${ayahs.map(a => `<option value="${a}" ${a === q.startAyah ? 'selected' : ''}>Ayah ${a}</option>`).join('')}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">To Ayah</label>
+                <select class="form-select" id="ikhtebaar-q-end-${idx}" onchange="App.onIkhtebaarQAyahChange(${idx})">
+                  ${ayahs.map(a => `<option value="${a}" ${a === q.endAyah ? 'selected' : ''}>Ayah ${a}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 3: Deduction Steppers -->
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">Tanbeeh (-0.5)</label>
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" onclick="App.updateIkhtebaarQCounter(${idx}, 'tanbeeh', -1)">-</button>
+                  <span class="counter-val" id="ikhtebaar-q-tan-${idx}">${q.tanbeeh}</span>
+                  <button type="button" class="btn-step" onclick="App.updateIkhtebaarQCounter(${idx}, 'tanbeeh', 1)">+</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="font-size: 11px;">Talqeen (-1.0)</label>
+                <div class="counter-controls">
+                  <button type="button" class="btn-step" onclick="App.updateIkhtebaarQCounter(${idx}, 'talqeen', -1)">-</button>
+                  <span class="counter-val" id="ikhtebaar-q-tal-${idx}">${q.talqeen}</span>
+                  <button type="button" class="btn-step" onclick="App.updateIkhtebaarQCounter(${idx}, 'talqeen', 1)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <input type="text" class="form-input" id="ikhtebaar-q-remarks-${idx}" placeholder="Question notes (e.g. good flow, prompt at ayah 12)..." value="${q.remarks || ''}" oninput="App.onIkhtebaarQRemarksChange(${idx}, this.value)" style="font-size: 12px;">
+          `;
+          container.appendChild(card);
+        });
+
+        this.updateIkhtebaarRecitationAvg();
+      },
+
+      onIkhtebaarQJuzChange(idx, val) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (!q) return;
+        q.juz = parseInt(val);
+        const surahs = QuranFilters.getSurahsForJuz(q.juz);
+        q.surah = surahs[0] ? surahs[0].surah : 1;
+        q.surahName = surahs[0] ? surahs[0].name : "Surah";
+        const pages = QuranFilters.getPagesForSurah(q.surah);
+        q.page = pages[0] || 1;
+        const ayahs = QuranFilters.getAyahsForPageAndSurah(q.page, q.surah);
+        q.startAyah = ayahs[0] || 1;
+        q.endAyah = ayahs[Math.min(ayahs.length - 1, 10)] || 10;
+        this.renderIkhtebaarQuestionsUI();
+      },
+
+      onIkhtebaarQSurahChange(idx, val) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (!q) return;
+        q.surah = parseInt(val);
+        const sObj = QuranFilters.getSurah(q.surah);
+        q.surahName = sObj ? sObj.name : "Surah";
+        const pages = QuranFilters.getPagesForSurah(q.surah);
+        q.page = pages[0] || 1;
+        const ayahs = QuranFilters.getAyahsForPageAndSurah(q.page, q.surah);
+        q.startAyah = ayahs[0] || 1;
+        q.endAyah = ayahs[Math.min(ayahs.length - 1, 10)] || 10;
+        this.renderIkhtebaarQuestionsUI();
+      },
+
+      onIkhtebaarQPageChange(idx, val) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (!q) return;
+        q.page = parseInt(val);
+        const ayahs = QuranFilters.getAyahsForPageAndSurah(q.page, q.surah);
+        q.startAyah = ayahs[0] || 1;
+        q.endAyah = ayahs[Math.min(ayahs.length - 1, 10)] || 10;
+        this.renderIkhtebaarQuestionsUI();
+      },
+
+      onIkhtebaarQAyahChange(idx) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (!q) return;
+        const sEl = document.getElementById(`ikhtebaar-q-start-${idx}`);
+        const eEl = document.getElementById(`ikhtebaar-q-end-${idx}`);
+        if (sEl) q.startAyah = parseInt(sEl.value);
+        if (eEl) q.endAyah = parseInt(eEl.value);
+      },
+
+      onIkhtebaarQRemarksChange(idx, val) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (q) q.remarks = val;
+      },
+
+      updateIkhtebaarQCounter(idx, type, delta) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (!q) return;
+        if (type === 'tanbeeh') q.tanbeeh = Math.max(0, q.tanbeeh + delta);
+        else if (type === 'talqeen') q.talqeen = Math.max(0, q.talqeen + delta);
+        q.score = Math.max(0, 10.0 - (q.tanbeeh * 0.5) - (q.talqeen * 1.0));
+
+        this.triggerHaptic('light');
+        const tanEl = document.getElementById(`ikhtebaar-q-tan-${idx}`);
+        const talEl = document.getElementById(`ikhtebaar-q-tal-${idx}`);
+        const pillEl = document.getElementById(`ikhtebaar-q-pill-${idx}`);
+        if (tanEl) tanEl.textContent = q.tanbeeh;
+        if (talEl) talEl.textContent = q.talqeen;
+        if (pillEl) {
+          pillEl.textContent = `${q.score.toFixed(1)}/10`;
+          this.morphGradePill(`ikhtebaar-q-pill-${idx}`, q.score);
+        }
+        this.updateIkhtebaarRecitationAvg();
+        this.calculateIkhtebaarComposite();
+      },
+
+      resetIkhtebaarQCounters(idx) {
+        const q = this.ikhtebaarState.questions[idx];
+        if (!q) return;
+        q.tanbeeh = 0;
+        q.talqeen = 0;
+        q.score = 10.0;
+        this.triggerHaptic('light');
+        this.renderIkhtebaarQuestionsUI();
+        this.calculateIkhtebaarComposite();
+      },
+
+      getIkhtebaarRecitationAvg() {
+        const qs = this.ikhtebaarState.questions;
+        if (!qs || qs.length === 0) return 10.0;
+        const sum = qs.reduce((acc, q) => acc + q.score, 0);
+        return sum / qs.length;
+      },
+
+      updateIkhtebaarRecitationAvg() {
+        const avg = this.getIkhtebaarRecitationAvg();
+        const avgStr = `${avg.toFixed(1)}/10`;
+        const pill = document.getElementById('ikhtebaar-recitation-avg-pill');
+        if (pill) {
+          pill.textContent = avgStr;
+          this.morphGradePill('ikhtebaar-recitation-avg-pill', avg);
+        }
+        const formulaEl = document.getElementById('ikhtebaar-recitation-calc-formula');
+        if (formulaEl) {
+          const qs = this.ikhtebaarState.questions;
+          const calc = qs.map((q, i) => `Q${i+1}: ${q.score.toFixed(1)}`).join(' + ');
+          formulaEl.textContent = `Calculation: (${calc}) ÷ ${qs.length} = ${avgStr}`;
+        }
+      },
+
+      renderTajweedControls() {
+        const mVal = document.getElementById('ikhtebaar-makhaarij-val');
+        const mPill = document.getElementById('ikhtebaar-makhaarij-pill');
+        if (mVal) mVal.textContent = this.ikhtebaarState.makhaarijScore.toFixed(1);
+        if (mPill) {
+          mPill.textContent = `${this.ikhtebaarState.makhaarijScore.toFixed(1)}/10`;
+          this.morphGradePill('ikhtebaar-makhaarij-pill', this.ikhtebaarState.makhaarijScore);
+        }
+
+        const aVal = document.getElementById('ikhtebaar-ahkam-val');
+        const aPill = document.getElementById('ikhtebaar-ahkam-pill');
+        if (aVal) aVal.textContent = this.ikhtebaarState.ahkamScore.toFixed(1);
+        if (aPill) {
+          aPill.textContent = `${this.ikhtebaarState.ahkamScore.toFixed(1)}/10`;
+          this.morphGradePill('ikhtebaar-ahkam-pill', this.ikhtebaarState.ahkamScore);
+        }
+      },
+
+      updateMakhaarijScore(delta) {
+        this.ikhtebaarState.makhaarijScore = Math.max(0, Math.min(10.0, this.ikhtebaarState.makhaarijScore + delta));
+        this.triggerHaptic('light');
+        this.renderTajweedControls();
+        this.calculateIkhtebaarComposite();
+      },
+
+      toggleMakhaarijTag(tagText) {
+        const tags = this.ikhtebaarState.makhaarijTags;
+        const idx = tags.indexOf(tagText);
+        if (idx !== -1) tags.splice(idx, 1);
+        else tags.push(tagText);
+        this.triggerHaptic('light');
+
+        // Update tag chip UI
+        document.querySelectorAll('#ikhtebaar-makhaarij-tags .tag-chip').forEach(el => {
+          const tName = el.textContent.replace(/^[✓⚠️\s]+/, '').split('(')[0].trim();
+          const isAct = tags.some(t => t.includes(tName));
+          if (isAct) el.classList.add('active');
+          else el.classList.remove('active');
+        });
+      },
+
+      updateAhkamScore(delta) {
+        this.ikhtebaarState.ahkamScore = Math.max(0, Math.min(10.0, this.ikhtebaarState.ahkamScore + delta));
+        this.triggerHaptic('light');
+        this.renderTajweedControls();
+        this.calculateIkhtebaarComposite();
+      },
+
+      toggleAhkamTag(tagText) {
+        const tags = this.ikhtebaarState.ahkamTags;
+        const idx = tags.indexOf(tagText);
+        if (idx !== -1) tags.splice(idx, 1);
+        else tags.push(tagText);
+        this.triggerHaptic('light');
+
+        document.querySelectorAll('#ikhtebaar-ahkam-tags .tag-chip').forEach(el => {
+          const tName = el.textContent.replace(/^[✓⚠️\s]+/, '').split('(')[0].trim();
+          const isAct = tags.some(t => t.includes(tName));
+          if (isAct) el.classList.add('active');
+          else el.classList.remove('active');
+        });
+      },
+
+      calculateIkhtebaarComposite() {
+        const recAvg = this.getIkhtebaarRecitationAvg();
+        const mScore = this.ikhtebaarState.makhaarijScore;
+        const aScore = this.ikhtebaarState.ahkamScore;
+
+        // Weighted Formula: 60% Recitation Fluency, 20% Makhaarij, 20% Ahkam
+        const composite = (recAvg * 0.6) + (mScore * 0.2) + (aScore * 0.2);
+        const compStr = `${composite.toFixed(1)} / 10`;
+        const pct = Math.round(composite * 10);
+
+        let merit = "✨ MUMTAZ (ممتاز)";
+        let status = "✅ PASSED (ناجح)";
+        let statusBg = "#16a34a";
+
+        if (composite >= 9.0) {
+          merit = "✨ MUMTAZ (ممتاز)";
+          status = "✅ PASSED (ناجح)";
+          statusBg = "#16a34a";
+        } else if (composite >= 8.0) {
+          merit = "★ JAYYID JIDDAN (جيد جدا)";
+          status = "✅ PASSED (ناجح)";
+          statusBg = "#059669";
+        } else if (composite >= 7.0) {
+          merit = "JAYYID (جيد)";
+          status = "✅ PASSED (ناجح)";
+          statusBg = "#0284c7";
+        } else if (composite >= 6.0) {
+          merit = "MAQBOOL (مقبول)";
+          status = "⚠️ PASSED WITH DAUR (مقبول)";
+          statusBg = "#d97706";
+        } else {
+          merit = "NEEDS DAUR (يحتاج دور)";
+          status = "❌ RETEST (إعادة)";
+          statusBg = "#dc2626";
+        }
+
+        const pill = document.getElementById('ikhtebaar-composite-pill');
+        if (pill) {
+          pill.textContent = `${compStr} (${pct}%)`;
+          this.morphGradePill('ikhtebaar-composite-pill', composite);
+        }
+
+        const sBadge = document.getElementById('ikhtebaar-status-badge');
+        if (sBadge) {
+          sBadge.textContent = status;
+          sBadge.style.background = statusBg;
+        }
+
+        const hBreak = document.getElementById('score-breakdown-hifz');
+        if (hBreak) hBreak.textContent = `${recAvg.toFixed(1)}/10`;
+        const mBreak = document.getElementById('score-breakdown-makhaarij');
+        if (mBreak) mBreak.textContent = `${mScore.toFixed(1)}/10`;
+        const aBreak = document.getElementById('score-breakdown-ahkam');
+        if (aBreak) aBreak.textContent = `${aScore.toFixed(1)}/10`;
+        const meritBreak = document.getElementById('score-breakdown-merit');
+        if (meritBreak) meritBreak.textContent = merit;
+
+        return { composite, compStr, pct, merit, status };
+      },
+
+      getCurrentIkhtebaarData() {
+        const st = this.students[this.ikhtebaarState.selectedStudentIndex] || { name: "Student", class: "4-B", its: "30491823", phone: "919876543210" };
+        const titleEl = document.getElementById('ikhtebaar-title-preset');
+        let title = titleEl ? titleEl.value : this.ikhtebaarState.examTitle;
+        if (title.includes('Custom')) {
+          const cust = document.getElementById('ikhtebaar-custom-title')?.value;
+          if (cust && cust.trim()) title = cust.trim();
+        }
+        const examinerEl = document.getElementById('ikhtebaar-examiner');
+        const examiner = examinerEl ? examinerEl.value : this.ikhtebaarState.examiner;
+        const overallRem = document.getElementById('ikhtebaar-overall-remarks')?.value || "";
+        const mRem = document.getElementById('ikhtebaar-makhaarij-notes')?.value || "";
+        const aRem = document.getElementById('ikhtebaar-ahkam-notes')?.value || "";
+
+        const comp = this.calculateIkhtebaarComposite();
+        const dateStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const hijriObj = FatimiCalendar.fromDate(new Date());
+
+        return {
+          id: Date.now(),
+          studentName: st.name,
+          class: st.class || '4-B',
+          its: st.its || 'N/A',
+          phone: st.phone || '',
+          date: dateStr,
+          hijriDate: hijriObj.formattedEn,
+          examTitle: title,
+          examiner: examiner,
+          selectedSiparahs: [...this.ikhtebaarState.selectedSiparahs],
+          questions: JSON.parse(JSON.stringify(this.ikhtebaarState.questions)),
+          recitationAvg: this.getIkhtebaarRecitationAvg(),
+          makhaarijScore: this.ikhtebaarState.makhaarijScore,
+          makhaarijTags: [...this.ikhtebaarState.makhaarijTags],
+          makhaarijRemarks: mRem,
+          ahkamScore: this.ikhtebaarState.ahkamScore,
+          ahkamTags: [...this.ikhtebaarState.ahkamTags],
+          ahkamRemarks: aRem,
+          compositeScore: comp.composite,
+          percentage: comp.pct,
+          merit: comp.merit,
+          status: comp.status,
+          overallRemarks: overallRem
+        };
+      },
+
+      saveIkhtebaarRecord() {
+        const exam = this.getCurrentIkhtebaarData();
+        this.ikhtebaarRecords.unshift(exam);
+        this.saveIkhtebaarToStorage();
+
+        // Also push a record into recitation log
+        const qSummary = exam.questions.map((q, i) => `Q${i+1}: Juz ${q.juz}, ${q.surahName} (${q.score.toFixed(1)})`).join(' | ');
+        this.records.unshift({
+          studentName: exam.studentName,
+          date: exam.date,
+          hijriDate: exam.hijriDate,
+          section: "IKHTEBAAR",
+          details: `${exam.examTitle}: ${qSummary} • Composite: ${exam.compositeScore.toFixed(1)}/10 (${exam.merit})`,
+          grade: `${exam.compositeScore.toFixed(1)}/10`,
+          averageGrade: exam.compositeScore,
+          questionsCount: exam.questions.length,
+          questions: exam.questions,
+          remarks: exam.overallRemarks || `Cleared ${exam.examTitle}`
+        });
+        this.saveRecords();
+        this.renderAllRecords();
+        this.updateDashboardKPIs();
+
+        this.triggerHaptic('celebrate');
+        this.triggerConfetti();
+        this.showMilestoneToast("🎉 Ikhtebaar Saved!", `Successfully saved examination result for ${exam.studentName} (${exam.merit})`);
+
+        const pastCountEl = document.getElementById('ikhtebaar-past-count');
+        if (pastCountEl) pastCountEl.textContent = this.ikhtebaarRecords.length;
+      },
+
+      buildIkhtebaarWhatsAppMessage(exam) {
+        const timeStr = this.formatSystematicDate();
+        let msg = `*HIFZ PRO – TAQREER AL-IKHTEBAAR (HIFZ EXAMINATION)*\n` +
+                  `*Date / التاريخ:* ${exam.date} • ${exam.hijriDate}\n` +
+                  `*Candidate / الطالب:* *${exam.studentName}* (ITS: ${exam.its})\n` +
+                  `*Class / السنة:* Sanah ${exam.class} • Daur 1\n` +
+                  `*Examiner / الممتحن:* ${exam.examiner}\n` +
+                  `*Exam Title:* ${exam.examTitle}\n` +
+                  `*Tested Siparahs:* ${exam.selectedSiparahs.map(s => 'Juz ' + s).join(', ')}\n\n` +
+                  `--- *RECITAION QUESTIONS (أسئلة التسميع)* ---\n`;
+
+        exam.questions.forEach((q, i) => {
+          const errs = [];
+          if (q.tanbeeh > 0) errs.push(`${q.tanbeeh} Tanbeeh`);
+          if (q.talqeen > 0) errs.push(`${q.talqeen} Talqeen`);
+          const errStr = errs.length > 0 ? ` (${errs.join(', ')})` : ' (Mumtaz)';
+          msg += `• *Question ${i + 1}:* Juz ${q.juz}, ${q.surahName}, Page ${q.page}, Ayat ${q.startAyah}-${q.endAyah} -> Grade: ${q.score.toFixed(1)}/10${errStr}\n`;
+          if (q.remarks && q.remarks.trim()) msg += `  Note: ${q.remarks.trim()}\n`;
+        });
+        msg += `📖 *Hifz Memory Average: ${exam.recitationAvg.toFixed(1)}/10*\n\n` +
+               `--- *TAJWEED CRITERIA (معايير التجويد)* ---\n` +
+               `🗣️ *Makhaarij al-Huroof:* ${exam.makhaarijScore.toFixed(1)}/10\n`;
+        if (exam.makhaarijTags && exam.makhaarijTags.length > 0) msg += `  Observations: ${exam.makhaarijTags.join(', ')}\n`;
+        if (exam.makhaarijRemarks && exam.makhaarijRemarks.trim()) msg += `  Remarks: ${exam.makhaarijRemarks.trim()}\n`;
+
+        msg += `📜 *Ahkam al-Tajweed:* ${exam.ahkamScore.toFixed(1)}/10\n`;
+        if (exam.ahkamTags && exam.ahkamTags.length > 0) msg += `  Observations: ${exam.ahkamTags.join(', ')}\n`;
+        if (exam.ahkamRemarks && exam.ahkamRemarks.trim()) msg += `  Remarks: ${exam.ahkamRemarks.trim()}\n`;
+
+        msg += `\n--- *FINAL EXAMINATION RESULT (النتيجة والتقدير)* ---\n` +
+               `🏆 *Composite Grade: ${exam.compositeScore.toFixed(1)} / 10 (${exam.percentage}%)*\n` +
+               `🎖️ *Bohra Merit Designation: ${exam.merit}*\n` +
+               `✅ *Examination Status: ${exam.status}*\n`;
+
+        if (exam.overallRemarks && exam.overallRemarks.trim()) {
+          msg += `\n*Examiner Du'a & Guidance:*\n${exam.overallRemarks.trim()}\n`;
+        }
+
+        return msg;
+      },
+
+      sendIkhtebaarWhatsApp(examRecord = null) {
+        const exam = examRecord || this.getCurrentIkhtebaarData();
+        const msg = this.buildIkhtebaarWhatsAppMessage(exam);
+        const phone = exam.phone || "919876543210";
+        this.triggerHaptic('celebrate');
+        this.showMilestoneToast("📲 Opening WhatsApp", `Dispatching examination certificate for ${exam.studentName}...`);
+        const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, '_blank');
+      },
+
+      openIkhtebaarSanad(examRecord = null) {
+        const exam = examRecord || this.getCurrentIkhtebaarData();
+        const modal = document.getElementById('ikhtebaar-sanad-modal');
+        if (!modal) return;
+
+        document.getElementById('sanad-exam-title').textContent = exam.examTitle;
+        document.getElementById('sanad-std-name').textContent = exam.studentName;
+        document.getElementById('sanad-std-its').textContent = exam.its;
+        document.getElementById('sanad-std-class').textContent = `Class ${exam.class}`;
+        document.getElementById('sanad-date-display').textContent = `${exam.date} • ${exam.hijriDate}`;
+
+        const qSummaryEl = document.getElementById('sanad-questions-summary');
+        if (qSummaryEl) {
+          qSummaryEl.innerHTML = exam.questions.map((q, i) => {
+            return `<div><strong>Question ${i+1}:</strong> Juz ${q.juz}, Surah ${q.surahName}, Page ${q.page}, Ayat ${q.startAyah}-${q.endAyah} — <strong>Score: ${q.score.toFixed(1)}/10</strong> ${q.remarks ? `(${q.remarks})` : ''}</div>`;
+          }).join('');
+        }
+
+        document.getElementById('sanad-recitation-score').textContent = `${exam.recitationAvg.toFixed(1)}/10`;
+        document.getElementById('sanad-makhaarij-score').textContent = `${exam.makhaarijScore.toFixed(1)}/10`;
+        document.getElementById('sanad-ahkam-score').textContent = `${exam.ahkamScore.toFixed(1)}/10`;
+        document.getElementById('sanad-final-score').textContent = `${exam.compositeScore.toFixed(1)} / 10 (${exam.percentage}%)`;
+        document.getElementById('sanad-merit-award').textContent = exam.merit;
+        document.getElementById('sanad-result-status').textContent = exam.status;
+        document.getElementById('sanad-remarks-text').textContent = exam.overallRemarks || "Mubarak! Candidate has successfully demonstrated required proficiency in memorization and tajweed.";
+        document.getElementById('sanad-examiner-sign').textContent = exam.examiner || "Shaikh Murtaza Zakir";
+
+        this.triggerHaptic('light');
+        modal.style.display = 'flex';
+      },
+
+      closeIkhtebaarSanad() {
+        const modal = document.getElementById('ikhtebaar-sanad-modal');
+        if (modal) modal.style.display = 'none';
+      },
+
+      printIkhtebaarSanad() {
+        window.print();
+      },
+
+      renderPastIkhtebaarExams() {
+        const container = document.getElementById('past-exams-list');
+        if (!container) return;
+        container.innerHTML = "";
+
+        if (this.ikhtebaarRecords.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 40px 20px; background: #ffffff; border: 1.5px dashed var(--border); border-radius: var(--radius); color: var(--text-muted);">
+              <div style="font-size: 32px; margin-bottom: 8px;">🎓</div>
+              <div style="font-weight: 700; font-size: 14px;">No Examination Records Found</div>
+              <div style="font-size: 12px; margin-top: 4px;">Conduct an exam under the "Conduct Examination" tab to see records here.</div>
+            </div>
+          `;
+          return;
+        }
+
+        this.ikhtebaarRecords.forEach((exam, idx) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.style.cssText = "background: #ffffff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);";
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+              <div>
+                <strong style="font-size: 14px; color: var(--text-main);">${exam.studentName}</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">${exam.date} ${exam.hijriDate ? '• ' + exam.hijriDate : ''} • ITS: ${exam.its} • Class ${exam.class}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="grade-pill grade-mumtaz" style="font-size: 12px; padding: 4px 10px;">${exam.compositeScore.toFixed(1)}/10</span>
+                <span class="badge" style="background: #16a34a; color: white; font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: 700;">${exam.merit.split('(')[0].trim()}</span>
+              </div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 700; color: #78350f; margin-bottom: 4px;">
+              ${exam.examTitle} (${exam.questions.length} Questions Asked)
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+              Recitation: <strong>${exam.recitationAvg.toFixed(1)}/10</strong> • Makhaarij: <strong>${exam.makhaarijScore.toFixed(1)}/10</strong> • Ahkam: <strong>${exam.ahkamScore.toFixed(1)}/10</strong>
+            </div>
+
+            <div style="display: flex; gap: 6px; justify-content: flex-end; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-secondary" style="font-size: 11px; padding: 4px 10px; display: flex; align-items: center; gap: 4px;" onclick="App.openIkhtebaarSanad(App.ikhtebaarRecords[${idx}])">
+                <span>📜</span> Sanad Certificate
+              </button>
+              <button type="button" class="btn-save-wa" style="font-size: 11px; padding: 4px 10px; display: flex; align-items: center; gap: 4px;" onclick="App.sendIkhtebaarWhatsApp(App.ikhtebaarRecords[${idx}])">
+                <span>💬</span> WhatsApp Taqreer
+              </button>
+              <button type="button" class="btn-danger" style="font-size: 11px; padding: 4px 8px; background: #fee2e2; color: #b91c1c; border-color: #fca5a5;" onclick="App.deleteIkhtebaarRecord(${idx})" title="Delete record">
+                🗑️
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      },
+
+      deleteIkhtebaarRecord(idx) {
+        if (!confirm("Are you sure you want to delete this examination record?")) return;
+        this.ikhtebaarRecords.splice(idx, 1);
+        this.saveIkhtebaarToStorage();
+        this.renderPastIkhtebaarExams();
+        const pastCountEl = document.getElementById('ikhtebaar-past-count');
+        if (pastCountEl) pastCountEl.textContent = this.ikhtebaarRecords.length;
+        this.showMilestoneToast("🗑️ Deleted", "Examination record deleted.");
+      },
+
+      filterPastExams() {
+        const query = (document.getElementById('ikhtebaar-search')?.value || '').toLowerCase();
+        document.querySelectorAll('#past-exams-list .card').forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(query) ? 'block' : 'none';
+        });
+      },
+
+      exportIkhtebaarJSON() {
+        const blob = new Blob([JSON.stringify(this.ikhtebaarRecords, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Hifz_Pro_Ikhtebaar_Records_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
       },
 
       // ---------------------------------------------------------
@@ -4483,6 +6032,7 @@
         q.score = Math.max(0, 10.0 - (q.tanbeeh * 0.5) - (q.talqeen * 1.0));
         this.triggerHaptic(type === 'talqeen' ? 'warning' : 'light');
         this.renderQuestionsUI(secKey);
+        this.updateMobileStickyBar();
       },
 
       resetQuestionCounter(section, qIdx) {
@@ -5309,6 +6859,7 @@
             try { this.onSingleJuzChange(); } catch(e) {}
           }
         }
+        this.updateMobileStickyBar();
       },
 
       setSingleAttendance(status) {
@@ -5440,7 +6991,54 @@
       // ---------------------------------------------------------
       // HAPTIC TOUCH FEEDBACK (Design Spells)
       // ---------------------------------------------------------
+      // Priority 5: Web Audio API Micro-Sound Synthesis (for iOS Safari & Desktop)
+      playFeedbackSound(type = 'tap') {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          if (!this._audioCtx) {
+            this._audioCtx = new AudioContextClass();
+          }
+          if (this._audioCtx.state === 'suspended') {
+            this._audioCtx.resume();
+          }
+
+          const osc = this._audioCtx.createOscillator();
+          const gain = this._audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(this._audioCtx.destination);
+
+          const now = this._audioCtx.currentTime;
+          if (type === 'tap' || type === 'light') {
+            osc.frequency.setValueAtTime(750, now);
+            osc.frequency.exponentialRampToValueAtTime(350, now + 0.035);
+            gain.gain.setValueAtTime(0.035, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+            osc.start(now);
+            osc.stop(now + 0.035);
+          } else if (type === 'success' || type === 'celebrate') {
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.04); // E5
+            osc.frequency.setValueAtTime(783.99, now + 0.08); // G5
+            gain.gain.setValueAtTime(0.05, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+            osc.start(now);
+            osc.stop(now + 0.14);
+          } else if (type === 'warning') {
+            osc.frequency.setValueAtTime(280, now);
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+            osc.start(now);
+            osc.stop(now + 0.055);
+          }
+        } catch(e) {
+          // Audio blocked before user interaction, safely ignored
+        }
+      },
+
+      // Priority 1 & 5: Enhanced Dual Tactile Feedback (Vibrate on Android + Audio on iOS)
       triggerHaptic(type = 'light') {
+        this.playFeedbackSound(type);
         if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
           try {
             if (type === 'light') navigator.vibrate(15);
@@ -5450,6 +7048,96 @@
             else if (type === 'celebrate') navigator.vibrate([40, 60, 40, 60, 80]);
           } catch(e) {}
         }
+      },
+
+      // Priority 3: Mobile Sticky Action Bar Synced Handlers
+      updateMobileStickyBar() {
+        const bar = document.getElementById('mobile-sticky-bar');
+        if (!bar) return;
+
+        const isApplicableScreen = ['single-entry-view', 'tasmee-view', 'ikhtebaar-view'].includes(this.currentView);
+        if (!isApplicableScreen) {
+          bar.classList.add('hidden-bar');
+          return;
+        }
+
+        const nameEl = document.getElementById('sticky-std-name');
+        const pillEl = document.getElementById('sticky-grade-pill');
+
+        if (this.currentView === 'single-entry-view') {
+          const sel = document.getElementById('single-student-select');
+          const idx = sel && sel.value !== '' ? parseInt(sel.value, 10) : null;
+          const st = (idx !== null && !isNaN(idx)) ? this.students[idx] : null;
+          if (st) {
+            bar.classList.remove('hidden-bar');
+            if (nameEl) nameEl.textContent = st.name;
+            const gText = document.getElementById('single-grade-pill')?.textContent || "10.0/10";
+            if (pillEl) pillEl.textContent = `Grade: ${gText}`;
+          } else {
+            bar.classList.add('hidden-bar');
+          }
+        } else if (this.currentView === 'tasmee-view') {
+          const st = this.students && this.students[this.currentIndex];
+          if (st) {
+            bar.classList.remove('hidden-bar');
+            if (nameEl) nameEl.textContent = `${this.currentIndex + 1}. ${st.name}`;
+            const grade = document.getElementById('grade-display')?.textContent || "10.0";
+            if (pillEl) pillEl.textContent = `Grade: ${grade}`;
+          } else {
+            bar.classList.add('hidden-bar');
+          }
+        } else if (this.currentView === 'ikhtebaar-view') {
+          const st = this.students && this.students[this.ikhtebaarState ? this.ikhtebaarState.selectedStudentIndex : 0];
+          if (st) {
+            bar.classList.remove('hidden-bar');
+            if (nameEl) nameEl.textContent = `🎓 ${st.name}`;
+            const comp = this.calculateIkhtebaarComposite();
+            if (pillEl) pillEl.textContent = `Exam: ${comp.compStr}`;
+          }
+        }
+      },
+
+      handleStickySave() {
+        if (this.currentView === 'single-entry-view') {
+          this.saveSingleSectionRecord();
+        } else if (this.currentView === 'tasmee-view') {
+          this.nextStudent();
+        } else if (this.currentView === 'ikhtebaar-view') {
+          this.saveIkhtebaarRecord();
+        }
+        this.updateMobileStickyBar();
+      },
+
+      handleStickyWA() {
+        if (this.currentView === 'single-entry-view') {
+          this.openConsolidatedReportModal('single');
+        } else if (this.currentView === 'tasmee-view') {
+          this.sendWhatsApp();
+        } else if (this.currentView === 'ikhtebaar-view') {
+          this.sendIkhtebaarWhatsApp();
+        }
+      },
+
+      // Priority 5: Circular SVG Progress Ring Generator for Siparahs
+      getStudentProgressRingSVG(curPage = 1, size = 38) {
+        const stroke = 3.5;
+        const radius = (size - stroke) / 2;
+        const circumference = 2 * Math.PI * radius;
+        // In a typical 20-page Siparah, page progress in current Siparah:
+        const pageInJuz = ((curPage - 1) % 20) + 1;
+        const pct = Math.min(100, Math.max(5, Math.round((pageInJuz / 20) * 100)));
+        const offset = circumference - (pct / 100) * circumference;
+
+        return `
+          <div class="progress-ring-container" title="Current Siparah Progress: ${pct}% (Page ${curPage})" style="width: ${size}px; height: ${size}px; flex-shrink: 0;">
+            <svg width="${size}" height="${size}">
+              <circle stroke="#e2e8f0" stroke-width="${stroke}" fill="transparent" r="${radius}" cx="${size/2}" cy="${size/2}"/>
+              <circle class="progress-ring-circle" stroke="#c69214" stroke-width="${stroke}" stroke-linecap="round" fill="transparent"
+                      r="${radius}" cx="${size/2}" cy="${size/2}" style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset};"/>
+            </svg>
+            <span class="progress-ring-label" style="font-size: ${size < 36 ? '9px' : '10px'};">${pct}%</span>
+          </div>
+        `;
       },
 
       // ---------------------------------------------------------
@@ -6010,12 +7698,15 @@
 
         this.students.forEach((st, idx) => {
           const card = document.createElement('div');
-          card.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm);";
+          card.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); position: relative; gap: 10px;";
           card.innerHTML = `
-            <div>
-              <div style="font-weight: 700; font-size: 14px;">${st.name}</div>
-              <div style="font-size: 12px; color: var(--text-muted);">Class ${st.class} • ITS: ${st.its} • Mobile: ${st.phone}</div>
-              <div style="font-size: 11px; color: var(--accent-green); font-weight: 600;">Current: Juz ${st.curJuz}, Page ${st.curPage}</div>
+            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+              ${this.getStudentProgressRingSVG(st.curPage || 1, 38)}
+              <div style="min-width: 0;">
+                <div style="font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${st.name}</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Class ${st.class} • ITS: ${st.its} • Mobile: ${st.phone}</div>
+                <div style="font-size: 11px; color: var(--accent-green); font-weight: 600;">Current: Juz ${st.curJuz}, Page ${st.curPage}</div>
+              </div>
             </div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap;">
               <button class="btn-primary" style="padding: 6px 10px; font-size: 11px; background: var(--primary); color: #fff;" onclick="App.openSingleEntryForStudent(${idx})" title="Record Tasmee for ${st.name}">📝 Record</button>
@@ -7369,6 +9060,117 @@
     </div>
   </div>
 
+
+  <!-- ============================================================= -->
+  <!-- IKHTEBAAR PRINTABLE SANAD (CERTIFICATE) MODAL                -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="ikhtebaar-sanad-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(3px); overflow-y: auto; padding: 16px;">
+    <div class="modal-card" style="max-width: 680px; width: 100%; max-height: 94vh; display: flex; flex-direction: column; background: #ffffff; border-radius: var(--radius); padding: 20px; box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.3); overflow-y: auto;">
+      <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+        <div style="font-weight: 800; font-size: 14px; color: #78350f; display: flex; align-items: center; gap: 6px;">
+          <span>📜</span> Formal Examination Sanad Preview (شهادة الإختبار)
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-primary" style="padding: 6px 14px; font-size: 12px; background: #c69214; border-color: #a1740d;" onclick="App.printIkhtebaarSanad()">
+            🖨️ Print / Save as PDF
+          </button>
+          <button class="btn-icon" style="background: #f1f5f9; color: #475569; width: 28px; height: 28px; border-radius: 50%; border: none; font-size: 14px; cursor: pointer;" onclick="App.closeIkhtebaarSanad()">✕</button>
+        </div>
+      </div>
+
+      <!-- Printable Fatemi Framed Certificate -->
+      <div class="sanad-frame" id="sanad-print-area">
+        <!-- Certificate Shamsah & Heading -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 13px; font-weight: 800; color: #c69214; letter-spacing: 1px;">MSB EDUCATIONAL INSTITUTE • MAHAD AL-ZAHRA</div>
+          <div style="font-size: 11px; color: #6b0f24; font-weight: 700; margin-top: 2px;">معهد الزهراء لحفظ القرآن الكريم • قسم الإختبارات والتسميع</div>
+          <div class="sanad-title-gold" style="margin-top: 10px;">سَنَدُ إِخْتِبَارِ حِفْظِ القُرْآنِ الكَرِيمِ</div>
+          <div style="font-size: 12px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;" id="sanad-exam-title">
+            Juz 30 (Amma) Final Ikhtebaar
+          </div>
+        </div>
+
+        <!-- Student Details -->
+        <div style="background: #fdfaf3; border: 1.5px solid #facc15; border-radius: 6px; padding: 12px 16px; margin-bottom: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+          <div>
+            <span style="color: #78350f;">Candidate / الطالب:</span> <strong style="font-size: 14px; color: #1e293b;" id="sanad-std-name">Hakimuddin Electricwala</strong>
+          </div>
+          <div>
+            <span style="color: #78350f;">ITS Number:</span> <strong id="sanad-std-its">50607080</strong>
+          </div>
+          <div>
+            <span style="color: #78350f;">Sanah / Class:</span> <strong id="sanad-std-class">Class 4-B</strong>
+          </div>
+          <div>
+            <span style="color: #78350f;">Date / التاريخ:</span> <strong id="sanad-date-display">19 Nov 2026 • 8 Jumada al-Ukhra 1448 H</strong>
+          </div>
+        </div>
+
+        <!-- Tested Siparahs & Questions Summary -->
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 11px; font-weight: 800; color: #78350f; margin-bottom: 6px;">EXAMINATION QUESTIONS & RECITAION SCORES:</div>
+          <div id="sanad-questions-summary" style="font-size: 11px; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 12px; background: #ffffff;"></div>
+        </div>
+
+        <!-- Marks Grid -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; font-size: 11px; text-align: center;">
+          <div style="border: 1px solid #bbf7d0; background: #f0fdf4; border-radius: 6px; padding: 6px;">
+            <div style="color: #166534;">Recitation (60%)</div>
+            <strong style="font-size: 13px;" id="sanad-recitation-score">10.0</strong>
+          </div>
+          <div style="border: 1px solid #fef08a; background: #fefce8; border-radius: 6px; padding: 6px;">
+            <div style="color: #854d0e;">Makhaarij (20%)</div>
+            <strong style="font-size: 13px;" id="sanad-makhaarij-score">10.0</strong>
+          </div>
+          <div style="border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 6px; padding: 6px;">
+            <div style="color: #0369a1;">Ahkam (20%)</div>
+            <strong style="font-size: 13px;" id="sanad-ahkam-score">10.0</strong>
+          </div>
+          <div style="border: 1.5px solid #22c55e; background: #dcfce7; border-radius: 6px; padding: 6px;">
+            <div style="color: #14532d; font-weight: 700;">Final Composite</div>
+            <strong style="font-size: 14px; color: #15803d;" id="sanad-final-score">10.0 / 10</strong>
+          </div>
+        </div>
+
+        <!-- Merit & Result -->
+        <div style="text-align: center; margin-bottom: 14px; padding: 8px; background: #fdfbf7; border-radius: 6px; border: 1px dashed #c69214;">
+          <span style="font-size: 12px; color: #78350f;">Official Bohra Merit Designation: </span>
+          <strong style="font-size: 15px; color: #15803d; margin-left: 6px;" id="sanad-merit-award">✨ MUMTAZ (ممتاز)</strong>
+          <span style="margin: 0 10px; color: #cbd5e1;">|</span>
+          <span style="font-size: 12px; color: #78350f;">Result: </span>
+          <strong style="font-size: 14px; color: #16a34a;" id="sanad-result-status">PASSED (ناجح ومجاز)</strong>
+        </div>
+
+        <!-- Remarks -->
+        <div style="margin-bottom: 20px; font-size: 11px;">
+          <div style="font-weight: 700; color: #78350f; margin-bottom: 4px;">Examiner Remarks & Du'a:</div>
+          <div style="font-style: italic; color: #334155; line-height: 1.5; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 8px 10px;" id="sanad-remarks-text">
+            Mubarak! Commendable fluency in Daur.
+          </div>
+        </div>
+
+        <!-- Signatures & Seal -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 10px; font-size: 11px;">
+          <div style="text-align: center; width: 180px;">
+            <div style="border-bottom: 1.5px solid #334155; height: 30px;"></div>
+            <div style="margin-top: 4px; font-weight: 700; color: #334155;" id="sanad-examiner-sign">Shaikh Murtaza Zakir</div>
+            <div style="color: var(--text-muted); font-size: 10px;">Mumtahin / Examiner</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 50px; height: 50px; border: 2px dashed #c69214; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #c69214; margin: 0 auto;">
+              ⚜️
+            </div>
+            <div style="font-size: 9px; color: #c69214; font-weight: 700; margin-top: 2px;">MADRASA SEAL</div>
+          </div>
+          <div style="text-align: center; width: 180px;">
+            <div style="border-bottom: 1.5px solid #334155; height: 30px;"></div>
+            <div style="margin-top: 4px; font-weight: 700; color: #334155;">Head Mudarris</div>
+            <div style="color: var(--text-muted); font-size: 10px;">Hifz Department Seal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ============================================================= -->
   <!-- CONSOLIDATED DAILY REPORT WHATSAPP MODAL -->
