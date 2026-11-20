@@ -1,0 +1,29 @@
+# Backups and temporary files
+*.bak*
+*.zip
+*.log
+Hifz_Pro_GitHub_Upload/
+public_url.txt
+launch_screenshot.png
+
+# Python runtime and local test scripts
+__pycache__/
+*.pyc
+server.py
+scripts/
+
+# Local build / packaging mirrors
+web/
+github-pages/
+
+# Legacy / experimental files
+lib/
+test/
+tests/
+pubspec.yaml
+data/
+quran_complete_misri.json
+quran_data_bundle.js
+quran_meta.json
+surah_page_ayah_map.json
+firestore.rules
